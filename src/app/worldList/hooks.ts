@@ -1,8 +1,8 @@
 import { useSnapshot } from "valtio";
-import { worldMetas } from ".";
+import { worldList } from ".";
 
 const useWorldMetas = () => {
-  const { metas } = useSnapshot(worldMetas);
+  const { metas } = useSnapshot(worldList);
   return metas;
 }
 

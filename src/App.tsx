@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import useEnableChangeRoute from "./hooks/useEnableChangeRoute";
 
-import Dashboard from "./dashboard/Dashboard";
-import World from "./dashboard/World";
+import Dashboard from "./home/Dashboard";
+import World from "./home/World";
 import Editor from "./editor/Editor";
 import Home from "./home/Home";
-import Tagpage from "./tagview/Tagpage";
-import Tagview from "./tagview/Tagview";
+import Tagpage from "./tagview/TagPage";
+import Tagview from "./tagview/TagsPage";
 
 function App() {
   useEnableChangeRoute();

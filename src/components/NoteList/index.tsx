@@ -1,5 +1,5 @@
 import { Note, TagsObject } from "@/app/world/types";
-import NoteListItem from "./NoteListItem";
+import NoteListItem from "../ListItem";
 
 type Props = {
   notes: Note[];

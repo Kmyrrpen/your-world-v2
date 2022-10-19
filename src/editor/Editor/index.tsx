@@ -5,12 +5,12 @@ import { useParams } from "react-router-dom";
 
 import { useNotesObj } from "@/app/world/hooks";
 import { Note } from "@/app/world/types";
-import { createConfiguration } from "./tiptap";
-import Toolbar from "./Toolbar";
-import Title from "./Title";
-import EditorNavbar from "./Navbar";
-import TagSelect from "./TagSelect";
-import LinkModal from "./LinkModal";
+import { createConfiguration } from "../tiptap";
+import Toolbar from "../Toolbar";
+import Title from "../Title";
+import EditorNavbar from "../Navbar";
+import TagSelect from "../TagSelect";
+import LinkModal from "../LinkModal";
 
 type Props = {
   note?: Note;

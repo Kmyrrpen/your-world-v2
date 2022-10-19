@@ -1,4 +1,4 @@
-import { proxy, snapshot, subscribe } from "valtio";
+import { proxy, snapshot } from "valtio";
 import { nanoid } from "nanoid";
 import { set, update, del, get } from "idb-keyval";
 import { Action, createAction, createReducer } from "wuuber";
@@ -13,35 +13,31 @@ interface WorldMetas {
   metas: readonly WorldMeta[];
 }
 
-const worldMetasKey = "worldList";
-export const worldMetas = proxy<Writeable<WorldMetas>>({
+const worldListKey = "worldList";
+export const worldList = proxy<Writeable<WorldMetas>>({
   metas: [],
 });
 
-subscribe(worldMetas, () => {
-  console.log(worldMetas.metas);
+get(worldListKey).then((val) => {
+  worldList.metas = val || [];
 });
 
-get(worldMetasKey).then((val) => {
-  worldMetas.metas = val || [];
-});
-
-const worldMetasReducer = createReducer("worldMetas", {
+const worldListReducer = createReducer("worldMetas", {
   _update: (action: Action<WorldMeta[]>) => {
-    worldMetas.metas = action.payload;
+    worldList.metas = action.payload;
   },
 });
 
-const { _update } = worldMetasReducer.actions;
+const { _update } = worldListReducer.actions;
 
 export const updateMetas = createAction<WorldMeta>(
   "worldMetas/updateWorldMeta",
   async (action, _, dispatch) => {
-    const newWorldMetas = worldMetas.metas.map((meta) =>
+    const newWorldMetas = worldList.metas.map((meta) =>
       meta.id === action.payload.id ? action.payload : meta
     );
 
-    await update<Readonly<WorldMeta[]>>(worldMetasKey, () => newWorldMetas);
+    await update<Readonly<WorldMeta[]>>(worldListKey, () => newWorldMetas);
     dispatch(_update(newWorldMetas));
   }
 );
@@ -49,11 +45,11 @@ export const updateMetas = createAction<WorldMeta>(
 export const deleteWorld = createAction<string>(
   "worldMetas/deleteWorld",
   async (action, _, dispatch) => {
-    const newWorldMetas = worldMetas.metas.filter(
+    const newWorldMetas = worldList.metas.filter(
       (meta) => meta.id !== action.payload
     );
 
-    await update<WorldMeta[]>(worldMetasKey, () => newWorldMetas);
+    await update<WorldMeta[]>(worldListKey, () => newWorldMetas);
     await del(action.payload);
     dispatch(unmountWorld());
     dispatch(_update(newWorldMetas));
@@ -78,10 +74,11 @@ export const createNewWorld = createAction<string>(
       tags: {},
       id: worldId,
     };
-    const snap = snapshot(worldMetas.metas);
 
+    // create snap since idb will complain
+    const snap = snapshot(worldList.metas);
     const newWorldMetas = [worldMeta, ...snap];
-    await update<WorldMeta[]>(worldMetasKey, () => newWorldMetas);
+    await update<WorldMeta[]>(worldListKey, () => newWorldMetas);
     await set(worldId, storedState);
 
     dispatch(_update(newWorldMetas));
@@ -89,8 +86,8 @@ export const createNewWorld = createAction<string>(
   }
 );
 
-export const worldMetasFlows = [
-  worldMetasReducer,
+export const worldListFlows = [
+  worldListReducer,
   createNewWorld,
   updateMetas,
   deleteWorld,

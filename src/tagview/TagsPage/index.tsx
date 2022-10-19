@@ -1,6 +1,6 @@
 import { useTags } from "@/app/world/hooks";
 import Navbar from "@/components/Navbar";
-import TagviewItem from "./TagviewItem";
+import TagviewItem from "../TagsItem";
 
 const Tagview: React.FC = () => {
   const tags = useTags();

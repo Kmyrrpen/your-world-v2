@@ -1,6 +1,6 @@
 import { useNotes, useTagsObj } from "@/app/world/hooks";
 import Navbar from "@/components/Navbar";
-import NoteList from "../components/NoteList";
+import NoteList from "../../components/NoteList";
 
 const Dashboard: React.FC = () => {
   const notes = useNotes();

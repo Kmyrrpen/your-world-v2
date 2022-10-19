@@ -1,6 +1,6 @@
 import { dispatch } from "@/app/dispatch";
-import { createNewWorld } from "@/app/worldMeta";
-import useWorldMetas from "@/app/worldMeta/hooks";
+import { createNewWorld } from "@/app/worldList";
+import useWorldMetas from "@/app/worldList/hooks";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 

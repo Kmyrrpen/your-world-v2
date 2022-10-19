@@ -1,5 +1,5 @@
 import { createDispatch } from "wuuber";
 import { worldFlows } from "./world";
-import { worldMetasFlows } from "./worldMeta";
+import { worldListFlows } from "./worldList";
 
-export const dispatch = createDispatch(...worldFlows, ...worldMetasFlows);
+export const dispatch = createDispatch(...worldFlows, ...worldListFlows);
