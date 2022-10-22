@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '@/assets/logo.svg';
 import { ReactComponent as LogoText } from '@/assets/logo-text-horizontal.svg';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const HomeNavbar: React.FC = () => {
   // only on mobile
@@ -11,16 +12,18 @@ const HomeNavbar: React.FC = () => {
 
   return (
     <nav className="relative mb-9 py-2 sm:py-4">
-      <div className="flex flex-wrap items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-1 md:gap-4">
         <Link to="/" className="flex items-center">
           <Logo className="w-8 fill-black dark:fill-white sm:hidden" />
           <LogoText className=" hidden h-auto fill-black dark:fill-white sm:block" />
         </Link>
 
+        <ThemeToggle className="ml-auto md:ml-0 md:order-3" />
+
         <button
           onClick={onToggle}
           type="button"
-          className="ml-3 inline-flex items-center rounded-lg p-2 text-sm text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-white dark:hover:bg-black dark:focus:ring-gray-600 md:hidden"
+          className="inline-flex items-center rounded-lg p-2 text-sm text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-white dark:hover:bg-black dark:focus:ring-gray-600 md:hidden"
           aria-controls="navbar-default"
           aria-expanded="false"
         >
@@ -45,11 +48,11 @@ const HomeNavbar: React.FC = () => {
         <div
           className={classNames(
             { hidden: !toggle },
-            'w-full md:block md:w-auto',
+            'w-full md:block md:w-auto md:ml-auto',
           )}
           id="navbar-default"
         >
-          <ul className="absolute top-full left-0 flex w-full flex-col border border-gray-200 bg-white dark:border-gray-600 dark:bg-black md:static md:flex-row md:gap-10 md:border-0 md:bg-transparent">
+          <ul className="absolute top-full left-0 flex w-full flex-col border border-gray-200 bg-white dark:border-gray-600 dark:bg-black md:static md:flex-row md:gap-4 md:border-0  md:bg-transparent md:dark:bg-transparent">
             <li>
               <Link
                 to="/how-to-use"
