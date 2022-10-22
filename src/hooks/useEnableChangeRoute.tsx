@@ -1,12 +1,12 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * change route outside of react, it dispatches a custom event on the document
  * and we listen to that event inside the react context with useEnableChangeRoute().
  */
 export const changeRoute = (path: string) => {
-  const event = new CustomEvent("changeRoute", { detail: path });
+  const event = new CustomEvent('changeRoute', { detail: path });
   document.dispatchEvent(event);
 };
 
@@ -21,10 +21,10 @@ const useEnableChangeRoute = () => {
       const { detail } = e;
       if (detail) navigate(detail);
     };
-    document.addEventListener("changeRoute", listener);
+    document.addEventListener('changeRoute', listener);
 
     return () => {
-      document.removeEventListener("changeRoute", listener);
+      document.removeEventListener('changeRoute', listener);
     };
   }, []);
 };

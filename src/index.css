@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-primary;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  #root {
+    width: 100%;
+    align-self: stretch;
+    display: flex;
+  }
+}

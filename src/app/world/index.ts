@@ -1,20 +1,20 @@
-import { get } from "idb-keyval";
-import { proxy } from "valtio";
-import { createReducer, Action, createAction } from "wuuber";
-import { notesToArray } from "@/utils";
-import { LoadState, Note, StoredWorldState, Tag, WorldState } from "./types";
+import { get } from 'idb-keyval';
+import { proxy } from 'valtio';
+import { createReducer, Action, createAction } from 'wuuber';
+import { notesToArray } from '@/utils';
+import { LoadState, Note, StoredWorldState, Tag, WorldState } from './types';
 
 // Responsible for current world
 export const worldStore = proxy<WorldState>({
-  name: "",
+  name: '',
   notes: {},
   tags: {},
-  loadState: "none",
-  id: "",
+  loadState: 'none',
+  id: '',
 });
 
 // root actions
-export const worldReducer = createReducer("world", {
+export const worldReducer = createReducer('world', {
   createNote: (action: Action<Note>) => {
     const note = action.payload;
     worldStore.notes[note.id] = note;
@@ -31,7 +31,7 @@ export const worldReducer = createReducer("world", {
     const { note, tag: tagIdToRemove } = action.payload;
     const mutableNote = worldStore.notes[note.id];
     mutableNote.tagIds = mutableNote.tagIds.filter(
-      (tagId) => tagId !== tagIdToRemove
+      (tagId) => tagId !== tagIdToRemove,
     );
   },
   setLoadState: (action: Action<LoadState>) => {
@@ -60,7 +60,7 @@ const {
 } = worldReducer.actions;
 
 const deleteTag = createAction<string>(
-  "world/deleteTag",
+  'world/deleteTag',
   (action, _, dispatch) => {
     const tagIdToRemove = action.payload;
 
@@ -73,34 +73,34 @@ const deleteTag = createAction<string>(
 
     // then delete the tag from the store
     dispatch(_deleteTag(tagIdToRemove));
-  }
+  },
 );
 
 const initializeWorld = createAction<string>(
-  "world/initializeWorld",
+  'world/initializeWorld',
   async (action, _, dispatch) => {
-    dispatch(setLoadState("loading"));
+    dispatch(setLoadState('loading'));
 
     const world: StoredWorldState | undefined = await get(action.payload);
-    if (!world) return dispatch(setLoadState("error"));
+    if (!world) return dispatch(setLoadState('error'));
 
-    dispatch(_initializeWorld({ ...world, loadState: "loaded" }));
-  }
+    dispatch(_initializeWorld({ ...world, loadState: 'loaded' }));
+  },
 );
 
 const unmountWorld = createAction(
-  "world/unmountWorld",
+  'world/unmountWorld',
   async (action, _, dispatch) => {
     dispatch(
       _initializeWorld({
-        name: "",
-        id: "",
-        loadState: "none",
+        name: '',
+        id: '',
+        loadState: 'none',
         notes: {},
         tags: {},
-      })
+      }),
     );
-  }
+  },
 );
 
 // expose non-internal action creators

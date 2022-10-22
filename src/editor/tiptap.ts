@@ -1,9 +1,9 @@
-import { EditorOptions, Extension } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
-import { Note } from "@/app/world/types";
+import { EditorOptions, Extension } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
+import { Note } from '@/app/world/types';
 
-declare module "@tiptap/react" {
+declare module '@tiptap/react' {
   interface Commands<ReturnType> {
     customShortcuts: {
       toggleLinkModal: () => ReturnType;
@@ -17,7 +17,7 @@ type Storage = {
 };
 
 const CustomExtension = Extension.create<{}, Storage>({
-  name: "custom",
+  name: 'custom',
   addStorage() {
     return {
       showLinkModal: false,
@@ -35,7 +35,7 @@ const CustomExtension = Extension.create<{}, Storage>({
           }
 
           const selection = editor.state.selection;
-          const noLink = Object.keys(editor.getAttributes("link")).length === 0;
+          const noLink = Object.keys(editor.getAttributes('link')).length === 0;
 
           if (!selection.empty) {
             // show link modal or remove link attached

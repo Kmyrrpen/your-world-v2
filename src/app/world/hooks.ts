@@ -1,8 +1,8 @@
-import { notesToArray, tagsToArray } from "@/utils";
-import { useMemo } from "react";
-import { useSnapshot } from "valtio";
-import { worldStore } from ".";
-import { Note, NotesObject, Tag, TagsObject, WorldState } from "./types";
+import { notesToArray, tagsToArray } from '@/utils';
+import { useMemo } from 'react';
+import { useSnapshot } from 'valtio';
+import { worldStore } from '.';
+import { Note, NotesObject, Tag, TagsObject, WorldState } from './types';
 
 // TODO: make sort function
 const sortNotes = (notes: Note[]): Note[] => notes;

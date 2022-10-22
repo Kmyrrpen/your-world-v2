@@ -1,19 +1,19 @@
-import { proxy, snapshot } from "valtio";
-import { nanoid } from "nanoid";
-import { set, update, del, get } from "idb-keyval";
-import { Action, createAction, createReducer } from "wuuber";
-import { changeRoute } from "@/hooks/useEnableChangeRoute";
-import { Writeable } from "@/utils";
+import { proxy, snapshot } from 'valtio';
+import { nanoid } from 'nanoid';
+import { set, update, del, get } from 'idb-keyval';
+import { Action, createAction, createReducer } from 'wuuber';
+import { changeRoute } from '@/hooks/useEnableChangeRoute';
+import { Writeable } from '@/utils';
 
-import { unmountWorld } from "../world";
-import { StoredWorldState } from "../world/types";
-import { WorldMeta } from "./types";
+import { unmountWorld } from '../world';
+import { StoredWorldState } from '../world/types';
+import { WorldMeta } from './types';
 
 interface WorldMetas {
   metas: readonly WorldMeta[];
 }
 
-const worldListKey = "worldList";
+const worldListKey = 'worldList';
 export const worldList = proxy<Writeable<WorldMetas>>({
   metas: [],
 });
@@ -22,7 +22,7 @@ get(worldListKey).then((val) => {
   worldList.metas = val || [];
 });
 
-const worldListReducer = createReducer("worldMetas", {
+const worldListReducer = createReducer('worldMetas', {
   _update: (action: Action<WorldMeta[]>) => {
     worldList.metas = action.payload;
   },
@@ -31,22 +31,22 @@ const worldListReducer = createReducer("worldMetas", {
 const { _update } = worldListReducer.actions;
 
 export const updateMetas = createAction<WorldMeta>(
-  "worldMetas/updateWorldMeta",
+  'worldMetas/updateWorldMeta',
   async (action, _, dispatch) => {
     const newWorldMetas = worldList.metas.map((meta) =>
-      meta.id === action.payload.id ? action.payload : meta
+      meta.id === action.payload.id ? action.payload : meta,
     );
 
     await update<Readonly<WorldMeta[]>>(worldListKey, () => newWorldMetas);
     dispatch(_update(newWorldMetas));
-  }
+  },
 );
 
 export const deleteWorld = createAction<string>(
-  "worldMetas/deleteWorld",
+  'worldMetas/deleteWorld',
   async (action, _, dispatch) => {
     const newWorldMetas = worldList.metas.filter(
-      (meta) => meta.id !== action.payload
+      (meta) => meta.id !== action.payload,
     );
 
     await update<WorldMeta[]>(worldListKey, () => newWorldMetas);
@@ -54,12 +54,12 @@ export const deleteWorld = createAction<string>(
     dispatch(unmountWorld());
     dispatch(_update(newWorldMetas));
 
-    changeRoute("/");
-  }
+    changeRoute('/');
+  },
 );
 
 export const createNewWorld = createAction<string>(
-  "worldMetas/createNewWorld",
+  'worldMetas/createNewWorld',
   async (action, _, dispatch) => {
     const worldId = nanoid();
 
@@ -83,7 +83,7 @@ export const createNewWorld = createAction<string>(
 
     dispatch(_update(newWorldMetas));
     changeRoute(worldId);
-  }
+  },
 );
 
 export const worldListFlows = [

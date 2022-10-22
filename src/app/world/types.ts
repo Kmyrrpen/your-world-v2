@@ -1,4 +1,4 @@
-import { Writeable } from "@/utils";
+import { Writeable } from '@/utils';
 
 export type Note = Readonly<{
   name: string;
@@ -15,7 +15,7 @@ export type Tag = Readonly<{
   id: string;
 }>;
 
-export type LoadState = "none" | "loading" | "loaded" | "error";
+export type LoadState = 'none' | 'loading' | 'loaded' | 'error';
 
 export type TagsObject = { readonly [key: string]: Tag };
 export type NotesObject = { readonly [key: string]: Note };
@@ -27,4 +27,4 @@ export type WorldState = {
   tags: { [key: string]: Writeable<Tag> };
   loadState: LoadState;
 };
-export type StoredWorldState = Omit<WorldState, "loadState">;
+export type StoredWorldState = Omit<WorldState, 'loadState'>;
