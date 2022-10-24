@@ -1,8 +1,8 @@
-import useWorldMetas from '@/app/worldList/hooks';
+import { useMetas } from '@/app/metas/hooks';
 import WorldListItem from './WorldListItem';
 
 const WorldList: React.FC = () => {
-  const metas = useWorldMetas();
+  const metas = useMetas();
 
   return (
     <div className="mb-20 flex flex-col gap-4">

@@ -1,23 +1,33 @@
-import { get } from 'idb-keyval';
+import { createReducer, Action, Flow, createAction } from 'wuuber';
 import { proxy } from 'valtio';
-import { createReducer, Action, createAction } from 'wuuber';
-import { notesToArray } from '@/utils';
-import { LoadState, Note, StoredWorldState, Tag, WorldState } from './types';
+import { notesToArray, Writeable } from '@/utils';
+import { changeRoute } from '@/hooks/useEnableChangeRoute';
+import { createMeta, metaStore } from '../metas';
+import { openWorldDB } from './utils';
+import { connections } from '../connections';
 
-// Responsible for current world
+import {
+  LoadState,
+  Note,
+  NotesObject,
+  Tag,
+  TagsObject,
+  WorldState,
+} from './types';
+import { nanoid } from 'nanoid';
+
 export const worldStore = proxy<WorldState>({
-  name: '',
   notes: {},
   tags: {},
-  loadState: 'none',
   id: '',
+  loadState: 'none',
 });
 
-// root actions
-export const worldReducer = createReducer('world', {
-  createNote: (action: Action<Note>) => {
-    const note = action.payload;
-    worldStore.notes[note.id] = note;
+export const worldLoadedActions = createReducer('world_loaded', {
+  createNote: (action: Action<Note | Note[]>) => {
+    if (Array.isArray(action.payload)) {
+      action.payload.forEach((note) => (worldStore.notes[note.id] = note));
+    } else worldStore.notes[action.payload.id] = action.payload;
   },
   deleteNote: (action: Action<Note>) => {
     const note = action.payload;
@@ -27,75 +37,151 @@ export const worldReducer = createReducer('world', {
     const tag = action.payload;
     worldStore.tags[tag.id] = tag;
   },
-  removeTag: (action: Action<{ note: Note; tag: string }>) => {
-    const { note, tag: tagIdToRemove } = action.payload;
-    const mutableNote = worldStore.notes[note.id];
-    mutableNote.tagIds = mutableNote.tagIds.filter(
-      (tagId) => tagId !== tagIdToRemove,
-    );
-  },
-  setLoadState: (action: Action<LoadState>) => {
-    worldStore.loadState = action.payload;
-  },
-  _deleteTag: (action: Action<string>) => {
+  deleteTag: (action: Action<string>) => {
     const tagId = action.payload;
     delete worldStore.tags[tagId];
   },
-  _initializeWorld: (action: Action<WorldState>) => {
-    worldStore.notes = { ...action.payload.notes };
-    worldStore.tags = { ...action.payload.tags };
-    worldStore.loadState = action.payload.loadState;
-    worldStore.id = action.payload.id;
+});
+
+export const { createNote, deleteNote, createTag, deleteTag } =
+  worldLoadedActions.actions;
+
+const worldSetActions = createReducer('world_set', {
+  setWorld: (action: Action<WorldState>) => {
+    const newWorld = action.payload;
+    const keys = Object.keys(newWorld) as (keyof typeof newWorld)[];
+    // @ts-ignore
+    keys.forEach((key) => (worldStore[key] = newWorld[key]));
+  },
+  setWorldLoad: (action: Action<LoadState>) => {
+    worldStore.loadState = action.payload;
   },
 });
 
-const {
-  createNote,
-  createTag,
-  deleteNote,
-  removeTag,
-  setLoadState,
-  _deleteTag,
-  _initializeWorld,
-} = worldReducer.actions;
+export const { setWorld, setWorldLoad } = worldSetActions.actions;
 
-const deleteTag = createAction<string>(
-  'world/deleteTag',
-  (action, _, dispatch) => {
-    const tagIdToRemove = action.payload;
+/**
+ * Listen to actions that will transform data inside world,
+ * do the same in the DB first and then let it through
+ */
+export const saveToDBFlow: Flow = async (action, { next, dispatch }) => {
+  const { world: db } = connections;
 
-    // remove references of the tag from every note
-    notesToArray(worldStore.notes).forEach((note) => {
-      if (note.tagIds.findIndex((tagId) => tagId === tagIdToRemove) !== -1) {
-        dispatch(removeTag({ note, tag: tagIdToRemove }));
-      }
+  // if db is not connected, check if action is one of the reducer actions,
+  // if it is, log an error else just pass the action along.
+  if (!db) {
+    if (action.type.startsWith('world_loaded')) {
+      console.error(
+        'WORLD: reducer actions are being called without db connection.',
+      );
+      return;
+    } else return next(action);
+  }
+
+  // Note: create/update
+  if (createNote.match(action)) {
+    const tr = db.transaction('notes', 'readwrite');
+
+    if (Array.isArray(action.payload)) {
+      const promises = action.payload.map((note) => tr.store.put(note));
+      await Promise.all(promises);
+    } else await tr.store.put(action.payload);
+  }
+
+  // Note: delete
+  else if (deleteNote.match(action)) {
+    const tr = db.transaction('notes', 'readwrite');
+    await tr.store.delete(action.payload.id);
+  }
+
+  // Tag: create/update
+  else if (createTag.match(action)) {
+    const tr = db.transaction('tags', 'readwrite');
+    await tr.store.put(action.payload);
+  }
+
+  // Tag: delete
+  else if (deleteTag.match(action)) {
+    const tr = db.transaction('tags', 'readwrite');
+    const tagId = action.payload;
+    const moddedNotes = notesToArray(worldStore.notes).map((note) => {
+      return { ...note, tagIds: note.tagIds.filter((id) => id !== tagId) };
     });
 
-    // then delete the tag from the store
-    dispatch(_deleteTag(tagIdToRemove));
-  },
-);
+    tr.store.delete(action.payload);
+    dispatch(createNote(moddedNotes));
+  }
 
-const initializeWorld = createAction<string>(
-  'world/initializeWorld',
-  async (action, _, dispatch) => {
-    dispatch(setLoadState('loading'));
+  return next(action);
+};
 
-    const world: StoredWorldState | undefined = await get(action.payload);
-    if (!world) return dispatch(setLoadState('error'));
+/**
+ * Call when opening a world to load all the data needed
+ * as well as providing a connection to the db.
+ */
+export const openWorld = createAction<string>(
+  'world/openWorld',
+  async (action, { dispatch }) => {
+    // tell app world is being loaded.
+    dispatch(setWorldLoad('loading'));
 
-    dispatch(_initializeWorld({ ...world, loadState: 'loaded' }));
-  },
-);
+    if (!connections.world) {
+      // world doesn't really exist
+      if (!metaStore.metas[action.payload]) {
+        return dispatch(setWorldLoad('error'));
+      }
+      const worldDB = await openWorldDB(action.payload);
+      connections.world = worldDB;
+    }
 
-const unmountWorld = createAction(
-  'world/unmountWorld',
-  async (action, _, dispatch) => {
+    const db = connections.world;
+    const tr = db.transaction(['tags', 'notes']);
+
+    const notes: Writeable<NotesObject> = {};
+    let noteCursor = await tr.objectStore('notes').openCursor();
+    while (noteCursor) {
+      const note = noteCursor.value;
+      notes[note.id] = note;
+      noteCursor = await noteCursor.continue();
+    }
+
+    const tags: Writeable<TagsObject> = {};
+    let tagCursor = await tr.objectStore('tags').openCursor();
+    while (tagCursor) {
+      const tag = tagCursor.value;
+      tags[tag.id] = tag;
+      tagCursor = await tagCursor.continue();
+    }
+
+    // grab all necessary data and upload it to app
     dispatch(
-      _initializeWorld({
-        name: '',
-        id: '',
+      setWorld({
+        notes,
+        tags,
+        id: action.payload,
+        loadState: 'loaded',
+      }),
+    );
+  },
+);
+
+/**
+ * closes the world db, reset the world state
+ */
+export const closeWorld = createAction(
+  'world/close',
+  (action, { dispatch }) => {
+    if (!connections.world) {
+      console.error('WORLD: closeWorld called without db connection');
+      return;
+    }
+
+    connections.world.close();
+    connections.world = null;
+    dispatch(
+      setWorld({
         loadState: 'none',
+        id: '',
         notes: {},
         tags: {},
       }),
@@ -103,20 +189,29 @@ const unmountWorld = createAction(
   },
 );
 
-// expose non-internal action creators
-export {
-  createNote,
-  createTag,
-  deleteNote,
-  deleteTag,
-  initializeWorld,
-  unmountWorld,
-};
+/**
+ * on world create, create a new DB with world id and also dispatch createMeta to store meta
+ * on metas db.
+ */
+export const createWorld = createAction<string>(
+  'world/create',
+  async (action, { dispatch }) => {
+    // create the db and store it in connections
+    const name = action.payload;
+    const id = nanoid();
+    const worldDB = await openWorldDB(id);
+
+    connections.world = worldDB;
+    dispatch(createMeta({ id, name }));
+    changeRoute(id);
+  },
+);
 
 export const worldFlows = [
-  worldReducer,
-  // non-reducer actions
-  deleteTag,
-  initializeWorld,
-  unmountWorld,
+  createWorld,
+  openWorld,
+  closeWorld,
+  worldSetActions,
+  saveToDBFlow,
+  worldLoadedActions,
 ];

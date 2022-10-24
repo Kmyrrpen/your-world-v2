@@ -13,7 +13,7 @@ const Container = <C extends React.ElementType = 'div'>({
   return (
     <Component
       className={classNames(
-        'w-full max-w-lg px-4 sm:max-w-2xl md:max-w-4xl lg:max-w-6xl',
+        'w-full max-w-lg px-4 sm:max-w-3xl md:max-w-4xl lg:max-w-6xl',
         className,
       )}
       {...props}

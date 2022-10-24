@@ -1,27 +1,27 @@
 import { Outlet, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import { initializeWorld, unmountWorld } from '@/app/world';
+import { closeWorld, openWorld } from '@/app/world';
 import { useWorld } from '@/app/world/hooks';
 import { dispatch } from '@/app/dispatch';
 
 const World = () => {
   const worldId = useParams<{ worldId: string }>().worldId as string;
-  const worldSnap = useWorld();
+  const world = useWorld();
 
-  // on unmount, set the world state back to none
+  // on unmount, close the world
   useEffect(() => {
-    if (worldSnap.loadState === 'none') {
-      dispatch(initializeWorld(worldId));
+    if (world.loadState === 'none') {
+      dispatch(openWorld(worldId));
     }
     return () => {
-      dispatch(unmountWorld());
+      dispatch(closeWorld());
     };
   }, []);
 
-  if (worldSnap.loadState === 'error')
+  if (world.loadState === 'error')
     return <div>error: world does not exist!</div>;
-  if (worldSnap.loadState === 'loaded') return <Outlet />;
+  if (world.loadState === 'loaded') return <Outlet />;
 
   // load state is none or loading
   return <div>Loading...</div>;

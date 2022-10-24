@@ -1,3 +1,5 @@
+import React from 'react';
+import { WorldMeta, WorldMetasObject } from './app/metas/types';
 import { Note, NotesObject, Tag, TagsObject } from './app/world/types';
 
 // removes readonly modifier from every property of an object
@@ -19,3 +21,6 @@ export const tagsToArray = (tagsObj: TagsObject): Tag[] =>
 
 export const notesToArray = (notesObj: NotesObject): Note[] =>
   Object.keys(notesObj).map((key) => notesObj[key]);
+
+export const metasToArray = (metasObj: WorldMetasObject): WorldMeta[] =>
+  Object.keys(metasObj).map((key) => metasObj[key]);

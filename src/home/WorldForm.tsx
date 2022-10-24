@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { createNewWorld } from '@/app/worldList';
 import { dispatch } from '@/app/dispatch';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import { createWorld } from '@/app/world';
 
 type Props = {
   show: boolean;
@@ -14,15 +14,12 @@ const WorldForm: React.FC<Props> = ({ show, onToggle }) => {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createNewWorld(nameValue));
+    dispatch(createWorld(nameValue));
   };
 
   if (!show)
     return (
-      <Button
-        className="button button-large mx-auto mb-6 w-fit bg-primary-200"
-        onClick={onToggle}
-      >
+      <Button size="large" className="mx-auto mb-6 w-fit" onClick={onToggle}>
         New World
       </Button>
     );
@@ -36,10 +33,7 @@ const WorldForm: React.FC<Props> = ({ show, onToggle }) => {
         value={nameValue}
         onChange={(e) => setNameValue(e.target.value)}
       />
-      <Button
-        className="button button-large w-fit bg-primary-200"
-        type="submit"
-      >
+      <Button className="w-fit" size="large" type="submit">
         Create New World
       </Button>
     </form>

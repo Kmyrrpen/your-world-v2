@@ -1,5 +1,5 @@
-import { WorldMeta } from '@/app/worldList/types';
 import { Link } from 'react-router-dom';
+import { WorldMeta } from '@/app/metas/types';
 import { ReactComponent as WorldIcon } from '@/assets/world-icon.svg';
 import { ReactComponent as ArrowRight } from '@/assets/arrow-right.svg';
 import Button from '@/components/Button';
@@ -18,7 +18,11 @@ const WorldListItem: React.FC<Props> = ({ meta }) => {
         <WorldIcon className="h-auto w-14 md:w-16" />
         <span className="grow text-base font-medium">{meta.name}</span>
         <ArrowRight className="h-10 dark:fill-white sm:hidden md:w-20" />
-        <Button as="span" className="hidden w-max sm:inline-block">
+        <Button
+          as="span"
+          color="secondary"
+          className="hidden w-max sm:inline-block"
+        >
           Visit World
         </Button>
       </Link>

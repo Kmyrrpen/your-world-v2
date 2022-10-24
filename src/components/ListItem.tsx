@@ -1,3 +1,4 @@
+import { useWorld } from '@/app/world/hooks';
 import { Note, TagsObject } from '@/app/world/types';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +8,8 @@ type Props = {
 };
 
 const NoteListItem: React.FC<Props> = ({ note, tagsObj }) => {
+  const world = useWorld();
+
   return (
     <li>
       <h2>{note.name}</h2>
@@ -16,7 +19,7 @@ const NoteListItem: React.FC<Props> = ({ note, tagsObj }) => {
         ))}
       </ul>
       <p>{note.description}</p>
-      <Link to={`/${note.id}`}>Open</Link>
+      <Link to={`/${world.id}/${note.id}`}>Open</Link>
     </li>
   );
 };

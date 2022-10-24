@@ -1,3 +1,4 @@
+import { DBSchema } from 'idb';
 import { Writeable } from '@/utils';
 
 export type Note = Readonly<{
@@ -15,16 +16,24 @@ export type Tag = Readonly<{
   id: string;
 }>;
 
-export type LoadState = 'none' | 'loading' | 'loaded' | 'error';
-
 export type TagsObject = { readonly [key: string]: Tag };
 export type NotesObject = { readonly [key: string]: Note };
+export type LoadState = 'none' | 'loading' | 'loaded' | 'error';
 
 export type WorldState = {
-  name: string;
-  id: string;
   notes: { [key: string]: Writeable<Note> };
   tags: { [key: string]: Writeable<Tag> };
   loadState: LoadState;
+  id: string;
 };
-export type StoredWorldState = Omit<WorldState, 'loadState'>;
+
+export interface WorldSchema extends DBSchema {
+  tags: {
+    key: string;
+    value: Tag;
+  };
+  notes: {
+    key: string;
+    value: Note;
+  };
+}
