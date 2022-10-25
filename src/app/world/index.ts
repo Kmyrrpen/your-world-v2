@@ -1,5 +1,7 @@
 import { createReducer, Action, Flow, createAction } from 'wuuber';
+import { cloneDeep } from 'lodash';
 import { proxy } from 'valtio';
+import { nanoid } from 'nanoid';
 import { notesToArray, Writeable } from '@/utils';
 import { changeRoute } from '@/hooks/useEnableChangeRoute';
 import { createMeta, metaStore } from '../metas';
@@ -14,7 +16,6 @@ import {
   TagsObject,
   WorldState,
 } from './types';
-import { nanoid } from 'nanoid';
 
 export const worldStore = proxy<WorldState>({
   notes: {},
@@ -71,9 +72,11 @@ export const saveToDBFlow: Flow = async (action, { next, dispatch }) => {
   // if it is, log an error else just pass the action along.
   if (!db) {
     if (action.type.startsWith('world_loaded')) {
+      console.group();
       console.error(
         'WORLD: reducer actions are being called without db connection.',
       );
+      console.error(`action dispatched: ${action.type}`);
       return;
     } else return next(action);
   }
@@ -81,9 +84,13 @@ export const saveToDBFlow: Flow = async (action, { next, dispatch }) => {
   // Note: create/update
   if (createNote.match(action)) {
     const tr = db.transaction('notes', 'readwrite');
+    console.log(action.payload);
 
     if (Array.isArray(action.payload)) {
-      const promises = action.payload.map((note) => tr.store.put(note));
+      // deep clone note to be sure no proxy is inside.
+      const promises = action.payload.map((note) =>
+        tr.store.put(cloneDeep(note)),
+      );
       await Promise.all(promises);
     } else await tr.store.put(action.payload);
   }
@@ -97,7 +104,13 @@ export const saveToDBFlow: Flow = async (action, { next, dispatch }) => {
   // Tag: create/update
   else if (createTag.match(action)) {
     const tr = db.transaction('tags', 'readwrite');
-    await tr.store.put(action.payload);
+    const promise = tr.store.put(action.payload);
+
+    // editor needs to also wait for the promise,
+    // attach the next(action) which is just createTag and
+    // return the promise.
+    promise.then(() => next(action));
+    return promise;
   }
 
   // Tag: delete

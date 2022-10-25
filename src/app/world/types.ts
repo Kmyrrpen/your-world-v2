@@ -1,6 +1,10 @@
 import { DBSchema } from 'idb';
 import { Writeable } from '@/utils';
 
+/** Properties of a note, the meat of our application,
+ * note that this should be deep-cloned/turned serializable
+ * when saving to DB since it has non-primitive properties.
+ */
 export type Note = Readonly<{
   name: string;
   description: string;

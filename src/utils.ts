@@ -8,7 +8,7 @@ export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 // used to create polymorphic components with the as property.
 export type Polymorphic<
   C extends React.ElementType,
-  A extends Object = {},
+  A extends object = {},
 > = React.PropsWithChildren<{
   as?: C;
   className?: string;

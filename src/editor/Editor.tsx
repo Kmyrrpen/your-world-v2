@@ -12,6 +12,8 @@ import Title from './TitleInput';
 import EditorNavbar from './Navbar';
 import TagSelect from './TagSelect';
 import LinkModal from './LinkModal';
+import Container from '@/components/Container';
+import { cloneDeep } from 'lodash';
 
 type Props = {
   note?: Note;
@@ -26,21 +28,23 @@ const createNote = (): Note => ({
 });
 
 const EditorInner: React.FC<Props> = ({ note }) => {
-  const [draft, setDraft] = useState<Note>(note ? { ...note } : createNote());
+  const [draft, setDraft] = useState<Note>(() =>
+    note ? cloneDeep(note) : createNote(),
+  );
   const editorConfig = useMemo(() => createConfiguration(draft), [draft]);
   const editor = useEditor(editorConfig);
 
   if (!editor) return null;
 
   return (
-    <div>
+    <Container>
       <EditorNavbar draft={draft} />
       <LinkModal editor={editor} />
       <Title editor={editor} draft={draft} setter={setDraft} />
       <TagSelect draft={draft} setter={setDraft} />
       <Toolbar editor={editor} />
       <EditorContent editor={editor} spellCheck="false" />
-    </div>
+    </Container>
   );
 };
 

@@ -53,7 +53,9 @@ export const saveToDBFlow: Flow = async (action, { next }) => {
   // Meta: create/update
   if (createMeta.match(action)) {
     const tr = metasDB.transaction('metas', 'readwrite');
-    await tr.store.put(action.payload);
+    const promise = tr.store.put(action.payload);
+    promise.then(() => next(action));
+    return promise;
   }
 
   // Meta: delete
@@ -75,14 +77,14 @@ export const openMetas = createAction(
     // tell app metas needs time
     dispatch(setMetasLoad('loading'));
 
-    const db = await openDB<MetasSchema>('metas', 1, {
+    const metasDB = await openDB<MetasSchema>('metas', 1, {
       upgrade: (db, oldv, newv, tr) => {
         db.createObjectStore('metas', { keyPath: 'id' });
       },
     });
 
-    connections.metas = db;
-    const tr = db.transaction('metas', 'readonly');
+    connections.metas = metasDB;
+    const tr = metasDB.transaction('metas', 'readonly');
     const metas = await tr.store.getAll();
     const metasObject: Writeable<WorldMetasObject> = {};
     metas.forEach((meta) => (metasObject[meta.id] = meta));

@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "plugin:valtio/recommended",
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ]
+}

@@ -1,19 +1,21 @@
 import { useTags } from '@/app/world/hooks';
-import Navbar from '@/components/Navbar';
+import Container from '@/components/Container';
+
+import DashboardNavbar from '@/dashboard/DashboardNavbar';
 import TagviewItem from './TagsItem';
 
 const Tagview: React.FC = () => {
   const tags = useTags();
 
   return (
-    <div>
-      <Navbar />
+    <Container>
+      <DashboardNavbar />
       <ul>
         {tags.map((tag) => (
           <TagviewItem tag={tag} key={tag.id} />
         ))}
       </ul>
-    </div>
+    </Container>
   );
 };
 

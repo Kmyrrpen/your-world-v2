@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import { useWorld } from '@/app/world/hooks';
 import { notesToArray } from '@/utils';
 
-import Navbar from '@/components/Navbar';
 import NoteList from '@/components/NoteList';
+import DashboardNavbar from '@/dashboard/DashboardNavbar';
+import Container from '@/components/Container';
 
 const Tagpage = () => {
   const { notes, tags } = useWorld();
-
   const id = useParams<{ id: string }>().id as string;
   const tag = tags[id];
 
@@ -23,12 +23,12 @@ const Tagpage = () => {
   );
 
   return (
-    <div>
-      <Navbar />
+    <Container>
+      <DashboardNavbar />
       <h1>{tag.name}</h1>
       <p>{tag.description}</p>
       <NoteList notes={filteredNotes} tagsObj={tags} />
-    </div>
+    </Container>
   );
 };
 

@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { useState } from 'react';
 import { ActionMeta, OnChangeValue } from 'react-select';
 import CreateableSelect from 'react-select/creatable';
 
@@ -28,13 +29,15 @@ const optionsToTagIds = (options: TagOption[]) => {
 const randomColor = () => '#ade34f';
 
 const TagSelect: React.FC<Props> = ({ draft, setter }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const tagsObj = useTagsObj();
   const tagOptions = tagsToOptions(tagsToArray(tagsObj));
   const values: TagOption[] = tagsToOptions(
     draft.tagIds.map((tagId) => tagsObj[tagId]),
   );
 
-  const onChange = (
+  const onChange = async (
     newValue: OnChangeValue<TagOption, true>,
     actionMeta: ActionMeta<TagOption>,
   ) => {
@@ -49,15 +52,19 @@ const TagSelect: React.FC<Props> = ({ draft, setter }) => {
         description: '',
         id: nanoid(),
       };
-      dispatch(createTag(newTag));
+
+      // wait for db to create tag
+      setIsLoading(true);
+      await dispatch(createTag(newTag));
+      setIsLoading(false);
 
       newTagOptions = newTagOptions.map((option) =>
         option !== actionMeta.option ? option : { ...option, value: newTag.id },
       );
     }
 
-    setter((draft) => ({
-      ...draft,
+    setter((prev) => ({
+      ...prev,
       tagIds: optionsToTagIds([...newTagOptions]),
     }));
   };
@@ -65,6 +72,7 @@ const TagSelect: React.FC<Props> = ({ draft, setter }) => {
   return (
     <CreateableSelect
       isMulti
+      isDisabled={isLoading}
       onChange={onChange}
       value={values}
       options={tagOptions}
