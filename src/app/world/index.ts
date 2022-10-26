@@ -1,9 +1,8 @@
 import { createReducer, Action, Flow, createAction } from 'wuuber';
-import { cloneDeep } from 'lodash';
 import { proxy } from 'valtio';
 import { nanoid } from 'nanoid';
-import { notesToArray, Writeable } from '@/utils';
 import { changeRoute } from '@/hooks/useEnableChangeRoute';
+import { notesToArray, Writeable } from '@/utils';
 import { createMeta, metaStore } from '../metas';
 import { openWorldDB } from './utils';
 import { connections } from '../connections';
@@ -51,7 +50,7 @@ const worldSetActions = createReducer('world_set', {
   setWorld: (action: Action<WorldState>) => {
     const newWorld = action.payload;
     const keys = Object.keys(newWorld) as (keyof typeof newWorld)[];
-    // @ts-ignore
+    // @ts-ignore: idk how to tell typescript that using the same key will reference the same type
     keys.forEach((key) => (worldStore[key] = newWorld[key]));
   },
   setWorldLoad: (action: Action<LoadState>) => {
@@ -84,13 +83,8 @@ export const saveToDBFlow: Flow = async (action, { next, dispatch }) => {
   // Note: create/update
   if (createNote.match(action)) {
     const tr = db.transaction('notes', 'readwrite');
-    console.log(action.payload);
-
     if (Array.isArray(action.payload)) {
-      // deep clone note to be sure no proxy is inside.
-      const promises = action.payload.map((note) =>
-        tr.store.put(cloneDeep(note)),
-      );
+      const promises = action.payload.map((note) => tr.store.put(note));
       await Promise.all(promises);
     } else await tr.store.put(action.payload);
   }

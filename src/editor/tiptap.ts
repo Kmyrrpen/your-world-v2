@@ -16,7 +16,7 @@ type Storage = {
   showLinkModal: boolean;
 };
 
-const CustomExtension = Extension.create<{}, Storage>({
+const CustomExtension = Extension.create<Record<string, never>, Storage>({
   name: 'custom',
   addStorage() {
     return {

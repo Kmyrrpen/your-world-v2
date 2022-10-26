@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import { useMemo, useState } from 'react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { useParams } from 'react-router-dom';
+import { cloneDeep } from 'lodash';
 
 import { useNotesObj } from '@/app/world/hooks';
 import { Note } from '@/app/world/types';
@@ -13,7 +14,6 @@ import EditorNavbar from './Navbar';
 import TagSelect from './TagSelect';
 import LinkModal from './LinkModal';
 import Container from '@/components/Container';
-import { cloneDeep } from 'lodash';
 
 type Props = {
   note?: Note;

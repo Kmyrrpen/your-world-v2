@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { useWorld } from '@/app/world/hooks';
 
 import NavContainer from '@/components/Navbar/NavContainer';

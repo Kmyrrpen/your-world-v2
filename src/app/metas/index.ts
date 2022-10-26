@@ -78,7 +78,7 @@ export const openMetas = createAction(
     dispatch(setMetasLoad('loading'));
 
     const metasDB = await openDB<MetasSchema>('metas', 1, {
-      upgrade: (db, oldv, newv, tr) => {
+      upgrade: (db) => {
         db.createObjectStore('metas', { keyPath: 'id' });
       },
     });
