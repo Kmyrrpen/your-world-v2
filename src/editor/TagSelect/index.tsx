@@ -2,16 +2,24 @@ import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { ActionMeta, OnChangeValue } from 'react-select';
 import CreateableSelect from 'react-select/creatable';
-
 import { dispatch } from '@/app/dispatch';
 import { createTag } from '@/app/world';
 import { useTagsObj } from '@/app/world/hooks';
-import { Note, Tag } from '@/app/world/types';
+import { Note } from '@/app/world/types';
 import { tagsToArray } from '@/utils';
 
-type TagOption = Readonly<{
+import {
+  getRandomColor,
+  optionsToTagIds,
+  sortValuesByName,
+  tagsToOptions,
+  useSelectStyles,
+} from './utils';
+
+export type TagOption = Readonly<{
   value: string;
   label: string;
+  color: string;
 }>;
 
 type Props = {
@@ -19,19 +27,11 @@ type Props = {
   setter: React.Dispatch<React.SetStateAction<Note>>;
 };
 
-const tagsToOptions = (tags: Tag[]): TagOption[] => {
-  return tags.map((tag) => ({ value: tag.id, label: tag.name }));
-};
-const optionsToTagIds = (options: TagOption[]) => {
-  return options.map((option) => option.value);
-};
-
-const randomColor = () => '#ade34f';
-
 const TagSelect: React.FC<Props> = ({ draft, setter }) => {
   const [isLoading, setIsLoading] = useState(false);
-
   const tagsObj = useTagsObj();
+  const styles = useSelectStyles();
+
   const tagOptions = tagsToOptions(tagsToArray(tagsObj));
   const values: TagOption[] = tagsToOptions(
     draft.tagIds.map((tagId) => tagsObj[tagId]),
@@ -48,7 +48,7 @@ const TagSelect: React.FC<Props> = ({ draft, setter }) => {
     if (actionMeta.action === 'create-option') {
       const newTag = {
         name: actionMeta.option.value,
-        color: randomColor(),
+        color: getRandomColor(),
         description: '',
         id: nanoid(),
       };
@@ -62,16 +62,20 @@ const TagSelect: React.FC<Props> = ({ draft, setter }) => {
         option !== actionMeta.option ? option : { ...option, value: newTag.id },
       );
     }
-
+    
+    newTagOptions.sort((a, b) => a.label.localeCompare(b.label));
     setter((prev) => ({
       ...prev,
-      tagIds: optionsToTagIds([...newTagOptions]),
+      tagIds: optionsToTagIds(sortValuesByName([...newTagOptions])),
     }));
   };
 
   return (
     <CreateableSelect
       isMulti
+      placeholder="Add Tag.."
+      styles={styles}
+      isClearable={false}
       isDisabled={isLoading}
       onChange={onChange}
       value={values}

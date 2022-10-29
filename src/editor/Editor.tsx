@@ -6,14 +6,15 @@ import { cloneDeep } from 'lodash';
 
 import { useNotesObj } from '@/app/world/hooks';
 import { Note } from '@/app/world/types';
+import Container from '@/components/Container';
 
 import { createConfiguration } from './tiptap';
 import Toolbar from './Toolbar';
 import Title from './TitleInput';
-import EditorNavbar from './Navbar';
+import EditorNavbar from './EditorNavbar';
 import TagSelect from './TagSelect';
 import LinkModal from './LinkModal';
-import Container from '@/components/Container';
+import './editor.css';
 
 type Props = {
   note?: Note;
@@ -28,6 +29,7 @@ const createNote = (): Note => ({
 });
 
 const EditorInner: React.FC<Props> = ({ note }) => {
+  // deep clone note to convert proxy to a plain object
   const [draft, setDraft] = useState<Note>(() =>
     note ? cloneDeep(note) : createNote(),
   );
@@ -38,12 +40,14 @@ const EditorInner: React.FC<Props> = ({ note }) => {
 
   return (
     <Container>
-      <EditorNavbar draft={draft} />
+      <EditorNavbar editor={editor} draft={draft} />
       <LinkModal editor={editor} />
-      <Title editor={editor} draft={draft} setter={setDraft} />
-      <TagSelect draft={draft} setter={setDraft} />
-      <Toolbar editor={editor} />
-      <EditorContent editor={editor} spellCheck="false" />
+      <div className="flex flex-col">
+        <Title editor={editor} draft={draft} setter={setDraft} />
+        <TagSelect draft={draft} setter={setDraft} />
+        <Toolbar editor={editor} />
+        <EditorContent editor={editor} placeholder="Type Here.." spellCheck="false" />
+      </div>
     </Container>
   );
 };

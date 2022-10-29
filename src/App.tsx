@@ -6,8 +6,8 @@ import useEnableTheme from './hooks/useEnableTheme';
 import Dashboard from './dashboard/Dashboard';
 import Editor from './editor/Editor';
 import Home from './home/Home';
-import Tagpage from './tagview/TagPage';
-import Tagview from './tagview/TagsPage';
+import Tagpage from './tags/TagPage';
+import Tagview from './tags/TagsPage';
 import World from './preps/World';
 import Metas from './preps/Metas';
 
@@ -16,7 +16,7 @@ function App() {
   useEnableTheme();
 
   return (
-    <div className="flex h-full w-full flex-col items-center dark:bg-dark dark:text-white">
+    <div className="flex h-full w-full flex-col items-center dark:bg-dark-100 dark:text-white">
       <Routes>
         <Route path="/" element={<Metas />}>
           <Route index element={<Home />} />

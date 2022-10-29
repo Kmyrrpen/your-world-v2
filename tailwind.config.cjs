@@ -1,8 +1,8 @@
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
+/* eslint @typescript-eslint/no-var-requires: 0, no-undef: 0 */
 const colors = require('tailwindcss/colors');
+const lineClamp = require('@tailwindcss/line-clamp');
 
 /** @type {import('tailwindcss').Config} */
-// eslint-disable-next-line no-undef
 module.exports = {
   darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -18,10 +18,14 @@ module.exports = {
     },
     colors: {
       transparent: '#00000000',
-      gray: colors.gray,
+      zinc: colors.zinc,
       white: colors.white,
       black: colors.black,
-      dark: '#0C0C0C',
+      dark: {
+        100: '#141414',
+        200: '#232323',
+        300: '#414141',
+      },
       primary: {
         100: {
           DEFAULT: '#D4A8FF',
@@ -35,5 +39,5 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [lineClamp],
 };

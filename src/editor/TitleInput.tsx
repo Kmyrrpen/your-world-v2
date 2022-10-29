@@ -15,6 +15,7 @@ const Title: React.FC<Props> = ({ draft, editor, setter }) => {
 
   return (
     <input
+      className="w-full bg-transparent text-2xl font-medium outline-none sm:text-3xl md:text-4xl lg:text-5xl"
       disabled={!editor.isEditable}
       value={draft.name}
       onChange={onChange}

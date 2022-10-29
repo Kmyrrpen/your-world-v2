@@ -13,7 +13,7 @@ const NavToggle: React.FC<Props> = ({ onClick, className }) => {
       type="button"
       className={classNames(
         className,
-        'inline-flex items-center rounded-lg p-2 text-sm text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-white dark:hover:bg-black dark:focus:ring-gray-600 md:hidden',
+        'inline-flex items-center rounded-lg p-2 text-sm text-black hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:text-white dark:hover:bg-black dark:focus:ring-zinc-600 md:hidden',
       )}
       aria-controls="navbar-default"
       aria-expanded="false"

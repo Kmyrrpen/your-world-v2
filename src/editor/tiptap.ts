@@ -62,9 +62,9 @@ export function createConfiguration(note: Note): Partial<EditorOptions> {
     content: note.content,
     editable: true,
     extensions: [
-      CustomExtension,
-      Link.configure({ openOnClick: false, autolink: false }),
       StarterKit.configure({ heading: { levels: [2, 3, 4] } }),
+      Link.configure({ openOnClick: false, autolink: false }),
+      CustomExtension,
     ],
   };
 }

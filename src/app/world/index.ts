@@ -209,7 +209,7 @@ export const createWorld = createAction<string>(
     const worldDB = await openWorldDB(id);
 
     connections.world = worldDB;
-    dispatch(createMeta({ id, name }));
+    await dispatch(createMeta({ id, name }));
     changeRoute(id);
   },
 );

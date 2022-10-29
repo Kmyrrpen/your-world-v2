@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useWorld } from '@/app/world/hooks';
-
-import NavContainer from '@/components/Navbar/NavContainer';
-import NavLink from '@/components/Navbar/NavLink';
-import NavLogo from '@/components/Navbar/NavLogo';
-import NavMenu from '@/components/Navbar/NavMenu';
-import NavThemeToggle from '@/components/Navbar/NavThemeToggle';
-import NavToggle from '@/components/Navbar/NavToggle';
 import Button from '@/components/Button';
+import {
+  NavBackButton,
+  NavContainer,
+  NavLink,
+  NavMenu,
+  NavThemeToggle,
+  NavToggle,
+} from '@/components/Navbar';
 
 const DashboardNavbar: React.FC = () => {
   const world = useWorld();
@@ -17,7 +18,7 @@ const DashboardNavbar: React.FC = () => {
 
   return (
     <NavContainer>
-      <NavLogo />
+      <NavBackButton />
       <NavThemeToggle />
       <NavToggle onClick={onToggle} />
       <NavMenu toggle={toggle}>

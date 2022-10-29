@@ -1,4 +1,5 @@
 import { Editor } from '@tiptap/react';
+import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 
 type Props = {
@@ -26,9 +27,13 @@ const LinkModal: React.FC<Props> = ({ editor }) => {
     editor.commands.toggleLinkModal();
   };
 
-  if (!editor.storage.custom.showLinkModal) return null;
   return (
-    <form onSubmit={onSubmit}>
+    <form
+      id='link-modal'
+      aria-modal
+      className={classNames({ hidden: !editor.storage.custom.showLinkModal })}
+      onSubmit={onSubmit}
+    >
       <span>attach link:</span>
       <input
         ref={inputRef}

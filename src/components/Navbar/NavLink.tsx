@@ -14,7 +14,7 @@ const NavLink = <C extends React.ElementType = typeof Link>({
     <Component
       to={props.to}
       className={classNames(
-        'block rounded py-2 px-4 md:p-0 md:text-lg',
+        'block rounded py-2 px-4 md:p-0 md:text-md',
         className,
       )}
       {...props}

@@ -13,7 +13,7 @@ const NavMenu: React.FC<PropsWithChildren<Props>> = ({ toggle, children }) => {
         hidden: !toggle,
       })}
     >
-      <ul className="absolute top-full left-0 z-50 flex w-full flex-col border border-gray-200 bg-white dark:border-gray-600 dark:bg-black md:static md:flex-row md:items-center md:gap-7  md:border-0 md:bg-transparent md:dark:bg-transparent">
+      <ul className="absolute top-full left-0 z-50 flex w-full flex-col border border-zinc-200 bg-white dark:border-zinc-600 dark:bg-black md:static md:flex-row md:items-center md:gap-9  md:border-0 md:bg-transparent md:dark:bg-transparent">
         {children}
       </ul>
     </div>

@@ -1,8 +1,10 @@
 import { proxy } from 'valtio';
 import { createReducer } from 'wuuber';
 
+export type ThemeType = "dark" | "light";
+
 interface ThemeState {
-  theme: 'dark' | 'light';
+  theme: ThemeType;
 }
 
 // TODO: change to user preference then local storage

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import HomeNavbar from '@/home/Navbar';
+import HomeNavbar from '@/home/HomeNavbar';
 import WorldForm from './WorldForm';
 import Container from '@/components/Container';
 import WorldList from './WorldList';

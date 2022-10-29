@@ -1,8 +1,10 @@
 import { useTags } from '@/app/world/hooks';
 import Container from '@/components/Container';
+import List from '@/components/List';
+import PageTitle from '@/components/PageTitle';
 
 import DashboardNavbar from '@/dashboard/DashboardNavbar';
-import TagviewItem from './TagsItem';
+import TagsItem from './TagsItem';
 
 const Tagview: React.FC = () => {
   const tags = useTags();
@@ -10,11 +12,12 @@ const Tagview: React.FC = () => {
   return (
     <Container>
       <DashboardNavbar />
-      <ul>
+      <PageTitle>All Tags</PageTitle>
+      <List>
         {tags.map((tag) => (
-          <TagviewItem tag={tag} key={tag.id} />
+          <TagsItem tag={tag} key={tag.id} />
         ))}
-      </ul>
+      </List>
     </Container>
   );
 };

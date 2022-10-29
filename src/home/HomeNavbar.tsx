@@ -1,11 +1,12 @@
 import { useState } from 'react';
-
-import NavContainer from '@/components/Navbar/NavContainer';
-import NavLink from '@/components/Navbar/NavLink';
-import NavLogo from '@/components/Navbar/NavLogo';
-import NavMenu from '@/components/Navbar/NavMenu';
-import NavThemeToggle from '@/components/Navbar/NavThemeToggle';
-import NavToggle from '@/components/Navbar/NavToggle';
+import {
+  NavContainer,
+  NavLink,
+  NavLogo,
+  NavMenu,
+  NavThemeToggle,
+  NavToggle,
+} from '@/components/Navbar';
 
 const HomeNavbar: React.FC = () => {
   const [toggle, setToggle] = useState(false);

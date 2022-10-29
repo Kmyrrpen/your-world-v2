@@ -11,14 +11,12 @@ type Props = {
 
 const ThemeToggle: React.FC<Props> = ({ className }) => {
   const theme = useTheme();
-  const onToggle = () => {
-    dispatch(toggleTheme());
-  };
+  const onToggle = () => dispatch(toggleTheme());
 
   return (
     <button
       className={classNames(
-        'w-9 border-0 bg-none p-1 outline-none focus:ring-2 focus:ring-gray-400',
+        'w-9 border-0 bg-none p-1 outline-none focus:ring-2 focus:ring-zinc-400',
         className,
       )}
       onClick={onToggle}
