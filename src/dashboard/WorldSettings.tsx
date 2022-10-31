@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Icon from '@/components/IconHighlight';
+import Icon from '@/components/Icon';
 import { ReactComponent as SettingIcon } from '@/assets/settings.svg';
 import Modal from '@/components/Modal';
 
@@ -20,10 +20,10 @@ const WorldSettings = () => {
         <Modal.ScrollFix>
           <Modal.Background onClick={onToggle} />
           <Modal.Popup>
-            <div className="flex">
+            <div className="flex p-2">
+              <span className='text-xl font-medium'>World Settings</span>
               <Modal.CloseIcon className="ml-auto" onClick={onToggle} />
             </div>
-            <p>asdasdasdas</p>
           </Modal.Popup>
         </Modal.ScrollFix>
       </Modal>

@@ -1,4 +1,4 @@
-import Icon from '../IconHighlight';
+import Icon from '../Icon';
 import { ReactComponent as Sun } from '@/assets/sun.svg';
 import { ReactComponent as Moon } from '@/assets/moon.svg';
 import useTheme from '@/app/theme/hooks';

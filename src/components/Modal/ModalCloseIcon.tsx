@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { ReactComponent as ExitIcon } from '@/assets/close-icon.svg';
-import Icon from '@/components/IconHighlight';
+import Icon from '@/components/Icon';
 
 const ModalCloseIcon: React.FC<ComponentPropsWithoutRef<'button'>> = ({
   className,

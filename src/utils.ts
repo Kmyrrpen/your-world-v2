@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentPropsWithRef } from 'react';
 import { WorldMeta, WorldMetasObject } from './app/metas/types';
 import { Note, NotesObject, Tag, TagsObject } from './app/world/types';
 
@@ -32,6 +32,14 @@ export type PolymorphicFC<
 > = <C extends React.ElementType = D>(
   props: Polymorphic<C, P>,
 ) => React.ReactElement | null;
+
+export type PolymorphicRef<C extends React.ElementType> =
+  ComponentPropsWithRef<C>['ref'];
+  
+export type PolymorhpicWithRef<
+  C extends React.ElementType,
+  P extends Record<string, unknown> = Record<string, never>,
+> = Polymorphic<C, AttemptUnion<{ ref?: PolymorphicRef<C> }, P>>;
 
 export const tagsToArray = (
   tagsObj: TagsObject,

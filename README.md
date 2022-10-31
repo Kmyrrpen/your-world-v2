@@ -11,5 +11,4 @@ A scuffed note-editing app built with react and typescript, bootstrapped with vi
 ## TODO
 - delete tag mechanism
 - edit tag mechanism (deepClone)
-- tag colour object implement ({ bg-color, text-color })
 - settings icon for dark/light mode, editing world name, deleting world

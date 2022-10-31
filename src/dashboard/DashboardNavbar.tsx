@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useWorld } from '@/app/world/hooks';
-import useNavbarToggle from '@/hooks/useNavbarToggle';
 
 import Button from '@/components/Button';
 import Navbar from '@/components/Navbar';
@@ -8,14 +7,12 @@ import WorldSettings from './WorldSettings';
 
 const DashboardNavbar: React.FC = () => {
   const world = useWorld();
-  const { menuRef, onToggle, toggle } = useNavbarToggle();
 
   return (
     <Navbar>
       <Navbar.Logo />
       <WorldSettings />
-      <Navbar.Toggle onClick={onToggle} />
-      <Navbar.Menu toggle={toggle} ref={menuRef}>
+      <Navbar.Menu>
         <li>
           <Navbar.Link to={`/${world.id}`}>dashboard</Navbar.Link>
         </li>

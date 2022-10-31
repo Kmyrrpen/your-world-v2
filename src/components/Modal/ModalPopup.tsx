@@ -29,7 +29,7 @@ const ModalPopup: React.FC<Props> = ({
   return (
     <div
       className={twMerge(
-        'relative z-20 flex min-h-[10rem] w-full flex-col rounded bg-white p-2',
+        'relative z-20 flex min-h-[10rem] w-full flex-col rounded bg-white',
         sizeTw,
         className,
       )}
