@@ -3,7 +3,7 @@ import Container from '@/components/Container';
 import List from '@/components/List';
 import PageTitle from '@/components/PageTitle';
 
-import DashboardNavbar from '@/dashboard/DashboardNavbar';
+import DefaultNavbar from '@/components/DefaultNavbar';
 import TagsItem from './TagsItem';
 
 const Tagview: React.FC = () => {
@@ -11,7 +11,7 @@ const Tagview: React.FC = () => {
 
   return (
     <Container>
-      <DashboardNavbar />
+      <DefaultNavbar />
       <PageTitle>All Tags</PageTitle>
       <List>
         {tags.map((tag) => (

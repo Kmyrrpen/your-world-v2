@@ -4,7 +4,7 @@ import { useWorld } from '@/app/world/hooks';
 import { notesToArray } from '@/utils';
 
 import NoteList from '@/dashboard/NoteList';
-import DashboardNavbar from '@/dashboard/DashboardNavbar';
+import DefaultNavbar from '@/components/DefaultNavbar';
 import Container from '@/components/Container';
 import PageTitle from '@/components/PageTitle';
 
@@ -25,7 +25,7 @@ const Tagpage = () => {
 
   return (
     <Container>
-      <DashboardNavbar />
+      <DefaultNavbar />
       <PageTitle>{tag.name}</PageTitle>
       <p>{tag.description}</p>
       <NoteList notes={filteredNotes} />

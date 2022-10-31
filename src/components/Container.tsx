@@ -1,25 +1,21 @@
-import { Polymorphic } from '@/utils';
-import classNames from 'classnames';
-import React from 'react';
+import { ComponentPropsWithoutRef } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-const Container = <C extends React.ElementType = 'div'>({
-  as,
+const Container: React.FC<ComponentPropsWithoutRef<'div'>> = ({
   children,
   className,
   ...props
-}: Polymorphic<C>) => {
-  const Component = as || 'div';
-
+}) => {
   return (
-    <Component
-      className={classNames(
-        'w-full max-w-lg px-4 sm:max-w-3xl md:max-w-4xl lg:max-w-6xl',
+    <div
+      className={twMerge(
+        'w-full max-w-lg px-4 sm:max-w-3xl md:max-w-4xl lg:max-w-6xl ',
         className,
       )}
       {...props}
     >
       {children}
-    </Component>
+    </div>
   );
 };
 

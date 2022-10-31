@@ -1,5 +1,4 @@
-import classNames from 'classnames';
-
+import { twMerge } from 'tailwind-merge';
 type Props = { isActive?: boolean } & React.ComponentPropsWithoutRef<'button'>;
 
 const ToolbarIcon: React.FC<Props> = ({
@@ -9,9 +8,9 @@ const ToolbarIcon: React.FC<Props> = ({
   ...props
 }) => (
   <button
-    className={classNames(
+    className={twMerge(
       'flex h-auto w-6 items-center justify-center p-1 md:w-7',
-      { 'bg-black text-white dark:bg-dark-300': isActive },
+      isActive && 'bg-black text-white dark:bg-dark-300',
       className,
     )}
     {...props}

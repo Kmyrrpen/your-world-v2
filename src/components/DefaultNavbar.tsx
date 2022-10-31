@@ -1,21 +1,24 @@
 import { Link } from 'react-router-dom';
 import { useWorld } from '@/app/world/hooks';
 import useNavbarToggle from '@/hooks/useNavbarToggle';
-
 import Button from '@/components/Button';
 import Navbar from '@/components/Navbar';
-import WorldSettings from './WorldSettings';
 
-const DashboardNavbar: React.FC = () => {
+type Props = {
+  /** use the logo instead of a back button */
+  isLogoBack?: boolean;
+};
+
+const DefaultNavbar: React.FC<Props> = ({ isLogoBack }) => {
   const world = useWorld();
   const { menuRef, onToggle, toggle } = useNavbarToggle();
 
   return (
     <Navbar>
-      <Navbar.Logo />
-      <WorldSettings />
+      {isLogoBack ? <Navbar.Logo /> : <Navbar.BackButton />}
+      <Navbar.ThemeToggle />
       <Navbar.Toggle onClick={onToggle} />
-      <Navbar.Menu toggle={toggle} ref={menuRef}>
+      <Navbar.Menu ref={menuRef} toggle={toggle}>
         <li>
           <Navbar.Link to={`/${world.id}`}>dashboard</Navbar.Link>
         </li>
@@ -39,4 +42,4 @@ const DashboardNavbar: React.FC = () => {
   );
 };
 
-export default DashboardNavbar;
+export default DefaultNavbar;

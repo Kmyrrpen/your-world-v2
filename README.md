@@ -9,7 +9,6 @@ A scuffed note-editing app built with react and typescript, bootstrapped with vi
 - wuuber - a small set of functions to create action-based logic
 
 ## TODO
-- tag page styles
 - delete tag mechanism
 - edit tag mechanism (deepClone)
 - tag colour object implement ({ bg-color, text-color })

@@ -1,32 +1,48 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Polymorphic } from '@/utils';
+import { PolymorphicFC } from '@/utils';
+import { twMerge } from 'tailwind-merge';
 
 type Props = {
-  color?: 'primary' | 'secondary';
-  size?: 'large' | 'default';
+  color?: 'default' | 'primary-100';
+  size?: 'default' | 'large';
 };
 
-const Button = <C extends React.ElementType = 'button'>({
+const Button: PolymorphicFC<'button', Props> = ({
   as,
   children,
   className,
-  size,
-  color,
+  size = 'default',
+  color = 'default',
   ...props
-}: Polymorphic<C, Props>) => {
+}) => {
   const Component = as || 'button';
-  const _size = size || 'default';
-  const _color = color || 'primary';
+
+  // note the `Tw` postfix is to enable tailwind intellisense.
+  let sizeTw: string;
+  switch (size) {
+    case 'default':
+      sizeTw = 'py-2';
+      break;
+    case 'large':
+      sizeTw = 'py-3';
+      break;
+  }
+
+  let colorTw: string;
+  switch (color) {
+    case 'default':
+      colorTw = 'bg-primary-200 dark:bg-primary-200-dark';
+      break;
+    case 'primary-100':
+      colorTw = 'bg-primary-100 dark:bg-primary-100-dark';
+      break;
+  }
 
   return (
     <Component
-      className={classNames(
-        'rounded px-8 text-base text-white',
-        { 'py-2': _size === 'default' },
-        { 'py-3': _size === 'large' },
-        { 'bg-primary-200 dark:bg-primary-200-dark': _color === 'primary' },
-        { 'bg-primary-100 dark:bg-primary-100-dark': _color === 'secondary' },
+      className={twMerge(
+        'rounded px-8 text-base text-white ',
+        sizeTw,
+        colorTw,
         className,
       )}
       {...props}

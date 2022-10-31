@@ -6,7 +6,7 @@ import { dispatch } from '@/app/dispatch';
 import { createNote, deleteNote } from '@/app/world';
 import { Note } from '@/app/world/types';
 import { useNotesObj } from '@/app/world/hooks';
-import { NavBackButton, NavContainer, NavLink, NavMenu, NavToggle } from '@/components/Navbar';
+import Navbar from '@/components/Navbar';
 import { getDescription } from './utils';
 
 type Props = {
@@ -32,24 +32,24 @@ const EditorNavbar: React.FC<Props> = ({ draft, editor }) => {
   };
 
   return (
-    <NavContainer>
-      <NavBackButton />
-      <NavToggle onClick={() => setToggle((prev) => !prev)} />
-      <NavMenu toggle={toggle}>
+    <Navbar>
+      <Navbar.BackButton />
+      <Navbar.Toggle onClick={() => setToggle((prev) => !prev)} />
+      <Navbar.Menu toggle={toggle}>
         {notesObj[draft.id] ? (
           <li>
-            <NavLink as="button" onClick={onDelete}>
+            <Navbar.Link as="button" onClick={onDelete}>
               delete
-            </NavLink>
+            </Navbar.Link>
           </li>
         ) : null}
         <li>
-          <NavLink as="button" onClick={onSave}>
+          <Navbar.Link as="button" onClick={onSave}>
             save
-          </NavLink>
+          </Navbar.Link>
         </li>
-      </NavMenu>
-    </NavContainer>
+      </Navbar.Menu>
+    </Navbar>
   );
 };
 

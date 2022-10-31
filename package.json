@@ -13,7 +13,6 @@
     "@tiptap/extension-link": "^2.0.0-beta.195",
     "@tiptap/react": "^2.0.0-beta.195",
     "@tiptap/starter-kit": "^2.0.0-beta.198",
-    "classnames": "^2.3.2",
     "idb": "^7.1.0",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
@@ -21,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.0",
     "react-select": "^5.5.0",
+    "tailwind-merge": "^1.7.0",
     "valtio": "^1.7.0",
     "wuuber": "^1.1.0"
   },

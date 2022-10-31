@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-const NavContainer: React.FC<PropsWithChildren> = ({
+const Navbar: React.FC<PropsWithChildren> = ({
   children,
 }) => {
   return (
@@ -12,4 +12,4 @@ const NavContainer: React.FC<PropsWithChildren> = ({
   );
 };
 
-export default NavContainer;
+export default Navbar;

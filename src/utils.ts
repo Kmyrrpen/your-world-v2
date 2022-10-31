@@ -2,19 +2,36 @@ import React from 'react';
 import { WorldMeta, WorldMetasObject } from './app/metas/types';
 import { Note, NotesObject, Tag, TagsObject } from './app/world/types';
 
-// removes readonly modifier from every property of an object
+/** Removes readonly modifiers from every porperty from type */
 export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 
-// used to create polymorphic components with the as property.
-export type Polymorphic<
-  C extends React.ElementType,
-  A extends object = Record<string, unknown>,
-> = React.PropsWithChildren<{
+/** Checks whether or not object `B` can be made into a union with A, assuming A is already an object */
+type AttemptUnion<A, B> = B extends Record<string, never> ? A : A & B;
+
+/**
+ * Used with `Polymorhic`. since we are using generics, typescript
+ * will not know the type of our props until it is used. This can
+ * be bad if we are prematurely trying to access things like className
+ * that will always be there.
+ */
+type PermanentProps<C extends React.ElementType> = {
   as?: C;
   className?: string;
-}> &
-  React.ComponentPropsWithoutRef<C> &
-  A;
+};
+
+/** Used to create polymorphic components */
+export type Polymorphic<
+  C extends React.ElementType,
+  P extends Record<string, unknown> = Record<string, never>,
+> = React.ComponentPropsWithoutRef<C> &
+  React.PropsWithChildren<AttemptUnion<PermanentProps<C>, P>>;
+
+export type PolymorphicFC<
+  D extends React.ElementType,
+  P extends Record<string, unknown> = Record<string, never>,
+> = <C extends React.ElementType = D>(
+  props: Polymorphic<C, P>,
+) => React.ReactElement | null;
 
 export const tagsToArray = (
   tagsObj: TagsObject,
@@ -33,12 +50,11 @@ export const notesToArray = (notesObj: NotesObject): Note[] =>
 export const metasToArray = (metasObj: WorldMetasObject): WorldMeta[] =>
   Object.keys(metasObj).map((key) => metasObj[key]);
 
-
-// https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
 /**
  * given a hex color, returns true if whether or not the color is too dark to have black text placed on top of it.
  * This function was originally from stackoverflow, link in the definition
  */
+// https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
 export const isColorDark = (hexColor: string) => {
   const color =
     hexColor.charAt(0) === '#' ? hexColor.substring(1, 7) : hexColor;

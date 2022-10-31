@@ -20,7 +20,7 @@ const WorldListItem: React.FC<Props> = ({ meta }) => {
         <ArrowRight className="h-10 dark:fill-white sm:hidden md:w-20" />
         <Button
           as="span"
-          color="secondary"
+          color="primary-100"
           className="hidden w-max sm:inline-block"
         >
           Visit World

@@ -3,7 +3,6 @@ import { StylesConfig } from 'react-select';
 import { Tag } from '@/app/world/types';
 import { ThemeType } from '@/app/theme';
 import useTheme from '@/app/theme/hooks';
-import { isColorDark } from '@/utils';
 import { TagOption } from '.';
 
 export const useSelectStyles = () => {
@@ -33,15 +32,15 @@ export const getStyles = (theme?: ThemeType): StylesConfig<TagOption> => ({
   multiValue: (state, { data }) => ({
     ...state,
     color: 'black',
-    backgroundColor: data.color,
+    backgroundColor: data.color.background,
   }),
   multiValueLabel: (state, { data }) => ({
     ...state,
-    color: isColorDark(data.color) ? 'white' : 'black',
+    color: data.color.text,
   }),
   multiValueRemove: (state, { data }) => ({
     ...state,
-    color: isColorDark(data.color) ? 'white' : 'black',
+    color: data.color.text,
   }),
   option: (state, { isFocused }) => ({
     ...state,

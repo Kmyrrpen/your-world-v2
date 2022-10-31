@@ -5,8 +5,8 @@ import CreateableSelect from 'react-select/creatable';
 import { dispatch } from '@/app/dispatch';
 import { createTag } from '@/app/world';
 import { useTagsObj } from '@/app/world/hooks';
-import { Note } from '@/app/world/types';
-import { tagsToArray } from '@/utils';
+import { Note, Tag } from '@/app/world/types';
+import { isColorDark, tagsToArray } from '@/utils';
 
 import {
   getRandomColor,
@@ -14,12 +14,12 @@ import {
   sortValuesByName,
   tagsToOptions,
   useSelectStyles,
-} from './utils';
+} from './styles';
 
 export type TagOption = Readonly<{
   value: string;
   label: string;
-  color: string;
+  color: Tag['color'];
 }>;
 
 type Props = {
@@ -46,9 +46,13 @@ const TagSelect: React.FC<Props> = ({ draft, setter }) => {
     // if new option, create the tag on the store
     // then change the default option value on newTagOptions
     if (actionMeta.action === 'create-option') {
-      const newTag = {
+      const newColor = getRandomColor();
+      const newTag: Tag = {
         name: actionMeta.option.value,
-        color: getRandomColor(),
+        color: {
+          background: newColor,
+          text: isColorDark(newColor) ? '#ffffff' : '#000000',
+        },
         description: '',
         id: nanoid(),
       };
@@ -62,7 +66,7 @@ const TagSelect: React.FC<Props> = ({ draft, setter }) => {
         option !== actionMeta.option ? option : { ...option, value: newTag.id },
       );
     }
-    
+
     newTagOptions.sort((a, b) => a.label.localeCompare(b.label));
     setter((prev) => ({
       ...prev,

@@ -1,8 +1,7 @@
 import { useWorld } from '@/app/world/hooks';
 import { Note } from '@/app/world/types';
-
 import TagDisplay from '@/components/TagDisplay';
-import { Item, ItemDescription, ItemLink, ItemTitle } from '@/components/Item';
+import Item from '@/components/Item';
 
 type Props = {
   note: Note;
@@ -14,19 +13,19 @@ const NoteListItem: React.FC<Props> = ({ note }) => {
 
   return (
     <Item>
-      <ItemTitle>{note.name}</ItemTitle>
+      <Item.Title>{note.name}</Item.Title>
       <ul className="flex gap-1 line-clamp-1">
         {note.tagIds.map((tagId) => (
           <TagDisplay tag={tagsObj[tagId]} key={tagId} />
         ))}
       </ul>
-      <ItemDescription>{note.description}</ItemDescription>
-      <ItemLink
+      <Item.Description>{note.description}</Item.Description>
+      <Item.Link
         to={`/${world.id}/${note.id}`}
         className="ml-auto mt-auto font-bold"
       >
         Open
-      </ItemLink>
+      </Item.Link>
     </Item>
   );
 };

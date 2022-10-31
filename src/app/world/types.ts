@@ -11,7 +11,10 @@ export type Note = Readonly<{
 
 export type Tag = Readonly<{
   name: string;
-  color: string;
+  color: {
+    background: string;
+    text: string;
+  };
   description: string;
   id: string;
 }>;

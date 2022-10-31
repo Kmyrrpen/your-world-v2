@@ -1,5 +1,6 @@
 import { Tag } from '@/app/world/types';
-import { Item, ItemDescription, ItemLink, ItemTitle } from '@/components/Item';
+import Item from '@/components/Item';
+import TagDisplay from '@/components/TagDisplay';
 
 type Props = {
   tag: Tag;
@@ -8,9 +9,11 @@ type Props = {
 const TagsItem: React.FC<Props> = ({ tag }) => {
   return (
     <Item>
-      <ItemTitle>{tag.name}</ItemTitle>
-      <ItemDescription>{tag.description}</ItemDescription>
-      <ItemLink to={`${tag.id}`}>Open</ItemLink>
+      <Item.Title>
+        <TagDisplay tag={tag} className="text-xl" />
+      </Item.Title>
+      <Item.Description>{tag.description}</Item.Description>
+      <Item.Link to={`${tag.id}`}>Open</Item.Link>
     </Item>
   );
 };

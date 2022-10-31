@@ -1,31 +1,23 @@
-import { useState } from 'react';
-import {
-  NavContainer,
-  NavLink,
-  NavLogo,
-  NavMenu,
-  NavThemeToggle,
-  NavToggle,
-} from '@/components/Navbar';
+import Navbar from '@/components/Navbar';
+import useNavbarToggle from '@/hooks/useNavbarToggle';
 
 const HomeNavbar: React.FC = () => {
-  const [toggle, setToggle] = useState(false);
-  const onToggle = () => setToggle((prev) => !prev);
+  const { menuRef, toggle, onToggle } = useNavbarToggle();
 
   return (
-    <NavContainer>
-      <NavLogo hasText />
-      <NavThemeToggle />
-      <NavToggle onClick={onToggle} />
-      <NavMenu toggle={toggle}>
+    <Navbar>
+      <Navbar.Logo hasText />
+      <Navbar.ThemeToggle />
+      <Navbar.Toggle onClick={onToggle} />
+      <Navbar.Menu ref={menuRef} toggle={toggle}>
         <li>
-          <NavLink to="/how-to-use">instructions</NavLink>
+          <Navbar.Link to="/how-to-use">instructions</Navbar.Link>
         </li>
         <li>
-          <NavLink to="/contact">contact</NavLink>
+          <Navbar.Link to="/contact">contact</Navbar.Link>
         </li>
-      </NavMenu>
-    </NavContainer>
+      </Navbar.Menu>
+    </Navbar>
   );
 };
 

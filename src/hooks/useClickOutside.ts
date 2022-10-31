@@ -5,11 +5,14 @@ const useClickOutside = <T>(
   handler: (event?: MouseEvent) => void,
 ) => {
   useEffect(() => {
-    document.addEventListener('click', (e) => {
+    const listener = (e: MouseEvent) => {
       if (ref.current && ref.current !== e.target) {
         handler(e);
       }
-    });
+    };
+
+    document.addEventListener('click', listener);
+    return () => removeEventListener('click', listener);
   });
 };
 
