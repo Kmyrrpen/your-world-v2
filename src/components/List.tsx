@@ -1,8 +1,7 @@
 import { twMerge } from 'tailwind-merge';
-import { ComponentPropsWithoutRef } from 'react';
+import { WithComponentProps } from '@/utils/types';
 
-type Props = ComponentPropsWithoutRef<'ul'>;
-const List: React.FC<Props> = ({ className, children, ...props }) => (
+const List: React.FC<WithComponentProps<'ul'>> = ({ className, children, ...props }) => (
   <ul
     className={twMerge('row-auto grid gap-3 pb-6 md:grid-cols-2 ', className)}
     {...props}

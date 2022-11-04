@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
-import { ComponentPropsWithoutRef } from 'react';
+import { WithComponentProps } from '@/utils/types';
 
-const Modal: React.FC<ComponentPropsWithoutRef<'div'>> = ({
+const Modal: React.FC<WithComponentProps<'div'>> = ({
   className,
   children,
   ...props

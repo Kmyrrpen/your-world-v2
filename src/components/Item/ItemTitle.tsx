@@ -1,7 +1,7 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { WithComponentProps } from '@/utils/types';
 import { twMerge } from 'tailwind-merge';
 
-const ItemTitle: React.FC<ComponentPropsWithoutRef<'h2'>> = ({
+const ItemTitle: React.FC<WithComponentProps<'h2'>> = ({
   className,
   children,
   ...props

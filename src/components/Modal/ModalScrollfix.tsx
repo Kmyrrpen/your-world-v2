@@ -1,8 +1,8 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { WithComponentProps } from '@/utils/types';
 import { twMerge } from 'tailwind-merge';
 
 /** To fix modal popup getting it's content cut a little from the top and bottom, we can do this little trick */
-const ModalScrollFix: React.FC<ComponentPropsWithoutRef<'div'>> = ({
+const ModalScrollFix: React.FC<WithComponentProps<'div'>> = ({
   children,
   className,
   ...props

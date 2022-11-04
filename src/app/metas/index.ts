@@ -1,10 +1,10 @@
 import { Action, createAction, createReducer, Flow } from 'wuuber';
 import { proxy } from 'valtio';
 import { openDB } from 'idb';
-import { Writeable } from '@/utils';
 import { MetasSchema, WorldMeta, WorldMetasObject } from './types';
 import { connections } from '../connections';
 import { LoadState } from '../world/types';
+import { Writeable } from '@/utils/types';
 
 type WorldMetas = { metas: Writeable<WorldMetasObject>; loadState: LoadState };
 export const metaStore = proxy<WorldMetas>({ metas: {}, loadState: 'none' });

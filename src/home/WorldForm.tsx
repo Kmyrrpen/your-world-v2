@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { dispatch } from '@/app/dispatch';
+import { createWorld } from '@/app/world';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import { createWorld } from '@/app/world';
 
 type Props = {
   show: boolean;
@@ -27,6 +27,7 @@ const WorldForm: React.FC<Props> = ({ show, onToggle }) => {
   return (
     <form className="mb-4 flex flex-col items-center gap-4" onSubmit={onSubmit}>
       <Input
+        size="large"
         className="max-w-[20rem]"
         id="new-name"
         placeholder="name.."

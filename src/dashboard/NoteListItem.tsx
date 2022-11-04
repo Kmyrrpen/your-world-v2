@@ -14,7 +14,7 @@ const NoteListItem: React.FC<Props> = ({ note }) => {
   return (
     <Item>
       <Item.Title>{note.name}</Item.Title>
-      <ul className="flex gap-1 line-clamp-1">
+      <ul className="flex gap-1 flex-wrap overflow-hidden">
         {note.tagIds.map((tagId) => (
           <TagDisplay tag={tagsObj[tagId]} key={tagId} />
         ))}

@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import { useWorld } from '@/app/world/hooks';
 
 import Button from '@/components/Button';
 import Navbar from '@/components/Navbar';
+import { Link } from 'react-router-dom';
 import WorldSettings from './WorldSettings';
 
 const DashboardNavbar: React.FC = () => {
@@ -11,6 +11,7 @@ const DashboardNavbar: React.FC = () => {
   return (
     <Navbar>
       <Navbar.Logo />
+      <Navbar.BackButton />
       <WorldSettings />
       <Navbar.Menu>
         <li>

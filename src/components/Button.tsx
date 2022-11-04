@@ -1,4 +1,4 @@
-import { PolymorphicFC } from '@/utils';
+import { PolymorphicFunctionComponent } from '@/utils/types';
 import { twMerge } from 'tailwind-merge';
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
   size?: 'default' | 'large';
 };
 
-const Button: PolymorphicFC<'button', Props> = ({
+const Button: PolymorphicFunctionComponent<'button', Props> = ({
   as,
   children,
   className,
@@ -16,7 +16,6 @@ const Button: PolymorphicFC<'button', Props> = ({
 }) => {
   const Component = as || 'button';
 
-  // note the `Tw` postfix is to enable tailwind intellisense.
   let sizeTw: string;
   switch (size) {
     case 'default':

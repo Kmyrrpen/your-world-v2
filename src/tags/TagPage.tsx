@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useWorld } from '@/app/world/hooks';
-import { notesToArray } from '@/utils';
 
 import NoteList from '@/dashboard/NoteList';
 import Container from '@/components/Container';
 import PageTitle from '@/components/PageTitle';
 import DashboardNavbar from '@/dashboard/DashboardNavbar';
+import { stateObjectToArray } from '@/utils';
 
 const Tagpage = () => {
   const { notes, tags } = useWorld();
@@ -15,7 +15,7 @@ const Tagpage = () => {
 
   const filteredNotes = useMemo(
     () =>
-      notesToArray(notes).filter(
+      stateObjectToArray(notes).filter(
         (note) => note.tagIds.findIndex((tagId) => tagId === tag.id) !== -1,
       ),
     [tag, notes],

@@ -1,9 +1,9 @@
 import { twMerge } from 'tailwind-merge';
-import { ComponentPropsWithoutRef } from 'react';
+import { WithComponentProps } from '@/utils/types';
 
 /** The layer of black that covers the screen when modal is up, attach your `closeModal` function on click */
 const ModalBackground: React.FC<
-  Omit<ComponentPropsWithoutRef<'div'>, 'children'>
+  Omit<WithComponentProps<'div'>, 'children'>
 > = ({ className, ...props }) => {
   return (
     <div

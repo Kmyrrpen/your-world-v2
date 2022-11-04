@@ -5,7 +5,7 @@ import { closeWorld, openWorld } from '@/app/world';
 import { useWorld } from '@/app/world/hooks';
 import { dispatch } from '@/app/dispatch';
 
-const World = () => {
+const World: React.FC = () => {
   const worldId = useParams<{ worldId: string }>().worldId as string;
   const world = useWorld();
 

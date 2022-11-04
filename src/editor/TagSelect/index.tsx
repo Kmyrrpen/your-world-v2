@@ -6,7 +6,7 @@ import { dispatch } from '@/app/dispatch';
 import { createTag } from '@/app/world';
 import { useTagsObj } from '@/app/world/hooks';
 import { Note, Tag } from '@/app/world/types';
-import { isColorDark, tagsToArray } from '@/utils';
+import { isColorDark, stateObjectToArray } from '@/utils';
 
 import {
   getRandomColor,
@@ -32,7 +32,7 @@ const TagSelect: React.FC<Props> = ({ draft, setter }) => {
   const tagsObj = useTagsObj();
   const styles = useSelectStyles();
 
-  const tagOptions = tagsToOptions(tagsToArray(tagsObj));
+  const tagOptions = tagsToOptions(stateObjectToArray(tagsObj));
   const values: TagOption[] = tagsToOptions(
     draft.tagIds.map((tagId) => tagsObj[tagId]),
   );

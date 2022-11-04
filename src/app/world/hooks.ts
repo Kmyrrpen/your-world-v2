@@ -1,4 +1,4 @@
-import { notesToArray, tagsToArray } from '@/utils';
+import {stateObjectToArray } from '@/utils';
 import { useMemo } from 'react';
 import { useSnapshot } from 'valtio';
 import { worldStore } from '.';
@@ -20,7 +20,7 @@ export const useNotes = (): Note[] => {
   const { notes } = useSnapshot(worldStore);
   // useMemo already runs on render so valtio will still detect
   // eslint-disable-next-line valtio/state-snapshot-rule
-  const sortedNotes = useMemo(() => sortNotes(notesToArray(notes)), [notes]);
+  const sortedNotes = useMemo(() => sortNotes(stateObjectToArray(notes)), [notes]);
   return sortedNotes;
 };
 
@@ -28,7 +28,7 @@ export const useTags = (): Tag[] => {
   const { tags } = useSnapshot(worldStore);
   // useMemo already runs on render so valtio will still detect
   // eslint-disable-next-line valtio/state-snapshot-rule
-  const sortedTags = useMemo(() => sortTags(tagsToArray(tags)), [tags]);
+  const sortedTags = useMemo(() => sortTags(stateObjectToArray(tags)), [tags]);
   return sortedTags;
 };
 

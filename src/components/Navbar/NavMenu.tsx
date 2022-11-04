@@ -25,7 +25,7 @@ const NavMenu: React.FC<PropsWithChildren> = ({ children }) => {
   useOnClickOutside(menuRef, listener);
 
   return (
-    <div>
+    <div className='md:ml-auto'>
       <Icon
         ref={iconRef}
         onClick={onToggle}

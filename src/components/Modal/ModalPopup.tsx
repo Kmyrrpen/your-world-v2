@@ -1,11 +1,11 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { WithComponentProps } from '@/utils/types';
 import { twMerge } from 'tailwind-merge';
 
 type Props = {
   size?: 'small' | 'medium' | 'large' | 'responsive';
-} & ComponentPropsWithoutRef<'div'>;
+};
 
-const ModalPopup: React.FC<Props> = ({
+const ModalPopup: React.FC<WithComponentProps<'div', Props>> = ({
   size = 'responsive',
   children,
   className,
@@ -29,7 +29,7 @@ const ModalPopup: React.FC<Props> = ({
   return (
     <div
       className={twMerge(
-        'relative z-20 flex min-h-[10rem] w-full flex-col rounded bg-white',
+        'relative z-20 flex min-h-[10rem] w-full flex-col justify-start rounded bg-white dark:bg-dark-100',
         sizeTw,
         className,
       )}

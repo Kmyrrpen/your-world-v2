@@ -1,8 +1,8 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { WithComponentProps } from '@/utils/types';
 import { Link } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
-const ItemLink: React.FC<ComponentPropsWithoutRef<typeof Link>> = ({
+const ItemLink: React.FC<WithComponentProps<typeof Link>> = ({
   className,
   children,
   ...props

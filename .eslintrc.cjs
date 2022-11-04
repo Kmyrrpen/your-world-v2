@@ -26,6 +26,16 @@ module.exports = {
         'ts-ignore': 'allow-with-description',
       },
     ],
+    'react/display-name': 'off',
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        types: {
+          '{}': false,
+        },
+        extendDefaults: true,
+      },
+    ],
   },
   settings: {
     react: {

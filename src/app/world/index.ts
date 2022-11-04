@@ -2,7 +2,6 @@ import { createReducer, Action, Flow, createAction } from 'wuuber';
 import { proxy } from 'valtio';
 import { nanoid } from 'nanoid';
 import { changeRoute } from '@/hooks/useEnableChangeRoute';
-import { notesToArray, Writeable } from '@/utils';
 import { createMeta, metaStore } from '../metas';
 import { openWorldDB } from './utils';
 import { connections } from '../connections';
@@ -15,6 +14,8 @@ import {
   TagsObject,
   WorldState,
 } from './types';
+import { stateObjectToArray } from '@/utils';
+import { Writeable } from '@/utils/types';
 
 export const worldStore = proxy<WorldState>({
   notes: {},
@@ -111,7 +112,7 @@ export const saveToDBFlow: Flow = async (action, { next, dispatch }) => {
   else if (deleteTag.match(action)) {
     const tr = db.transaction('tags', 'readwrite');
     const tagId = action.payload;
-    const moddedNotes = notesToArray(worldStore.notes).map((note) => {
+    const moddedNotes = stateObjectToArray(worldStore.notes).map((note) => {
       return { ...note, tagIds: note.tagIds.filter((id) => id !== tagId) };
     });
 

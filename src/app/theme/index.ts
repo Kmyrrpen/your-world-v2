@@ -1,5 +1,5 @@
 import { proxy } from 'valtio';
-import { createReducer } from 'wuuber';
+import { Action, createReducer } from 'wuuber';
 
 export type ThemeType = "dark" | "light";
 
@@ -13,8 +13,8 @@ export const theme = proxy<ThemeState>({
 });
 
 const themeActions = createReducer('theme', {
-  toggleTheme: () => {
-    theme.theme = theme.theme === 'light' ? 'dark' : 'light';
+  toggleTheme: (action: Action<ThemeType | undefined>) => {
+    theme.theme = action.payload ? action.payload : theme.theme === 'light' ? 'dark' : 'light';
   },
 });
 

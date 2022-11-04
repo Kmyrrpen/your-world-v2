@@ -9,10 +9,7 @@ const NavThemeToggle: React.FC = () => {
   const theme = useTheme();
   const onToggle = () => dispatch(toggleTheme());
   return (
-    <Icon
-      onClick={onToggle}
-      className="ml-auto md:order-3 md:ml-0"
-    >
+    <Icon onClick={onToggle} className="ml-auto md:order-3 md:ml-0">
       <Sun
         className={`
          ${theme === 'dark' && 'hidden'}

@@ -1,5 +1,5 @@
 import { DBSchema } from 'idb';
-import { Writeable } from '@/utils';
+import { Writeable } from '@/utils/types';
 
 export type Note = Readonly<{
   name: string;
