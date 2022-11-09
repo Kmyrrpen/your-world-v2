@@ -8,6 +8,7 @@ type Props = {
 const ModalPopup: React.FC<WithComponentProps<'div', Props>> = ({
   size = 'responsive',
   children,
+  innerRef,
   className,
   ...props
 }) => {
@@ -28,6 +29,7 @@ const ModalPopup: React.FC<WithComponentProps<'div', Props>> = ({
 
   return (
     <div
+      ref={innerRef}
       className={twMerge(
         'relative z-20 flex min-h-[10rem] w-full flex-col justify-start rounded bg-white dark:bg-dark-100',
         sizeTw,

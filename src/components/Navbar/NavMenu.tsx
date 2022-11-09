@@ -1,7 +1,7 @@
 import { PropsWithChildren, useCallback, useRef, useState } from 'react';
 import { ReactComponent as MenuIcon } from '@/assets/menu-icon.svg';
-import Icon from '@/components/Icon';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
+import Icon from '@/components/Icon';
 
 const NavMenu: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,13 +21,13 @@ const NavMenu: React.FC<PropsWithChildren> = ({ children }) => {
     },
     [isOpen],
   );
-  
+
   useOnClickOutside(menuRef, listener);
 
   return (
-    <div className='md:ml-auto'>
+    <div className="md:ml-auto">
       <Icon
-        ref={iconRef}
+        innerRef={iconRef}
         onClick={onToggle}
         type="button"
         className={'inline-flex items-center md:hidden'}
@@ -51,7 +51,5 @@ const NavMenu: React.FC<PropsWithChildren> = ({ children }) => {
     </div>
   );
 };
-
-NavMenu.displayName = 'NavMenu';
 
 export default NavMenu;

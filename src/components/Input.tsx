@@ -8,6 +8,7 @@ type Props = {
 
 const Input: React.FC<WithComponentProps<'input', Props>> = ({
   className,
+  innerRef,
   size = 'default',
   ...props
 }) => {
@@ -23,6 +24,7 @@ const Input: React.FC<WithComponentProps<'input', Props>> = ({
 
   return (
     <input
+      ref={innerRef}
       className={twMerge(
         'block w-full border-b-[1px] border-b-zinc-200 bg-transparent p-2 outline-none focus:border-b-zinc-800 dark:text-white',
         sizeTw,

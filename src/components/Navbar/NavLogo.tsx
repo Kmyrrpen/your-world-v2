@@ -2,7 +2,7 @@ import { twMerge } from 'tailwind-merge';
 import { Link } from 'react-router-dom';
 
 import { ReactComponent as Logo } from '@/assets/logo.svg';
-import { ReactComponent as LogoText } from '@/assets/logo-text-horizontal.svg';
+import { ReactComponent as LogoText } from '@/assets/logo-x.svg';
 
 type Props = {
   hasText?: boolean;

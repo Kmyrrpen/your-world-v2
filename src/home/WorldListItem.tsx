@@ -19,7 +19,7 @@ const WorldListItem: React.FC<Props> = ({ meta }) => {
         <span className="grow text-base font-medium">{meta.name}</span>
         <ArrowRight className="h-10 dark:fill-white sm:hidden md:w-20" />
         <Button
-          as="span"
+          render={(props) => <span {...props} />}
           color="primary-100"
           className="hidden w-max sm:inline-block"
         >

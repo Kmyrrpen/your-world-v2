@@ -4,10 +4,11 @@ import { twMerge } from 'tailwind-merge';
 
 const ItemLink: React.FC<WithComponentProps<typeof Link>> = ({
   className,
+  innerRef,
   children,
   ...props
 }) => (
-  <Link className={twMerge('ml-auto mt-auto font-bold ', className)} {...props}>
+  <Link ref={innerRef} className={twMerge('ml-auto mt-auto font-bold ', className)} {...props}>
     {children}
   </Link>
 );

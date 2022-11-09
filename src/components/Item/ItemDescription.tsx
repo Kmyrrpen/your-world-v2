@@ -4,9 +4,10 @@ import { twMerge } from 'tailwind-merge';
 const ItemDescription: React.FC<WithComponentProps<'p'>> = ({
   className,
   children,
+  innerRef,
   ...props
 }) => (
-  <p className={twMerge('text-sm line-clamp-3 ', className)} {...props}>
+  <p ref={innerRef} className={twMerge('text-sm line-clamp-3 ', className)} {...props}>
     {children}
   </p>
 );

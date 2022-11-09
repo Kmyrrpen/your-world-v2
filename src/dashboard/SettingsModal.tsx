@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import { cloneDeep } from 'lodash';
 import { WorldMeta } from '@/app/metas/types';
+import { dispatch } from '@/app/dispatch';
+import { createMeta } from '@/app/metas';
+import { ThemeType, toggleTheme } from '@/app/theme';
+import useTheme from '@/app/theme/hooks';
+
 import Icon from '@/components/Icon';
 import Input from '@/components/Input';
 import Modal from '@/components/Modal';
+import Button from '@/components/Button';
 import { ReactComponent as Sun } from '@/assets/sun.svg';
 import { ReactComponent as Moon } from '@/assets/moon.svg';
-import Button from '@/components/Button';
-import { dispatch } from '@/app/dispatch';
-import { createMeta } from '@/app/metas';
-import { cloneDeep } from 'lodash';
-import useTheme from '@/app/theme/hooks';
-import { ThemeType, toggleTheme } from '@/app/theme';
+
 
 type Props = {
   onToggle: () => void;

@@ -25,7 +25,7 @@ const Tagpage = () => {
 
   return (
     <Container>
-      <DashboardNavbar />
+      <DashboardNavbar isBack />
       <PageTitle>{tag.name}</PageTitle>
       <p>{tag.description}</p>
       <NoteList notes={filteredNotes} />

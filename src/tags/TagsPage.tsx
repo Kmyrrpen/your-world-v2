@@ -10,7 +10,7 @@ const Tagview: React.FC = () => {
 
   return (
     <Container>
-      <DashboardNavbar />
+      <DashboardNavbar isBack />
       <PageTitle>All Tags</PageTitle>
       <List>
         {tags.map((tag) => (

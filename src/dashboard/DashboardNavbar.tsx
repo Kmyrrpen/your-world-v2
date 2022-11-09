@@ -5,13 +5,16 @@ import Navbar from '@/components/Navbar';
 import { Link } from 'react-router-dom';
 import WorldSettings from './WorldSettings';
 
-const DashboardNavbar: React.FC = () => {
+type Props = {
+  isBack?: boolean;
+};
+
+const DashboardNavbar: React.FC<Props> = ({ isBack }) => {
   const world = useWorld();
 
   return (
     <Navbar>
-      <Navbar.Logo />
-      <Navbar.BackButton />
+      {isBack ? <Navbar.BackButton /> : <Navbar.Logo />}
       <WorldSettings />
       <Navbar.Menu>
         <li>
@@ -25,9 +28,8 @@ const DashboardNavbar: React.FC = () => {
         </li>
         <li>
           <Button
-            as={Link}
+            render={(props) => <Link to={`/${world.id}/new`} {...props} />}
             className="hidden md:inline-block"
-            to={`/${world.id}/new`}
           >
             New Note
           </Button>

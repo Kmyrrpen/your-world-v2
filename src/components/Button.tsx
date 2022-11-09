@@ -1,21 +1,42 @@
-import { PolymorphicFunctionComponent } from '@/utils/types';
+import { PropsWithChildren } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { createDefaultRenderWithRef } from '@/utils';
+import {
+  ComponentPropsWithInnerRef,
+  Overwrite,
+  PropsWithRender,
+  RenderProp,
+} from '@/utils/types';
 
-type Props = {
-  color?: 'default' | 'primary-100';
-  size?: 'default' | 'large';
-};
+/** The props that will be passed into `render`. */
+type InjectedProps = PropsWithChildren<{ className: string }>;
 
-const Button: PolymorphicFunctionComponent<'button', Props> = ({
-  as,
-  children,
-  className,
+/** If `render` key is undefined, Button will have this type. */
+type SharedDefaultProps = ComponentPropsWithInnerRef<'button'>;
+
+type PermanentProps = PropsWithRender<
+  InjectedProps,
+  {
+    /** classes to override default classes with `tailwind-merge`. */
+    className?: string;
+    color?: 'default' | 'primary-100';
+    size?: 'default' | 'large';
+  }
+>;
+
+const defaultButton =
+  createDefaultRenderWithRef<Overwrite<SharedDefaultProps, InjectedProps>>(
+    'button',
+  );
+const Button = <T extends RenderProp<InjectedProps> | undefined>({
+  render = defaultButton,
   size = 'default',
   color = 'default',
+  className,
   ...props
-}) => {
-  const Component = as || 'button';
-
+}: T extends undefined
+  ? Overwrite<SharedDefaultProps, PermanentProps & { render?: T }>
+  : PermanentProps) => {
   let sizeTw: string;
   switch (size) {
     case 'default':
@@ -36,19 +57,20 @@ const Button: PolymorphicFunctionComponent<'button', Props> = ({
       break;
   }
 
-  return (
-    <Component
-      className={twMerge(
-        'rounded px-8 text-base text-white ',
-        sizeTw,
-        colorTw,
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </Component>
+  const classTw = twMerge(
+    'rounded px-8 text-base text-white',
+    sizeTw,
+    colorTw,
+    className,
   );
+
+  return render({
+    className: classTw,
+    // If `render` is undefined, this will most likely be ComponentPropsWithRef<T>
+    // if we do have a custom render function, this will probably just be `children`.
+    // note that we should remove anything else that isn't part of InjectedProps like `color` or `size`.
+    ...props,
+  });
 };
 
 export default Button;
