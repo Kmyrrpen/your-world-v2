@@ -1,7 +1,7 @@
 import { WorldMetasObject } from '@/app/metas/types';
 import { NotesObject, TagsObject } from '@/app/world/types';
-import React from 'react';
 import { ConvertStateObjToItem, RenderProp } from './types';
+import React from 'react';
 
 /**
  * Creates a render function given a react element type, types are very loose
@@ -23,7 +23,7 @@ export const createDefaultRenderWithRef = <
 >(
   Component: React.ElementType,
 ): RenderProp<P> => {
-  return (props: P) => <Component ref={props.innerRef} {...props} />;
+  return ({ innerRef, ...props }) => <Component ref={innerRef} {...props} />;
 };
 
 /**

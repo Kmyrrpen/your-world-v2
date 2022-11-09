@@ -10,7 +10,12 @@ const LinkModal: React.FC<Props> = ({ editor }) => {
 
   // focus input on mount
   const inputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => inputRef.current?.focus(), []);
+  useEffect(() => {
+    inputRef.current?.focus();
+    return () => {
+      editor.commands.toggleLinkModal();
+    };
+  }, []);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();

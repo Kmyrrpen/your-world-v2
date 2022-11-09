@@ -13,7 +13,6 @@ import Button from '@/components/Button';
 import { ReactComponent as Sun } from '@/assets/sun.svg';
 import { ReactComponent as Moon } from '@/assets/moon.svg';
 
-
 type Props = {
   onToggle: () => void;
   meta: WorldMeta;
@@ -44,10 +43,16 @@ const SettingsModal: React.FC<Props> = ({ onToggle, meta }) => {
         <Modal.Background onClick={onToggle} />
         <Modal.Popup size="medium">
           <div className="flex pr-2 pt-2 pb-2 pl-4">
-            <span className="text-xl font-medium">SETTINGS</span>
             <Modal.CloseIcon className="ml-auto" onClick={onToggle} />
           </div>
           <div className="flex flex-col gap-3 px-4 pb-4">
+            <div className="flex flex-col">
+              <Input
+                className="min-w-max flex-1 border-none focus:border-b-2"
+                value={worldMeta.name}
+                onChange={onNameChange}
+              />
+            </div>
             <div>
               <span className="mr-3 text-sm font-light">Theme:</span>
               <div className="flex gap-2">
@@ -64,14 +69,6 @@ const SettingsModal: React.FC<Props> = ({ onToggle, meta }) => {
                   <Moon />
                 </Icon>
               </div>
-            </div>
-            <div className="flex flex-col">
-              <label className="mr-3 text-sm font-light">World Name:</label>
-              <Input
-                className="min-w-max flex-1"
-                value={worldMeta.name}
-                onChange={onNameChange}
-              />
             </div>
             <Button
               className="ml-auto mt-2 w-min"
