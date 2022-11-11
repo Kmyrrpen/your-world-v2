@@ -1,5 +1,8 @@
 import { PropsWithChildren } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { ReactComponent as Click } from '@/assets/click.svg';
+import { ReactComponent as ArrowRight } from '@/assets/arrow-right.svg';
+
 import { createDefaultRenderWithRef } from '@/utils';
 import {
   ComponentPropsWithInnerRef,
@@ -8,19 +11,17 @@ import {
   RenderProp,
 } from '@/utils/types';
 
-/** The props that will be passed into `render`. */
-type InjectedProps = PropsWithChildren<{ className: string }>;
+type InjectedProps = PropsWithChildren<{
+  className: string;
+}>;
 
-/** If `render` key is undefined, Button will have this type. */
 type SharedDefaultProps = ComponentPropsWithInnerRef<'button'>;
-
 type PermanentProps = PropsWithRender<
   InjectedProps,
   {
-    /** classes to override default classes with `tailwind-merge`. */
-    className?: string;
-    color?: 'default' | 'primary-100';
-    size?: 'default' | 'large';
+    size?: 'small' | 'large';
+    icon?: 'none' | 'click' | 'arr-right';
+    border?: 'dashed' | 'none';
   }
 >;
 
@@ -28,47 +29,66 @@ const defaultButton =
   createDefaultRenderWithRef<Overwrite<SharedDefaultProps, InjectedProps>>(
     'button',
   );
+
 const Button = <T extends RenderProp<InjectedProps> | undefined>({
   render = defaultButton,
-  size = 'default',
-  color = 'default',
+  size = 'small',
+  icon = 'none',
+  border = 'dashed',
   className,
+  children,
   ...props
 }: T extends undefined
   ? Overwrite<SharedDefaultProps, PermanentProps & { render?: T }>
   : PermanentProps) => {
-  let sizeTw: string;
+  let sizeTw;
   switch (size) {
-    case 'default':
-      sizeTw = 'py-2';
-      break;
     case 'large':
-      sizeTw = 'py-3';
+      sizeTw = '';
       break;
+    default:
+      sizeTw = '';
   }
 
-  let colorTw: string;
-  switch (color) {
-    case 'default':
-      colorTw = 'bg-primary-200 dark:bg-primary-200-dark';
+  let borderTw;
+  switch (border) {
+    case 'dashed':
+      borderTw = 'border-b border-dashed';
       break;
-    case 'primary-100':
-      colorTw = 'bg-primary-100 dark:bg-primary-100-dark';
-      break;
+    default:
+      borderTw = 'border-none';
   }
 
-  const classTw = twMerge(
-    'rounded px-8 text-base text-white',
-    sizeTw,
-    colorTw,
-    className,
-  );
+  let newChildren;
+  switch (icon) {
+    case 'click':
+      newChildren = (
+        <>
+          {children}
+          <Click className="w-8" />
+        </>
+      );
+      break;
+    case 'arr-right':
+      newChildren = (
+        <>
+          {children}
+          <ArrowRight className="w-5" />
+        </>
+      );
+      break;
+    default:
+      newChildren = children;
+  }
 
   return render({
-    className: classTw,
-    // If `render` is undefined, this will most likely be ComponentPropsWithRef<T>
-    // if we do have a custom render function, this will probably just be `children`.
-    // note that we should remove anything else that isn't part of InjectedProps like `color` or `size`.
+    className: twMerge(
+      'flex items-center gap-3 font-bold p-0.5 pr-2',
+      borderTw,
+      sizeTw,
+      className,
+    ),
+    children: newChildren,
     ...props,
   });
 };

@@ -1,5 +1,4 @@
 import { Note } from '@/app/world/types';
-import List from '@/components/List';
 import NoteListItem from './NoteListItem';
 
 type Props = {
@@ -8,11 +7,11 @@ type Props = {
 
 const NoteList: React.FC<Props> = ({ notes }) => {
   return (
-    <List>
+    <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       {notes.map((note) => (
         <NoteListItem note={note} key={note.id} />
       ))}
-    </List>
+    </ul>
   );
 };
 

@@ -1,7 +1,6 @@
 import { useTags } from '@/app/world/hooks';
 import Container from '@/components/Container';
-import List from '@/components/List';
-import PageTitle from '@/components/PageTitle';
+import Header from '@/components/Header';
 import DashboardNavbar from '@/dashboard/DashboardNavbar';
 import TagsItem from './TagsItem';
 
@@ -11,12 +10,14 @@ const Tagview: React.FC = () => {
   return (
     <Container>
       <DashboardNavbar isBack />
-      <PageTitle>All Tags</PageTitle>
-      <List>
+      <Header>
+        <Header.Title>All Tags</Header.Title>
+      </Header>
+      <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {tags.map((tag) => (
           <TagsItem tag={tag} key={tag.id} />
         ))}
-      </List>
+      </ul>
     </Container>
   );
 };

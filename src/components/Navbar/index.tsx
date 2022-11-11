@@ -1,16 +1,16 @@
-import NavbarComponent from './Navbar';
-import NavThemeToggle from './NavThemeToggle';
-import NavLogo from './NavLogo';
-import NavMenu from './NavMenu';
-import NavLink from './NavLink';
-import NavBackButton from './NavBackButton';
+import NavbarC from './Navbar';
+import NavbarLogo from './NavbarLogo';
+import NavbarMenu from './NavbarMenu';
+import NavbarLink from './NavbarLink';
+import NavbarMenuItem from './NavbarMenuItem';
+import NavbarBack from './NavbarBack';
 
-const Navbar = Object.assign(NavbarComponent, {
-  ThemeToggle: NavThemeToggle,
-  Logo: NavLogo,
-  Menu: NavMenu,
-  Link: NavLink,
-  BackButton: NavBackButton,
+const Navbar = Object.assign(NavbarC, {
+  Logo: NavbarLogo,
+  Menu: NavbarMenu,
+  MenuItem: NavbarMenuItem,
+  Link: NavbarLink,
+  Back: NavbarBack,
 });
 
 export default Navbar;

@@ -32,24 +32,24 @@ const EditorNavbar: React.FC<Props> = ({ draft, editor }) => {
 
   return (
     <Navbar>
-      <Navbar.BackButton />
+      <Navbar.Back />
       <Navbar.Menu>
         {notesObj[draft.id] ? (
-          <li>
+          <Navbar.MenuItem>
             <Navbar.Link
               render={(props) => <button {...props} onClick={onDelete} />}
             >
               delete
             </Navbar.Link>
-          </li>
+          </Navbar.MenuItem>
         ) : null}
-        <li>
+        <Navbar.MenuItem>
           <Navbar.Link
             render={(props) => <button {...props} onClick={onSave} />}
           >
             save
           </Navbar.Link>
-        </li>
+        </Navbar.MenuItem>
       </Navbar.Menu>
     </Navbar>
   );

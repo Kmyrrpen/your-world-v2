@@ -9,7 +9,7 @@ const Container: React.FC<WithComponentProps<'div'>> = ({
   return (
     <div
       className={twMerge(
-        'w-full max-w-lg px-4 sm:max-w-3xl md:max-w-4xl lg:max-w-6xl ',
+        'w-full pb-4 max-w-container-xs px-4 sm:max-w-container-sm sm:px-6 md:max-w-container-md md:px-8 lg:max-w-container-lg lg:px-10 xl:max-w-container-xl',
         className,
       )}
       ref={innerRef}

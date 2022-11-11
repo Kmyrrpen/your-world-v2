@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import useEnableChangeRoute from './hooks/useEnableChangeRoute';
 import useEnableTheme from './hooks/useEnableTheme';
 
+import Home from './home/Home';
 import Dashboard from './dashboard/Dashboard';
 import Editor from './editor/Editor';
-import Home from './home/Home';
 import Tagpage from './tags/TagPage';
 import Tagview from './tags/TagsPage';
 import World from './preps/World';
@@ -16,7 +16,7 @@ function App() {
   useEnableTheme();
 
   return (
-    <div className="flex h-full w-full flex-col items-center dark:bg-dark-100 dark:text-white">
+    <div className="line flex flex-col items-center text-base">
       <Routes>
         <Route path="/" element={<Metas />}>
           <Route index element={<Home />} />

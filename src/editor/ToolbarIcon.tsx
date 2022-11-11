@@ -9,7 +9,7 @@ const ToolbarIcon: React.FC<Props> = ({
 }) => (
   <button
     className={twMerge(
-      'flex h-auto w-6 items-center justify-center p-1 md:w-7',
+      'flex h-auto w-6 items-center justify-center p-1',
       isActive && 'bg-black text-white dark:bg-dark-300',
       className,
     )}

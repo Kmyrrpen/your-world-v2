@@ -4,14 +4,12 @@
 
 @layer base {
   body {
-    @apply font-primary;
+    font-family: 'Alegreya', 'ui-serif', 'system-ui', 'serif';
     display: flex;
     min-height: 100vh;
   }
 
   #root {
     width: 100%;
-    align-self: stretch;
-    display: flex;
   }
 }

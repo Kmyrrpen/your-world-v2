@@ -1,8 +1,8 @@
 import { useCurrentMeta } from '@/app/metas/hooks';
 import { useNotes } from '@/app/world/hooks';
 import Container from '@/components/Container';
-import PageTitle from '@/components/PageTitle';
-import NoteList from '@/dashboard/NoteList';
+import Header from '@/components/Header';
+import NoteList from './NoteList';
 import DashboardNavbar from './DashboardNavbar';
 
 const Dashboard: React.FC = () => {
@@ -12,7 +12,9 @@ const Dashboard: React.FC = () => {
   return (
     <Container>
       <DashboardNavbar />
-      <PageTitle>{meta.name}</PageTitle>
+      <Header>
+        <Header.Title>{meta.name}</Header.Title>
+      </Header>
       <NoteList notes={notes} />
     </Container>
   );

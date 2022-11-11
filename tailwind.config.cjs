@@ -8,36 +8,39 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     screens: {
-      sm: '520px',
-      md: '900px',
-      lg: '1200px',
+      sm: '480px',
+      md: '662px',
+      lg: '844px',
+      xl: '1024px',
     },
-    fontFamily: {
-      primary: ['Poppins', 'ui-sans-serif', 'system-ui'],
-      secondary: ['Roboto', 'ui-sans-serif', 'system-ui'],
+    fontFamily: {},
+    fontSize: {
+      xs: ['0.694rem', '1.2'],
+      sm: ['0.833rem', '1.5'],
+      base: ['1rem', '1.5'],
+      lg: ['1.2rem', '1.5'],
+      xl: ['1.44rem', '1.5'],
+      '2xl': ['1.728rem', '1.3'],
+      '3xl': ['2.074rem', '1.3'],
+      '4xl': ['2.488rem', '1.3'],
+      '5xl': ['2.986rem', '1.2'],
     },
     colors: {
-      transparent: '#00000000',
-      zinc: colors.zinc,
+      current: 'currentColor',
+      transparent: 'transparent',
       white: colors.white,
       black: colors.black,
-      dark: {
-        100: '#141414',
-        200: '#232323',
-        300: '#414141',
-      },
-      primary: {
-        100: {
-          DEFAULT: '#D4A8FF',
-          dark: '#BA75FF',
-        },
-        200: {
-          DEFAULT: '#C183FF',
-          dark: '#A64EFF',
-        },
+      neutral: colors.neutral,
+    },
+    extend: {
+      maxWidth: {
+        'container-xs': '420px',
+        'container-sm': '600px',
+        'container-md': '800px',
+        'container-lg': '980px',
+        'container-xl': '1130px',
       },
     },
-    extend: {},
   },
   plugins: [lineClamp],
 };

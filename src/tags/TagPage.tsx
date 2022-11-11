@@ -4,9 +4,9 @@ import { useWorld } from '@/app/world/hooks';
 
 import NoteList from '@/dashboard/NoteList';
 import Container from '@/components/Container';
-import PageTitle from '@/components/PageTitle';
 import DashboardNavbar from '@/dashboard/DashboardNavbar';
 import { stateObjectToArray } from '@/utils';
+import Header from '@/components/Header';
 
 const Tagpage = () => {
   const { notes, tags } = useWorld();
@@ -26,7 +26,9 @@ const Tagpage = () => {
   return (
     <Container>
       <DashboardNavbar isBack />
-      <PageTitle>{tag.name}</PageTitle>
+      <Header>
+        <Header.Title># {tag.name}</Header.Title>
+      </Header>
       <p>{tag.description}</p>
       <NoteList notes={filteredNotes} />
     </Container>

@@ -12,9 +12,6 @@ const LinkModal: React.FC<Props> = ({ editor }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     inputRef.current?.focus();
-    return () => {
-      editor.commands.toggleLinkModal();
-    };
   }, []);
 
   const onSubmit = (e: React.FormEvent) => {
@@ -33,8 +30,6 @@ const LinkModal: React.FC<Props> = ({ editor }) => {
 
   return (
     <form
-      id="link-modal"
-      aria-modal
       className={!editor.storage.custom.showLinkModal ? 'hidden' : ''}
       onSubmit={onSubmit}
     >

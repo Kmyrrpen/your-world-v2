@@ -1,16 +1,16 @@
 import { WithComponentProps } from '@/utils/types';
 import { twMerge } from 'tailwind-merge';
 
-const ItemDescription: React.FC<WithComponentProps<'p'>> = ({
+const NavbarMenuItem: React.FC<WithComponentProps<'li'>> = ({
   innerRef,
   className,
   ...props
 }) => (
-  <p
+  <li
+    className={twMerge('p-1.5 px-2 sm:px-4', className)}
     ref={innerRef}
-    className={twMerge('flex flex-col p-2', className)}
     {...props}
   />
 );
 
-export default ItemDescription;
+export default NavbarMenuItem;

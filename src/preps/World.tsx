@@ -1,5 +1,5 @@
-import { Outlet, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Outlet, useParams } from 'react-router-dom';
 
 import { closeWorld, openWorld } from '@/app/world';
 import { useWorld } from '@/app/world/hooks';

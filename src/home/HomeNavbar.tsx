@@ -3,15 +3,14 @@ import Navbar from '@/components/Navbar';
 const HomeNavbar: React.FC = () => {
   return (
     <Navbar>
-      <Navbar.Logo hasText />
-      <Navbar.ThemeToggle />
+      <Navbar.Logo />
       <Navbar.Menu>
-        <li>
+        <Navbar.MenuItem>
           <Navbar.Link to="/how-to-use">instructions</Navbar.Link>
-        </li>
-        <li>
+        </Navbar.MenuItem>
+        <Navbar.MenuItem>
           <Navbar.Link to="/contact">contact</Navbar.Link>
-        </li>
+        </Navbar.MenuItem>
       </Navbar.Menu>
     </Navbar>
   );

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { useParams } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
@@ -36,18 +36,22 @@ const EditorInner: React.FC<Props> = ({ note }) => {
   const editorConfig = useMemo(() => createConfiguration(draft), [draft]);
   const editor = useEditor(editorConfig);
 
+  useEffect(() => () => editor?.destroy(), []);
+
   if (!editor) return null;
 
   return (
     <Container>
       <EditorNavbar editor={editor} draft={draft} />
       <LinkModal editor={editor} />
-      <div className="flex flex-col">
-        <Title editor={editor} draft={draft} setter={setDraft} />
-        <TagSelect draft={draft} setter={setDraft} />
-        <Toolbar editor={editor} />
-        <EditorContent editor={editor} placeholder="Type Here.." spellCheck="false" />
-      </div>
+      <Title editor={editor} draft={draft} setter={setDraft} />
+      <TagSelect draft={draft} setter={setDraft} />
+      <Toolbar editor={editor} />
+      <EditorContent
+        editor={editor}
+        placeholder="Type Here.."
+        spellCheck="false"
+      />
     </Container>
   );
 };

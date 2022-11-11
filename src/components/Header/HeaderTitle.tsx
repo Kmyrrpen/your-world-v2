@@ -1,19 +1,18 @@
 import { WithComponentProps } from '@/utils/types';
 import { twMerge } from 'tailwind-merge';
 
-const Item: React.FC<WithComponentProps<'li'>> = ({
+const HeaderTitle: React.FC<WithComponentProps<'h1'>> = ({
   innerRef,
   className,
   ...props
 }) => (
-  <li
+  <h1
     ref={innerRef}
     className={twMerge(
-      'flex flex-col gap-1 border p-2 sm:p-3',
+      'text-xl font-bold sm:text-2xl md:text-3xl',
       className,
     )}
     {...props}
   />
 );
-
-export default Item;
+export default HeaderTitle;

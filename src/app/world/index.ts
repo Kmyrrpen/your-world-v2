@@ -181,11 +181,12 @@ export const closeWorld = createAction(
   (action, { dispatch }) => {
     if (!connections.world) {
       console.error('WORLD: closeWorld called without db connection');
-      return;
+    } else {
+      connections.world.close();
+      connections.world = null;
     }
 
-    connections.world.close();
-    connections.world = null;
+    // should still dispatch a reset in the case that the world doesn't exist
     dispatch(
       setWorld({
         loadState: 'none',

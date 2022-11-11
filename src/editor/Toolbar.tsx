@@ -13,7 +13,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
   if (!editor.isEditable) return null;
 
   return (
-    <div className="sticky z-40 top-0 py-2 bg-white dark:bg-dark-100 flex flex-wrap items-center gap-x-4 gap-y-2 my-2 sm:my-4 md:my-6">
+    <div className="dark:bg-dark-100 sticky top-0 z-40 my-2 flex flex-wrap items-center gap-x-4 gap-y-2 bg-white py-2 sm:my-4 md:my-6">
       <div className="flex flex-wrap items-center gap-2">
         <ToolbarIcon
           isActive={editor.isActive('paragraph')}
@@ -128,7 +128,6 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
       <div className="flex gap-2">
         <ToolbarIcon
           isActive={editor.isActive('italic')}
-          className="italic"
           onClick={() => cf(editor).toggleItalic().run()}
         >
           <span className="sr-only">apply italic</span>
@@ -140,7 +139,6 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
           </svg>
         </ToolbarIcon>
         <ToolbarIcon
-          className="font-bold"
           isActive={editor.isActive('bold')}
           onClick={() => cf(editor).toggleBold().run()}
         >
@@ -154,7 +152,6 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
         </ToolbarIcon>
         <ToolbarIcon
           isActive={editor.isActive('strike')}
-          className="line-through"
           onClick={() => cf(editor).toggleStrike().run()}
         >
           <span className="sr-only">apply strike-through</span>

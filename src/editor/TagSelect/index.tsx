@@ -14,7 +14,7 @@ import {
   sortValuesByName,
   tagsToOptions,
   useSelectStyles,
-} from './styles';
+} from './utils';
 
 export type TagOption = Readonly<{
   value: string;
