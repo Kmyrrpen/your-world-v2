@@ -8,8 +8,8 @@ import Dashboard from './dashboard/Dashboard';
 import Editor from './editor/Editor';
 import Tagpage from './tags/TagPage';
 import Tagview from './tags/TagsPage';
-import World from './preps/World';
-import Metas from './preps/Metas';
+import World from './loads/World';
+import Metas from './loads/Metas';
 
 function App() {
   useEnableChangeRoute();

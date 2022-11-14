@@ -1,16 +1,16 @@
 import { WithComponentProps } from '@/utils/types';
 import { twMerge } from 'tailwind-merge';
 
-const ItemDescription: React.FC<WithComponentProps<'p'>> = ({
+const FormFieldLabel: React.FC<WithComponentProps<'label'>> = ({
   innerRef,
   className,
   ...props
 }) => (
-  <p
+  <label
     ref={innerRef}
-    className={twMerge('my-2 block line-clamp-3', className)}
+    className={twMerge('text-sm text-neutral-600', className)}
     {...props}
   />
 );
 
-export default ItemDescription;
+export default FormFieldLabel;

@@ -7,7 +7,7 @@ type Props = {
   note: Note;
 };
 
-const NoteListItem: React.FC<Props> = ({ note }) => {
+const NoteItem: React.FC<Props> = ({ note }) => {
   const world = useWorld();
   const tagsObj = world.tags;
 
@@ -59,11 +59,9 @@ const NoteListItem: React.FC<Props> = ({ note }) => {
         ) : null}
       </div>
       <Item.Description>{note.description}</Item.Description>
-      <Item.Link to={`/${world.id}/${note.id}`} className="">
-        Edit
-      </Item.Link>
+      <Item.Link to={`/${world.id}/${note.id}`} />
     </Item>
   );
 };
 
-export default NoteListItem;
+export default NoteItem;

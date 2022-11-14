@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useWorld } from '@/app/world/hooks';
 
-import NoteList from '@/dashboard/NoteList';
+import Notes from '@/dashboard/Notes';
 import Container from '@/components/Container';
 import DashboardNavbar from '@/dashboard/DashboardNavbar';
 import { stateObjectToArray } from '@/utils';
@@ -30,7 +30,7 @@ const Tagpage = () => {
         <Header.Title># {tag.name}</Header.Title>
       </Header>
       <p>{tag.description}</p>
-      <NoteList notes={filteredNotes} />
+      <Notes notes={filteredNotes} />
     </Container>
   );
 };

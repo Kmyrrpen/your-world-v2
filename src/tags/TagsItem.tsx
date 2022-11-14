@@ -10,7 +10,7 @@ const TagsItem: React.FC<Props> = ({ tag }) => {
     <Item>
       <Item.Title>
         <span
-          className='leading-none px-2'
+          className="px-2 leading-none"
           style={{
             backgroundColor: tag.color.background,
             color: tag.color.text,
@@ -20,7 +20,7 @@ const TagsItem: React.FC<Props> = ({ tag }) => {
         </span>
       </Item.Title>
       <Item.Description>{tag.description}</Item.Description>
-      <Item.Link to={`${tag.id}`}>See Notes</Item.Link>
+      <Item.Link to={`${tag.id}`} />
     </Item>
   );
 };

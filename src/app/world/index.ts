@@ -2,7 +2,7 @@ import { createReducer, Action, Flow, createAction } from 'wuuber';
 import { proxy } from 'valtio';
 import { nanoid } from 'nanoid';
 import { changeRoute } from '@/hooks/useEnableChangeRoute';
-import { createMeta, metaStore } from '../metas';
+import { createMeta, deleteMeta, metaStore } from '../metas';
 import { openWorldDB } from './utils';
 import { connections } from '../connections';
 
@@ -16,6 +16,7 @@ import {
 } from './types';
 import { stateObjectToArray } from '@/utils';
 import { Writeable } from '@/utils/types';
+import { deleteDB } from 'idb';
 
 export const worldStore = proxy<WorldState>({
   notes: {},
@@ -173,6 +174,22 @@ export const openWorld = createAction<string>(
   },
 );
 
+export const deleteWorld = createAction(
+  'world/delete',
+  async (action, { dispatch }) => {
+    if (!connections.world) {
+      console.log('WORLD: deleteWorld called without db connection');
+    } else {
+      connections.world.close();
+      await deleteDB(connections.world.name);
+      connections.world = null;
+      
+      dispatch(deleteMeta(worldStore.id));
+      changeRoute('/');
+    }
+  },
+);
+
 /**
  * closes the world db, reset the world state
  */
@@ -219,6 +236,7 @@ export const createWorld = createAction<string>(
 export const worldFlows = [
   createWorld,
   openWorld,
+  deleteWorld,
   closeWorld,
   worldSetActions,
   saveToDBFlow,

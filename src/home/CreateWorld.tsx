@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { dispatch } from '@/app/dispatch';
 import { createWorld } from '@/app/world';
 import Button from '@/components/Button';
+import { Icons } from '@/components/Icons';
 
 const CreateWorld: React.FC = () => {
   const [nameValue, setNameValue] = useState('');
@@ -16,10 +17,10 @@ const CreateWorld: React.FC = () => {
     return (
       <Button
         className="ml-auto md:ml-0"
-        icon="click"
         onClick={() => setShowWorldForm(true)}
       >
         create new world
+        <Icons.Click />
       </Button>
     );
 

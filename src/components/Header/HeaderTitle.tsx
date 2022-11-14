@@ -9,7 +9,7 @@ const HeaderTitle: React.FC<WithComponentProps<'h1'>> = ({
   <h1
     ref={innerRef}
     className={twMerge(
-      'text-xl font-bold sm:text-2xl md:text-3xl',
+      'text-xl font-bold leading-none sm:text-2xl md:text-3xl md:leading-none',
       className,
     )}
     {...props}

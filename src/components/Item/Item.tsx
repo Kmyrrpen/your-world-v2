@@ -8,10 +8,7 @@ const Item: React.FC<WithComponentProps<'li'>> = ({
 }) => (
   <li
     ref={innerRef}
-    className={twMerge(
-      'flex flex-col gap-1 border p-2 sm:p-3',
-      className,
-    )}
+    className={twMerge('flex flex-col gap-1 border border-neutral-400 p-2 sm:p-3', className)}
     {...props}
   />
 );

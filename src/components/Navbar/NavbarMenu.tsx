@@ -1,6 +1,7 @@
 import { PropsWithChildren, useCallback, useRef, useState } from 'react';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
-import Button from '../Button';
+import IconButton from '../IconButton';
+import { Icons } from '../Icons';
 
 const NavbarMenu: React.FC<PropsWithChildren> = ({ children }) => {
   const [show, setShow] = useState(false);
@@ -20,14 +21,14 @@ const NavbarMenu: React.FC<PropsWithChildren> = ({ children }) => {
   useOnClickOutside(menuRef, outsideToggler);
 
   return (
-    <div className="">
-      <Button
+    <div>
+      <IconButton
         innerRef={buttonRef}
         onClick={() => setShow((prev) => !prev)}
         className="lg:hidden"
       >
-        Menu
-      </Button>
+        <Icons.Menu />
+      </IconButton>
       <ul
         ref={menuRef}
         className={`

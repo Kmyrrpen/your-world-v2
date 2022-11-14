@@ -30,6 +30,9 @@ module.exports = {
       transparent: 'transparent',
       white: colors.white,
       black: colors.black,
+      form: {
+        error: '#d00000',
+      },
       neutral: colors.neutral,
     },
     extend: {
