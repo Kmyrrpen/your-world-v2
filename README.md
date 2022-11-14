@@ -7,8 +7,3 @@ A scuffed note-editing app built with react and typescript, bootstrapped with vi
 - valtio - a proxy-based state management library
 - tailwindcss - utility-first CSS framework
 - wuuber - a small set of functions to create action-based logic
-
-## TODO
-- delete tag mechanism
-- edit tag mechanism (deepClone)
-- settings icon for dark/light mode, editing world name, deleting world

@@ -44,6 +44,7 @@ const NoteItem: React.FC<Props> = ({ note }) => {
         <ul ref={tagsRef} className="flex overflow-hidden">
           {note.tagIds.map((tagId, i) => (
             <Item.Tag
+              to={`/${world.id}/tags/${tagId}`}
               tag={tagsObj[tagId]}
               key={tagId}
               className={

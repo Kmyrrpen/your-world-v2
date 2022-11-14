@@ -1,19 +1,20 @@
 import { Tag } from '@/app/world/types';
 import { WithComponentProps } from '@/utils/types';
+import { Link } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
 type Props = {
   tag: Tag;
 };
 
-const ItemTag: React.FC<WithComponentProps<'li', Props>> = ({
+const ItemTag: React.FC<WithComponentProps<typeof Link, Props>> = ({
   tag,
   className,
   style,
   ...props
 }) => {
   return (
-    <li
+    <Link
       style={{
         backgroundColor: tag.color.background,
         color: tag.color.text,
@@ -26,7 +27,7 @@ const ItemTag: React.FC<WithComponentProps<'li', Props>> = ({
       {...props}
     >
       {tag.name}
-    </li>
+    </Link>
   );
 };
 

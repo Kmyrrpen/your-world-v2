@@ -8,7 +8,7 @@ const FormField: React.FC<WithComponentProps<'div'>> = ({
 }) => (
   <div
     ref={innerRef}
-    className={twMerge('my-1 flex flex-col pr-3', className)}
+    className={twMerge('my-1 flex flex-col', className)}
     {...props}
   />
 );

@@ -32,7 +32,7 @@ const IconButton = <T extends RenderProp<InjectedProps> | undefined>({
   ? Overwrite<SharedDefaultProps, PermanentProps & { render?: T }>
   : PermanentProps) => {
   const classTw = twMerge(
-    'inline-flex justify-center items-center text-sm text-black hover:text-neutral-500 dark:text-white',
+    'inline-flex justify-center items-center text-sm text-black hover:text-neutral-500 dark:text-white gap-2',
     className,
   );
 

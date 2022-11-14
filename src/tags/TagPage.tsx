@@ -7,6 +7,7 @@ import Container from '@/components/Container';
 import DashboardNavbar from '@/dashboard/DashboardNavbar';
 import { stateObjectToArray } from '@/utils';
 import Header from '@/components/Header';
+import EditTag from './EditTag';
 
 const Tagpage = () => {
   const { notes, tags } = useWorld();
@@ -28,6 +29,9 @@ const Tagpage = () => {
       <DashboardNavbar isBack />
       <Header>
         <Header.Title># {tag.name}</Header.Title>
+        <div className="flex flex-wrap gap-3">
+          <EditTag tag={tag} tagsObj={tags} />
+        </div>
       </Header>
       <p>{tag.description}</p>
       <Notes notes={filteredNotes} />

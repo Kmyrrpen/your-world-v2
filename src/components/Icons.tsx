@@ -2,6 +2,8 @@ import { ReactComponent as ClickIcon } from '@/assets/click.svg';
 import { ReactComponent as ArrowRightIcon } from '@/assets/arrow-right.svg';
 import { ReactComponent as SettingsIcon } from '@/assets/settings.svg';
 import { ReactComponent as MenuIcon } from '@/assets/menu-icon.svg';
+import { ReactComponent as ArrowLeftIcon } from '@/assets/arrow-left.svg';
+
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -15,6 +17,7 @@ const createIcon =
     <Icon className={twMerge('w-4', className)} {...props} />;
 
 const Click = createIcon(ClickIcon);
+const ArrowLeft = createIcon(ArrowLeftIcon);
 const ArrowRight = createIcon(ArrowRightIcon);
 const Settings = createIcon(SettingsIcon);
 const Menu = createIcon(MenuIcon);
@@ -22,6 +25,7 @@ const Menu = createIcon(MenuIcon);
 export const Icons = {
   Click,
   ArrowRight,
+  ArrowLeft,
   Settings,
   Menu,
 };

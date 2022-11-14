@@ -13,10 +13,8 @@ const ItemLink: React.FC<Omit<WithComponentProps<typeof Link>, 'children'>> = ({
     className={twMerge('ml-auto mt-auto', className)}
     render={({ ...props }) => <Link ref={innerRef} {...props} {...linkProps} />}
   >
-    <div className='flex gap-2'>
-      <span className='font-bold hidden md:block'>Edit</span>
-      <Icons.ArrowRight />
-    </div>
+    <span className="hidden font-bold md:block">Edit</span>
+    <Icons.ArrowRight />
   </IconButton>
 );
 

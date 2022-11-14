@@ -29,7 +29,7 @@ const ModalContainer: React.FC<WithComponentProps<'div', Props>> = ({
   return (
     <div
       className={twMerge(
-        'dark:bg-dark-100 p-3 relative z-20 flex min-h-[10rem] w-full flex-col justify-start rounded bg-white',
+        'dark:bg-dark-100 p-4 relative z-20 flex min-h-[10rem] w-full flex-col justify-start rounded bg-white',
         sizeTw,
         className,
       )}
