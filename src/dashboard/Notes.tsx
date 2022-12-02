@@ -1,4 +1,4 @@
-import { Note } from '@/app/world/types';
+import { Note } from '@/app/world-curr/types';
 import NoteItem from './NoteItem';
 
 type Props = {

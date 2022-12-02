@@ -1,7 +1,7 @@
 import { EditorOptions, Extension } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
-import { Note } from '@/app/world/types';
+import { Note } from '@/app/world-curr/types';
 
 declare module '@tiptap/react' {
   interface Commands<ReturnType> {
@@ -38,6 +38,7 @@ const CustomExtension = Extension.create<Record<string, never>, Storage>({
           const noLink = Object.keys(editor.getAttributes('link')).length === 0;
 
           if (!selection.empty) {
+            console.log(selection);
             // show link modal or remove link attached
             if (noLink) {
               this.storage.showLinkModal = true;

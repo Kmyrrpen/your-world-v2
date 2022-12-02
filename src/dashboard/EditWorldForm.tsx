@@ -1,13 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { dispatch } from '@/app/dispatch';
-import { deleteWorld } from '@/app/world';
-import { createMeta } from '@/app/metas';
-import { WorldMeta } from '@/app/metas/types';
+
+import { WorldMeta } from '@/app/world-metas/types';
+import { useMetaStore } from '@/app/world-metas';
+import { deleteWorld } from '@/app/world-metas/db';
 
 import Button from '@/components/Button';
 import FormField from '@/components/FormField';
 
-type FormValues = {
+export type EditWorldFormVals = {
   name: string;
 };
 
@@ -18,25 +19,29 @@ type Props = {
 
 const EditWorldForm: React.FC<Props> = ({ meta, onToggle }) => {
   const {
-    register,
     handleSubmit,
+    register,
     formState: { errors },
-  } = useForm<FormValues>({
-    defaultValues: { name: meta.name },
+  } = useForm<EditWorldFormVals>({
+    defaultValues: meta,
   });
 
-  const onDelete = () => {
-    const confirmation = confirm(
+  const createMeta = useMetaStore((state) => state.createMeta);
+  const navigate = useNavigate();
+
+  const onDelete = async () => {
+    const isDeleteWorld = confirm(
       `Are you sure you want to delete ${meta.name}?`,
     );
-    if (confirmation) {
-      dispatch(deleteWorld());
-      onToggle();
+
+    if (isDeleteWorld) {
+      await deleteWorld(meta.id);
+      navigate('/');
     }
   };
 
-  const onSubmit = handleSubmit(({ name }) => {
-    dispatch(createMeta({ ...meta, name }));
+  const onSubmit = handleSubmit(async ({ name }) => {
+    await createMeta({ ...meta, name });
     onToggle();
   });
 

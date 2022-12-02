@@ -1,12 +1,12 @@
+import { useUserStore } from '@/app/user-preference';
+import { Theme } from '@/app/user-preference/types';
+import { Tag } from '@/app/world-curr/types';
 import { useMemo } from 'react';
 import { StylesConfig } from 'react-select';
-import { Tag } from '@/app/world/types';
-import { ThemeType } from '@/app/theme';
-import useTheme from '@/app/theme/hooks';
 import { TagOption } from '.';
 
 export const useSelectStyles = () => {
-  const theme = useTheme();
+  const theme = useUserStore(state => state.theme);
   return useMemo(() => getStyles(theme), [theme]);
 };
 
@@ -14,7 +14,7 @@ export const useSelectStyles = () => {
  * react-select unfortunately uses emotion under the hood, it becomes a bit hard to style these
  * with tailwindcss so best just use the reccomended way to set styles which is through this function.
  */
-export const getStyles = (theme?: ThemeType): StylesConfig<TagOption> => ({
+export const getStyles = (theme?: Theme): StylesConfig<TagOption> => ({
   control: (state) => ({
     ...state,
     background: 'none',

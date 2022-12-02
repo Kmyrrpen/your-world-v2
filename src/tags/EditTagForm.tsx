@@ -1,37 +1,45 @@
-import { useForm } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-
-import { dispatch } from '@/app/dispatch';
-import { createTag, deleteTag } from '@/app/world';
-import { useTags } from '@/app/world/hooks';
-import { Tag } from '@/app/world/types';
+import shallow from 'zustand/shallow';
 
 import Button from '@/components/Button';
 import FormField from '@/components/FormField';
+import { Tag } from '@/app/world-curr/types';
+import { useWorldStore } from '@/app/world-curr';
+import { stateObjectToArray } from '@/utils';
+
+export type EditTagFormVals = Omit<Tag, 'id'>;
 
 type Props = {
   tag: Tag;
-  tagValues: Omit<Tag, 'id'>;
   onToggle: () => void;
+  formData: UseFormReturn<EditTagFormVals>;
 };
 
-const EditTagForm: React.FC<Props> = ({ tag, tagValues, onToggle }) => {
-  const tags = useTags();
-  const navigate = useNavigate();
-
+const EditTagForm: React.FC<Props> = ({ tag, onToggle, formData }) => {
   const {
     register,
-    formState: { errors },
     handleSubmit,
-  } = useForm<Tag>({ defaultValues: tagValues });
+    formState: { errors },
+  } = formData;
 
-  const onDelete = () => {
-    dispatch(deleteTag(tag.id));
+  const navigate = useNavigate();
+  const { tags, deleteTag, createTag } = useWorldStore(
+    (state) => ({
+      tags: stateObjectToArray(state.tags),
+      deleteTag: state.deleteTag,
+      createTag: state.createTag,
+    }),
+    shallow,
+  );
+
+  const onDelete = async () => {
+    await deleteTag(tag);
     navigate('../');
   };
 
-  const onSubmit = handleSubmit((newValues) => {
-    dispatch(createTag({ ...newValues, id: tag.id }));
+  const onSubmit = handleSubmit(async (newValues) => {
+    await createTag({ ...newValues, id: tag.id });
     onToggle();
   });
 
@@ -45,7 +53,10 @@ const EditTagForm: React.FC<Props> = ({ tag, tagValues, onToggle }) => {
           {...register('name', {
             required: 'cannot be empty',
             validate: (value: string) => {
-              if (value === tag.name || !tags.find((tag) => tag.name === value))
+              if (
+                value === tag.name ||
+                !tags.find((item) => item.name === value)
+              )
                 return true;
               return 'name already exists!';
             },

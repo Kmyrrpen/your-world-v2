@@ -1,7 +1,6 @@
-import { WorldMetasObject } from '@/app/metas/types';
-import { NotesObject, TagsObject } from '@/app/world/types';
+import { NotesObject, TagsObject } from '@/app/world-curr/types';
+import { WorldMetasObject } from '@/app/world-metas/types';
 import { ConvertStateObjToItem, RenderProp } from './types';
-import React from 'react';
 
 /**
  * Creates a render function given a react element type, types are very loose

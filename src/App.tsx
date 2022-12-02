@@ -1,6 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-
-import useEnableChangeRoute from './hooks/useEnableChangeRoute';
 import useEnableTheme from './hooks/useEnableTheme';
 
 import Home from './home/Home';
@@ -12,7 +10,6 @@ import World from './loads/World';
 import Metas from './loads/Metas';
 
 function App() {
-  useEnableChangeRoute();
   useEnableTheme();
 
   return (

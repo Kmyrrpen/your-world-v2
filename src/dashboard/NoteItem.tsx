@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { useWorld } from '@/app/world/hooks';
-import { Note } from '@/app/world/types';
+import { Note } from '@/app/world-curr/types';
+import { useWorldStore } from '@/app/world-curr';
 import Item from '@/components/Item';
 
 type Props = {
@@ -8,8 +8,8 @@ type Props = {
 };
 
 const NoteItem: React.FC<Props> = ({ note }) => {
-  const world = useWorld();
-  const tagsObj = world.tags;
+  const id = useWorldStore((state) => state.id);
+  const tags = useWorldStore((state) => state.tags);
 
   const tagsRef = useRef<HTMLUListElement | null>(null);
   const [hiddenTagCount, setHiddenTagCount] = useState(0);
@@ -35,7 +35,7 @@ const NoteItem: React.FC<Props> = ({ note }) => {
 
       setHiddenTagCount(childrenToHide);
     }
-  }, [tagsRef]);
+  }, [tagsRef, setHiddenTagCount]);
 
   return (
     <Item>
@@ -44,8 +44,8 @@ const NoteItem: React.FC<Props> = ({ note }) => {
         <ul ref={tagsRef} className="flex overflow-hidden">
           {note.tagIds.map((tagId, i) => (
             <Item.Tag
-              to={`/${world.id}/tags/${tagId}`}
-              tag={tagsObj[tagId]}
+              to={`/${id}/tags/${tagId}`}
+              tag={tags[tagId]}
               key={tagId}
               className={
                 note.tagIds.length - hiddenTagCount <= i ? 'hidden' : ''
@@ -60,7 +60,7 @@ const NoteItem: React.FC<Props> = ({ note }) => {
         ) : null}
       </div>
       <Item.Description>{note.description}</Item.Description>
-      <Item.Link to={`/${world.id}/${note.id}`} />
+      <Item.Link to={`/${id}/${note.id}`} />
     </Item>
   );
 };

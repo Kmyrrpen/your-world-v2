@@ -1,11 +1,14 @@
-import { useTags } from '@/app/world/hooks';
+import { useWorldStore } from '@/app/world-curr';
+
+import DashboardNavbar from '@/dashboard/DashboardNavbar';
 import Container from '@/components/Container';
 import Header from '@/components/Header';
-import DashboardNavbar from '@/dashboard/DashboardNavbar';
 import TagsItem from './TagsItem';
 
+import { stateObjectToArray } from '@/utils';
+
 const Tagview: React.FC = () => {
-  const tags = useTags();
+  const tags = useWorldStore((state) => stateObjectToArray(state.tags));
 
   return (
     <Container>

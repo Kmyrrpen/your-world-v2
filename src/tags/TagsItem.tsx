@@ -1,4 +1,4 @@
-import { Tag } from '@/app/world/types';
+import { Tag } from '@/app/world-curr/types';
 import Item from '@/components/Item';
 
 type Props = {

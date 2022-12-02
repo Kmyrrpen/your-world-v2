@@ -1,12 +1,13 @@
 import { DBSchema } from 'idb';
 
-export type WorldMetasObject = { readonly [key: string]: WorldMeta };
-export type WorldMeta = Readonly<{
-  name: string;
-  id: string;
-}>;
+export type WorldMeta = {
+  readonly name: string;
+  readonly id: string;
+};
 
-export interface MetasSchema extends DBSchema {
+export type WorldMetasObject = { readonly [key: string]: WorldMeta };
+
+export interface MetaSchema extends DBSchema {
   metas: {
     key: string;
     value: WorldMeta;

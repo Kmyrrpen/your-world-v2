@@ -1,11 +1,12 @@
-import { useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { cloneDeep } from 'lodash';
+import { useForm } from 'react-hook-form';
+import { Tag, TagsObject } from '@/app/world-curr/types';
 
-import { Tag, TagsObject } from '@/app/world/types';
 import { Icons } from '@/components/Icons';
 import Button from '@/components/Button';
 import Modal from '@/components/Modal';
-import EditTagForm from './EditTagForm';
+import EditTagForm, { EditTagFormVals } from './EditTagForm';
 
 type Props = {
   tag: Tag;
@@ -14,8 +15,16 @@ type Props = {
 
 const EditTag: React.FC<Props> = ({ tag }) => {
   const [show, setShow] = useState(false);
-  const { current: clonedTag } = useRef({ ...cloneDeep(tag), id: undefined });
-  const onToggle = () => setShow((prev) => !prev);
+  const clonedTag = useMemo(
+    () => ({ ...cloneDeep(tag), id: undefined }),
+    [tag],
+  );
+
+  const formData = useForm<EditTagFormVals>({ defaultValues: clonedTag });
+  const onToggle = () => {
+    setShow((prev) => !prev);
+    formData.reset();
+  };
 
   return (
     <div>
@@ -23,14 +32,12 @@ const EditTag: React.FC<Props> = ({ tag }) => {
         edit tag
         <Icons.Settings />
       </Button>
-      {show && (
-        <Modal>
-          <Modal.Background onClick={onToggle} />
-          <Modal.Container>
-            <EditTagForm tag={tag} onToggle={onToggle} tagValues={clonedTag} />
-          </Modal.Container>
-        </Modal>
-      )}
+      <Modal className={!show ? 'hidden' : ''}>
+        <Modal.Background onClick={onToggle} />
+        <Modal.Container>
+          <EditTagForm tag={tag} onToggle={onToggle} formData={formData} />
+        </Modal.Container>
+      </Modal>
     </div>
   );
 };

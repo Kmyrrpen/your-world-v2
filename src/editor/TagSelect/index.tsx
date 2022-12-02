@@ -2,11 +2,10 @@ import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { ActionMeta, OnChangeValue } from 'react-select';
 import CreateableSelect from 'react-select/creatable';
-import { dispatch } from '@/app/dispatch';
-import { createTag } from '@/app/world';
-import { useTagsObj } from '@/app/world/hooks';
-import { Note, Tag } from '@/app/world/types';
 import { isColorDark, stateObjectToArray } from '@/utils';
+
+import { Note, Tag } from '@/app/world-curr/types';
+import { useWorldStore } from '@/app/world-curr';
 
 import {
   getRandomColor,
@@ -29,12 +28,13 @@ type Props = {
 
 const TagSelect: React.FC<Props> = ({ draft, setter }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const tagsObj = useTagsObj();
+  const tags = useWorldStore((state) => state.tags);
+  const createTag = useWorldStore((state) => state.createTag);
   const styles = useSelectStyles();
 
-  const tagOptions = tagsToOptions(stateObjectToArray(tagsObj));
+  const tagOptions = tagsToOptions(stateObjectToArray(tags));
   const values: TagOption[] = tagsToOptions(
-    draft.tagIds.map((tagId) => tagsObj[tagId]),
+    draft.tagIds.map((tagId) => tags[tagId]),
   );
 
   const onChange = async (
@@ -57,14 +57,13 @@ const TagSelect: React.FC<Props> = ({ draft, setter }) => {
         id: nanoid(),
       };
 
-      // wait for db to create tag
       setIsLoading(true);
-      await dispatch(createTag(newTag));
-      setIsLoading(false);
+      await createTag(newTag);
 
       newTagOptions = newTagOptions.map((option) =>
         option !== actionMeta.option ? option : { ...option, value: newTag.id },
       );
+      setIsLoading(false);
     }
 
     newTagOptions.sort((a, b) => a.label.localeCompare(b.label));

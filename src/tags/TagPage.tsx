@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useWorld } from '@/app/world/hooks';
+import shallow from 'zustand/shallow';
 
 import Notes from '@/dashboard/Notes';
 import Container from '@/components/Container';
@@ -8,9 +8,17 @@ import DashboardNavbar from '@/dashboard/DashboardNavbar';
 import { stateObjectToArray } from '@/utils';
 import Header from '@/components/Header';
 import EditTag from './EditTag';
+import { useWorldStore } from '@/app/world-curr';
 
 const Tagpage = () => {
-  const { notes, tags } = useWorld();
+  const { notes, tags } = useWorldStore(
+    (state) => ({
+      tags: state.tags,
+      notes: state.notes,
+    }),
+    shallow,
+  );
+
   const id = useParams<{ id: string }>().id as string;
   const tag = tags[id];
 

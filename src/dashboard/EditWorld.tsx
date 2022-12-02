@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCurrentMeta } from '@/app/metas/hooks';
+import { useCurrentMeta } from '@/app/world-metas/hooks';
 
 import { Icons } from '@/components/Icons';
 import Button from '@/components/Button';
@@ -9,7 +9,10 @@ import EditWorldForm from './EditWorldForm';
 const EditWorld: React.FC = () => {
   const currentMeta = useCurrentMeta();
   const [show, setShow] = useState(false);
-  const onToggle = () => setShow((prev) => !prev);
+
+  const onToggle = () => {
+    setShow((prev) => !prev);
+  };
 
   return (
     <div>
@@ -21,7 +24,10 @@ const EditWorld: React.FC = () => {
         <Modal>
           <Modal.Background onClick={onToggle} />
           <Modal.Container>
-            <EditWorldForm meta={currentMeta} onToggle={onToggle} />
+            <EditWorldForm
+              meta={currentMeta}
+              onToggle={onToggle}
+            />
           </Modal.Container>
         </Modal>
       ) : null}

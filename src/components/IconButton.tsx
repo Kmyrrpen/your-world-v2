@@ -10,14 +10,7 @@ import {
 
 type InjectedProps = PropsWithChildren<{ className: string }>;
 type SharedDefaultProps = ComponentPropsWithInnerRef<'button'>;
-
-type PermanentProps = PropsWithRender<
-  InjectedProps,
-  {
-    /** classes to override default classes with `tailwind-merge`. */
-    className?: string;
-  }
->;
+type PermanentProps = PropsWithRender<InjectedProps>;
 
 const defaultIcon =
   createDefaultRenderWithRef<Overwrite<SharedDefaultProps, InjectedProps>>(

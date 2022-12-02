@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useCurrentMeta } from '@/app/metas/hooks';
-import { useNotes } from '@/app/world/hooks';
+
+import { useWorldStore } from '@/app/world-curr';
+import { stateObjectToArray } from '@/utils';
+import { useCurrentMeta } from '@/app/world-metas/hooks';
 
 import { Icons } from '@/components/Icons';
 import Container from '@/components/Container';
@@ -11,7 +13,7 @@ import EditWorld from './EditWorld';
 import Notes from './Notes';
 
 const Dashboard: React.FC = () => {
-  const notes = useNotes();
+  const notes = useWorldStore((state) => stateObjectToArray(state.notes));
   const meta = useCurrentMeta();
 
   return (

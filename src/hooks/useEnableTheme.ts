@@ -1,9 +1,8 @@
-import useTheme from '@/app/theme/hooks';
 import { useEffect } from 'react';
+import { useUserStore } from '@/app/user-preference';
 
 const useEnableTheme = () => {
-  const theme = useTheme();
-
+  const theme = useUserStore((state) => state.theme);
   useEffect(() => {
     const body = document.body;
     theme === 'dark'

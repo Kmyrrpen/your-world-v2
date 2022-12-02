@@ -1,4 +1,4 @@
-import { useWorld } from '@/app/world/hooks';
+import { useWorldStore } from '@/app/world-curr';
 import Navbar from '@/components/Navbar';
 
 type Props = {
@@ -6,17 +6,17 @@ type Props = {
 };
 
 const DashboardNavbar: React.FC<Props> = ({ isBack }) => {
-  const world = useWorld();
+  const id = useWorldStore((state) => state.id);
 
   return (
     <Navbar>
       {isBack ? <Navbar.Back /> : <Navbar.Logo />}
       <Navbar.Menu>
         <Navbar.MenuItem>
-          <Navbar.Link to={`/${world.id}`}>dashboard</Navbar.Link>
+          <Navbar.Link to={`/${id}`}>dashboard</Navbar.Link>
         </Navbar.MenuItem>
         <Navbar.MenuItem>
-          <Navbar.Link to={`/${world.id}/tags`}>see tags</Navbar.Link>
+          <Navbar.Link to={`/${id}/tags`}>see tags</Navbar.Link>
         </Navbar.MenuItem>
       </Navbar.Menu>
     </Navbar>

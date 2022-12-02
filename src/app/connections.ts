@@ -1,10 +1,10 @@
 import { IDBPDatabase } from 'idb';
-import { MetasSchema } from './metas/types';
-import { WorldSchema } from './world/types';
+import { WorldSchema } from './world-curr/types';
+import { MetaSchema } from './world-metas/types';
 
 export type Connections = {
   world: null | IDBPDatabase<WorldSchema>;
-  metas: null | IDBPDatabase<MetasSchema>;
+  metas: null | IDBPDatabase<MetaSchema>;
 };
 
 export const connections: Connections = {

@@ -1,24 +1,30 @@
 import React, { useState } from 'react';
-import { dispatch } from '@/app/dispatch';
-import { createWorld } from '@/app/world';
+import { useNavigate } from 'react-router-dom';
+import { nanoid } from 'nanoid';
+import { openWorldDB } from '@/app/world-curr/db';
+import { useMetaStore } from '@/app/world-metas';
+
 import Button from '@/components/Button';
 import { Icons } from '@/components/Icons';
 
 const CreateWorld: React.FC = () => {
-  const [nameValue, setNameValue] = useState('');
-  const [showWorldForm, setShowWorldForm] = useState(false);
+  const createMeta = useMetaStore((state) => state.createMeta);
+  const navigate = useNavigate();
 
-  const onSubmit = (e: React.FormEvent) => {
+  const [name, setName] = useState('');
+  const [toggle, setToggle] = useState(false);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createWorld(nameValue));
+    const id = nanoid();
+    await openWorldDB(id, true);
+    await createMeta({ name, id });
+    navigate(id);
   };
 
-  if (!showWorldForm)
+  if (!toggle)
     return (
-      <Button
-        className="ml-auto md:ml-0"
-        onClick={() => setShowWorldForm(true)}
-      >
+      <Button className="ml-auto md:ml-0" onClick={() => setToggle(true)}>
         create new world
         <Icons.Click />
       </Button>
@@ -29,8 +35,8 @@ const CreateWorld: React.FC = () => {
       <input
         className=""
         placeholder="world name..."
-        value={nameValue}
-        onChange={(e) => setNameValue(e.target.value)}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <Button>Create New World</Button>
     </form>

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Container from '@/components/Container';
 import HomeNavbar from './HomeNavbar';
 import CreateWorld from './CreateWorld';

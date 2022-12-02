@@ -1,9 +1,9 @@
-import { useMetas } from '@/app/metas/hooks';
+import { useMetaStore } from '@/app/world-metas';
+import { stateObjectToArray } from '@/utils';
 import WorldListItem from './WorldListItem';
 
 const WorldList: React.FC = () => {
-  const metas = useMetas();
-
+  const metas = useMetaStore(state => stateObjectToArray(state.metas))
   return (
     <div className="mb-16">
       {metas.length > 0 ? (
