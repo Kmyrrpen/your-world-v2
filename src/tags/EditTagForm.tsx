@@ -28,7 +28,7 @@ const EditTagForm: React.FC<Props> = ({ tag, onToggle, formData }) => {
     (state) => ({
       tags: stateObjectToArray(state.tags),
       deleteTag: state.deleteTag,
-      createTag: state.createTag,
+      createTag: state.setTag,
     }),
     shallow,
   );

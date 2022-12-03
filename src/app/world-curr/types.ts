@@ -1,4 +1,4 @@
-import { DBSchema } from 'idb';
+import { DBSchema } from "idb";
 
 export type Note = Readonly<{
   name: string;

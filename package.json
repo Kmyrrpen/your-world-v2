@@ -23,8 +23,6 @@
     "react-router-dom": "^6.4.0",
     "react-select": "^5.5.0",
     "tailwind-merge": "^1.7.0",
-    "valtio": "^1.7.0",
-    "wuuber": "^1.1.0",
     "zustand": "^4.1.4"
   },
   "devDependencies": {

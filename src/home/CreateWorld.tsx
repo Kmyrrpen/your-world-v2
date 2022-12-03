@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
-import { openWorldDB } from '@/app/world-curr/db';
-import { useMetaStore } from '@/app/world-metas';
 
+import { useMetaStore } from '@/app/world-metas';
 import Button from '@/components/Button';
 import { Icons } from '@/components/Icons';
 
 const CreateWorld: React.FC = () => {
-  const createMeta = useMetaStore((state) => state.createMeta);
+  const updateMeta = useMetaStore((state) => state.updateMeta);
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -17,8 +16,7 @@ const CreateWorld: React.FC = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const id = nanoid();
-    await openWorldDB(id, true);
-    await createMeta({ name, id });
+    await updateMeta({ name, id });
     navigate(id);
   };
 

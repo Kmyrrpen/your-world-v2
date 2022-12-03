@@ -2,8 +2,11 @@ import { Note, NotesObject, Tag, TagsObject } from '@/app/world-curr/types';
 import { WorldMeta, WorldMetasObject } from '@/app/world-metas/types';
 import { ComponentPropsWithRef } from 'react';
 
-export type Zaction<P, R = void> = (payload: P) => R;
-export type LoadState = 'none' | 'loading' | 'loaded' | 'error';
+export type Action<P = never, R = void> = [P] extends [never]
+  ? () => R
+  : (payload: P) => R;
+
+export type LoadState = 'loading' | 'loaded' | 'error';
 
 /** Removes readonly modifiers from every porperty from type */
 export type Writeable<T> = { -readonly [P in keyof T]: T[P] };

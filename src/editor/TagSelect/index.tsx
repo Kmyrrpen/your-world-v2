@@ -29,7 +29,7 @@ type Props = {
 const TagSelect: React.FC<Props> = ({ draft, setter }) => {
   const [isLoading, setIsLoading] = useState(false);
   const tags = useWorldStore((state) => state.tags);
-  const createTag = useWorldStore((state) => state.createTag);
+  const createTag = useWorldStore((state) => state.setTag);
   const styles = useSelectStyles();
 
   const tagOptions = tagsToOptions(stateObjectToArray(tags));

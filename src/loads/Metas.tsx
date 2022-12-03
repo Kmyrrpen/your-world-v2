@@ -1,22 +1,30 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
+
+import { LoadState } from '@/utils/types';
 import { useMetaStore } from '@/app/world-metas';
-import { closeMetaDB, openMetaDB } from '@/app/world-metas/db';
+import shallow from 'zustand/shallow';
 
 const Metas: React.FC = () => {
-  const loadState = useMetaStore((state) => state.loadState);
+  const [loading, setLoading] = useState<LoadState>('loading');
+  const { hydrate, reset } = useMetaStore(
+    (state) => ({ hydrate: state.hydrateStore, reset: state.resetStore }),
+    shallow,
+  );
 
   useEffect(() => {
-    openMetaDB();
+    hydrate()
+      .then(() => setLoading('loaded'))
+      .catch(() => setLoading('error'));
     return () => {
-      closeMetaDB();
+      reset();
     };
   }, []);
 
   // not sure what to do here, the only way this would happen
   // should be when loading metas gets an IDB error
-  if (loadState === 'error') return <div>error: something went wrong..</div>;
-  if (loadState === 'loaded') return <Outlet />;
+  if (loading === 'error') return <div>error: something went wrong..</div>;
+  if (loading === 'loaded') return <Outlet />;
 
   // load state is none or loading
   return <div>Metas Loading...</div>;

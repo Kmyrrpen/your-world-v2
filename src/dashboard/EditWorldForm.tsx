@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-
 import { WorldMeta } from '@/app/world-metas/types';
 import { useMetaStore } from '@/app/world-metas';
-import { deleteWorld } from '@/app/world-metas/db';
 
 import Button from '@/components/Button';
 import FormField from '@/components/FormField';
+import shallow from 'zustand/shallow';
 
 export type EditWorldFormVals = {
   name: string;
@@ -18,6 +17,14 @@ type Props = {
 };
 
 const EditWorldForm: React.FC<Props> = ({ meta, onToggle }) => {
+  const navigate = useNavigate();
+  const { updateMeta, deleteMeta } = useMetaStore(
+    (state) => ({
+      updateMeta: state.updateMeta,
+      deleteMeta: state.deleteMeta,
+    }),
+    shallow,
+  );
   const {
     handleSubmit,
     register,
@@ -26,27 +33,21 @@ const EditWorldForm: React.FC<Props> = ({ meta, onToggle }) => {
     defaultValues: meta,
   });
 
-  const createMeta = useMetaStore((state) => state.createMeta);
-  const navigate = useNavigate();
-
   const onDelete = async () => {
-    const isDeleteWorld = confirm(
-      `Are you sure you want to delete ${meta.name}?`,
-    );
-
-    if (isDeleteWorld) {
-      await deleteWorld(meta.id);
+    const confirmed = confirm(`Are you sure you want to delete ${meta.name}?`);
+    if (confirmed) {
+      await deleteMeta(meta);
       navigate('/');
     }
   };
 
-  const onSubmit = handleSubmit(async ({ name }) => {
-    await createMeta({ ...meta, name });
+  const onUpdate = handleSubmit(async ({ name }) => {
+    await updateMeta({ ...meta, name });
     onToggle();
   });
 
   return (
-    <form className="flex flex-1 flex-col" onSubmit={onSubmit}>
+    <form className="flex flex-1 flex-col" onSubmit={onUpdate}>
       <h2 className="text-lg font-bold">World Settings</h2>
       <FormField className="my-1 flex flex-col pr-3">
         <FormField.Label className="text-sm text-neutral-600" htmlFor="name">

@@ -17,7 +17,7 @@ const EditorNavbar: React.FC<Props> = ({ draft, editor }) => {
   const { notes, createNote, deleteNote } = useWorldStore(
     (state) => ({
       notes: state.notes,
-      createNote: state.createNote,
+      createNote: state.setNote,
       deleteNote: state.deleteNote,
     }),
     shallow,

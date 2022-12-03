@@ -2,14 +2,14 @@ import create from 'zustand';
 import createStore from 'zustand/vanilla';
 import { immer } from 'zustand/middleware/immer';
 import { Theme } from './types';
-import { Zaction } from '@/utils/types';
+import { Action } from '@/utils/types';
 
 interface State {
   theme: Theme;
 }
 
 interface UserStore extends State {
-  toggleTheme: Zaction<Theme | undefined>;
+  toggleTheme: Action<Theme | undefined>;
 }
 
 /**
