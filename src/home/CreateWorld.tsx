@@ -7,7 +7,7 @@ import Button from '@/components/Button';
 import { Icons } from '@/components/Icons';
 
 const CreateWorld: React.FC = () => {
-  const updateMeta = useMetaStore((state) => state.updateMeta);
+  const setMeta = useMetaStore((state) => state.setMeta);
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -15,8 +15,9 @@ const CreateWorld: React.FC = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // create world meta and then navigate to world
     const id = nanoid();
-    await updateMeta({ name, id });
+    await setMeta({ name, id });
     navigate(id);
   };
 

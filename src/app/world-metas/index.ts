@@ -2,8 +2,7 @@ import create from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { Action, Writeable } from '@/utils/types';
 import { WorldMeta, WorldMetasObject } from './types';
-import { closeMetaDB, getMetaDB, openMetaDB } from './db';
-import { deleteWorldDB, openWorldDB } from '../world-curr/db';
+import { closeMetaConnection, createMetaDB, getMetaConnection } from '../db';
 
 interface State {
   metas: WorldMetasObject;
@@ -15,11 +14,9 @@ interface WorldMetaStore extends State {
   /** removes current state from store */
   resetStore: Action<never, Promise<void>>;
   /** sets meta object to payload */
-  updateMeta: Action<WorldMeta, Promise<void>>;
-  /** deletes meta object as well as deleting assorted world database */
+  setMeta: Action<WorldMeta, Promise<void>>;
+  /** deletes meta object */
   deleteMeta: Action<WorldMeta, Promise<void>>;
-  /** create meta object as well as creating assorted world database */
-  createMeta: Action<WorldMeta, Promise<void>>;
 }
 
 /**
@@ -32,7 +29,7 @@ export const useMetaStore = create(
   immer<WorldMetaStore>((set) => ({
     metas: {},
     hydrateStore: async () => {
-      const metas = await (await openMetaDB()).getAll('metas');
+      const metas = await (await createMetaDB()).getAll('metas');
       set({
         metas: metas.reduce(
           (obj: Writeable<WorldMetasObject>, meta: WorldMeta) => {
@@ -44,28 +41,19 @@ export const useMetaStore = create(
       });
     },
     resetStore: async () => {
-      await closeMetaDB();
+      await closeMetaConnection();
       set({ metas: {} });
     },
-    updateMeta: async (payload) => {
-      const db = await getMetaDB();
+    setMeta: async (payload) => {
+      const db = await getMetaConnection();
       await db.put('metas', payload);
       set((state) => {
         state.metas[payload.id] = payload;
       });
     },
-    createMeta: async (payload) => {
-      const db = await getMetaDB();
-      await db.add('metas', payload);
-      await openWorldDB(payload.id);
-      set((state) => {
-        state.metas[payload.id] = payload;
-      });
-    },
     deleteMeta: async (payload) => {
-      const db = await getMetaDB();
+      const db = await getMetaConnection();
       await db.delete('metas', payload.id);
-      await deleteWorldDB(payload.id);
       set((state) => {
         delete state.metas[payload.id];
       });

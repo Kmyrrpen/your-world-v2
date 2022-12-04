@@ -6,6 +6,7 @@ import { useMetaStore } from '@/app/world-metas';
 import Button from '@/components/Button';
 import FormField from '@/components/FormField';
 import shallow from 'zustand/shallow';
+import { deleteWorldDB } from '@/app/db';
 
 export type EditWorldFormVals = {
   name: string;
@@ -20,7 +21,7 @@ const EditWorldForm: React.FC<Props> = ({ meta, onToggle }) => {
   const navigate = useNavigate();
   const { updateMeta, deleteMeta } = useMetaStore(
     (state) => ({
-      updateMeta: state.updateMeta,
+      updateMeta: state.setMeta,
       deleteMeta: state.deleteMeta,
     }),
     shallow,
@@ -36,6 +37,11 @@ const EditWorldForm: React.FC<Props> = ({ meta, onToggle }) => {
   const onDelete = async () => {
     const confirmed = confirm(`Are you sure you want to delete ${meta.name}?`);
     if (confirmed) {
+      deleteWorldDB(meta.id, () => {
+        console.log(
+          'please close all other tabs that have this world open first.',
+        );
+      });
       await deleteMeta(meta);
       navigate('/');
     }

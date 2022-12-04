@@ -33,7 +33,12 @@ const World: React.FC = () => {
     };
   }, []);
 
-  if (loading === 'error') return <div>error: world does not exist!</div>;
+  // we check if world id still exists on metas in
+  // the case of world database deletion, since children
+  // will assume that the world store and worldDB connection exists.
+  if (loading === 'error' || !metas[worldId])
+    return <div>error: world does not exist!</div>;
+
   if (loading === 'loading') return <div>Loading...</div>;
 
   return <Outlet />;

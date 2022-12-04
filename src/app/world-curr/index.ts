@@ -2,8 +2,8 @@ import create from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { Action, Writeable } from '@/utils/types';
 import { Note, NotesObject, Tag, TagsObject } from './types';
-import { closeWorldDB, getWorldDB, openWorldDB } from './db';
 import { stateObjectToArray } from '@/utils';
+import { closeWorldConnection, createWorldDB, getWorldConnection } from '../db';
 
 interface State {
   notes: { [key: string]: Note };
@@ -32,9 +32,10 @@ export const useWorldStore = create(
     tags: {},
     id: '',
     hydrateStore: async (payload) => {
-      const tr = (await openWorldDB(payload)).transaction(['tags', 'notes']);
+      const tr = (await createWorldDB(payload)).transaction(['tags', 'notes']);
       const notes: Writeable<NotesObject> = {};
       let noteCursor = await tr.objectStore('notes').openCursor();
+
       while (noteCursor) {
         const note = noteCursor.value;
         notes[note.id] = note;
@@ -52,29 +53,29 @@ export const useWorldStore = create(
       set({ notes, tags, id: payload });
     },
     resetStore: async () => {
-      await closeWorldDB();
       set({
         id: '',
         notes: {},
         tags: {},
       });
+      await closeWorldConnection();
     },
     setNote: async (payload) => {
-      const db = await getWorldDB();
+      const db = await getWorldConnection();
       await db.put('notes', payload);
       set((state) => {
         state.notes[payload.id] = payload;
       });
     },
     deleteNote: async (payload) => {
-      const db = await getWorldDB();
+      const db = await getWorldConnection();
       await db.delete('notes', payload.id);
       set((state) => {
         delete state.notes[payload.id];
       });
     },
     setTag: async (payload) => {
-      const db = await getWorldDB();
+      const db = await getWorldConnection();
       await db.put('tags', payload);
       set((state) => {
         state.tags[payload.id] = payload;
@@ -82,7 +83,7 @@ export const useWorldStore = create(
     },
     deleteTag: async (payload) => {
       const { notes } = get();
-      const db = await getWorldDB();
+      const db = await getWorldConnection();
       const tr = await db.transaction(['notes', 'tags'], 'readwrite');
 
       // find all notes that have the tag and update them on the db.
