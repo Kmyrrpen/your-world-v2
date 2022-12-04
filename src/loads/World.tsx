@@ -9,7 +9,6 @@ import { useMetaStore } from '@/app/world-metas';
 const World: React.FC = () => {
   const worldId = useParams<{ worldId: string }>().worldId as string;
   const metas = useMetaStore((state) => state.metas);
-  const [loading, setLoading] = useState<LoadState>('loading');
   const { hydrate, reset } = useWorldStore(
     (state) => ({
       hydrate: state.hydrateStore,
@@ -17,12 +16,12 @@ const World: React.FC = () => {
     }),
     shallow,
   );
+  const [loading, setLoading] = useState<LoadState>(
+    metas[worldId] ? 'loading' : 'error',
+  );
 
   useEffect(() => {
-    // check if world exists
-    if (!metas[worldId]) {
-      setLoading('error');
-    } else {
+    if (metas[worldId]) {
       // tell world store to hydrate a specific world
       hydrate(worldId)
         .then(() => setLoading('loaded'))
