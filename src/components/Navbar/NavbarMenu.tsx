@@ -23,7 +23,7 @@ const NavbarMenu: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <div>
       <IconButton
-        innerRef={buttonRef}
+        ref={buttonRef}
         onClick={() => setShow((prev) => !prev)}
         className="lg:hidden"
       >

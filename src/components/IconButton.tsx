@@ -1,38 +1,25 @@
-import { createDefaultRenderWithRef } from '@/utils';
-import { PropsWithChildren } from 'react';
+import { polyRef } from '@/utils';
+import { ElementType } from 'react';
 import { twMerge } from 'tailwind-merge';
-import {
-  ComponentPropsWithInnerRef,
-  Overwrite,
-  PropsWithRender,
-  RenderProp,
-} from '@/utils/types';
 
-type InjectedProps = PropsWithChildren<{ className: string }>;
-type SharedDefaultProps = ComponentPropsWithInnerRef<'button'>;
-type PermanentProps = PropsWithRender<InjectedProps>;
-
-const defaultIcon =
-  createDefaultRenderWithRef<Overwrite<SharedDefaultProps, InjectedProps>>(
-    'button',
-  );
-
-const IconButton = <T extends RenderProp<InjectedProps> | undefined>({
-  render = defaultIcon,
-  className,
-  ...props
-}: T extends undefined
-  ? Overwrite<SharedDefaultProps, PermanentProps & { render?: T }>
-  : PermanentProps) => {
-  const classTw = twMerge(
-    'inline-flex justify-center items-center text-sm text-black hover:text-neutral-500 dark:text-white gap-2',
-    className,
-  );
-
-  return render({
-    className: classTw,
-    ...props,
-  });
+type Props = {
+  className?: string;
 };
+
+const IconButton = polyRef<'button', Props>(
+  ({ as, className, ...props }, ref) => {
+    const Element: ElementType = as || 'button';
+    return (
+      <Element
+        ref={ref}
+        className={twMerge(
+          'inline-flex items-center justify-center gap-2 text-sm text-black hover:text-neutral-500 dark:text-white',
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
 
 export default IconButton;

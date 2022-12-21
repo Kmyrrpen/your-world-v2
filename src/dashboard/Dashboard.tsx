@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
         <Header.Title>{meta.name}</Header.Title>
         <div className="flex flex-wrap gap-3">
           <EditWorld />
-          <Button render={(props) => <Link to={'./new'} {...props} />}>
+          <Button as={Link} to={'/new'}>
             create note
             <Icons.ArrowRight />
           </Button>

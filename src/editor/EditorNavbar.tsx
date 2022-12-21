@@ -39,17 +39,13 @@ const EditorNavbar: React.FC<Props> = ({ draft, editor }) => {
       <Navbar.Menu>
         {notes[draft.id] ? (
           <Navbar.MenuItem>
-            <Navbar.Link
-              render={(props) => <button {...props} onClick={onDelete} />}
-            >
+            <Navbar.Link as={'button'} onClick={onDelete}>
               delete
             </Navbar.Link>
           </Navbar.MenuItem>
         ) : null}
         <Navbar.MenuItem>
-          <Navbar.Link
-            render={(props) => <button {...props} onClick={onSave} />}
-          >
+          <Navbar.Link as={'button'} onClick={onSave}>
             save
           </Navbar.Link>
         </Navbar.MenuItem>

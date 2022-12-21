@@ -1,39 +1,23 @@
-import { PropsWithChildren } from 'react';
+import { polyRef } from '@/utils';
+import { ElementType } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { createDefaultRenderWithRef } from '@/utils';
-import {
-  ComponentPropsWithInnerRef,
-  PropsWithRender,
-  Overwrite,
-  RenderProp,
-} from '@/utils/types';
 
-type InjectedProps = PropsWithChildren<{
-  className: string;
-}>;
-
-type SharedDefaultProps = ComponentPropsWithInnerRef<'button'>;
-type PermanentProps = PropsWithRender<InjectedProps, {}>;
-
-const defaultButton =
-  createDefaultRenderWithRef<Overwrite<SharedDefaultProps, InjectedProps>>(
-    'button',
-  );
-
-const Button = <T extends RenderProp<InjectedProps> | undefined>({
-  render = defaultButton,
-  className,
-  ...props
-}: T extends undefined
-  ? Overwrite<SharedDefaultProps, PermanentProps & { render?: T }>
-  : PermanentProps) => {
-  return render({
-    className: twMerge(
-      'flex items-center border-b border-dashed gap-3 font-bold p-0.5 px-1 hover:text-neutral-500',
-      className,
-    ),
-    ...props,
-  });
+type Props = {
+  className?: string;
 };
+
+const Button = polyRef<'button', Props>(({ as, className, ...props }, ref) => {
+  const Elem: ElementType = as || 'button';
+  return (
+    <Elem
+      className={twMerge(
+        'flex items-center gap-3 border-b border-dashed p-0.5 px-1 font-bold hover:text-neutral-500',
+        className,
+      )}
+      ref={ref}
+      {...props}
+    />
+  );
+});
 
 export default Button;

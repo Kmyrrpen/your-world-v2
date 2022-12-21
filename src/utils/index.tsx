@@ -1,6 +1,10 @@
+import React from 'react';
+import { PolyRefFunction } from 'react-polymorphed';
 import { NotesObject, TagsObject } from '@/app/world-curr/types';
 import { WorldMetasObject } from '@/app/world-metas/types';
 import { ConvertStateObjToItem, RenderProp } from './types';
+
+export const polyRef = React.forwardRef as PolyRefFunction;
 
 /**
  * Creates a render function given a react element type, types are very loose
