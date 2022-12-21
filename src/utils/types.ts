@@ -1,6 +1,5 @@
 import { Note, NotesObject, Tag, TagsObject } from '@/app/world-curr/types';
 import { WorldMeta, WorldMetasObject } from '@/app/world-metas/types';
-import { ComponentPropsWithRef } from 'react';
 
 export type Action<P = never, R = void> = [P] extends [never]
   ? () => R
@@ -22,21 +21,6 @@ export type ConvertStateObjToItem<T> = T extends NotesObject
   : T extends WorldMetasObject
   ? WorldMeta
   : never;
-
-/**
- * just like `ComponentPropsWithRef<T>` but with `ref` key changed to `innerRef`. This is used to bypass
- * react stripping ref away from the component.
- */
-export type ComponentPropsWithInnerRef<T extends React.ElementType> = {
-  [K in keyof ComponentPropsWithRef<T> as K extends 'ref'
-    ? 'innerRef'
-    : K]: ComponentPropsWithRef<T>[K];
-};
-
-export type WithComponentProps<
-  T extends React.ElementType,
-  P extends Record<string, unknown> = {},
-> = Overwrite<ComponentPropsWithInnerRef<T>, P>;
 
 export type RenderProp<T extends Record<string, unknown>> = (
   props: T,

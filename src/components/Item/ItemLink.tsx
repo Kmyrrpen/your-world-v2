@@ -1,12 +1,11 @@
-import { forwardRef } from 'react';
+import { ComponentPropsWithoutRef, forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
-import { WithComponentProps } from '@/utils/types';
 import IconButton from '../IconButton';
 import { Icons } from '../Icons';
 
-type Props = Omit<WithComponentProps<typeof Link>, 'children'>;
+type Props = Omit<ComponentPropsWithoutRef<typeof Link>, 'children'>;
 
 const ItemLink = forwardRef<HTMLAnchorElement, Props>(
   ({ className, ...props }, ref) => {

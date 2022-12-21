@@ -2,32 +2,9 @@ import React from 'react';
 import { PolyRefFunction } from 'react-polymorphed';
 import { NotesObject, TagsObject } from '@/app/world-curr/types';
 import { WorldMetasObject } from '@/app/world-metas/types';
-import { ConvertStateObjToItem, RenderProp } from './types';
+import { ConvertStateObjToItem } from './types';
 
 export const polyRef = React.forwardRef as PolyRefFunction;
-
-/**
- * Creates a render function given a react element type, types are very loose
- * on this function so make sure to give it the proper `P` for the `Component` passed
- * because typescript won't complain if they don't match.
- */
-export const createDefaultRender = <P extends Record<string, unknown>>(
-  Component: React.ElementType,
-): RenderProp<P> => {
-  return (props: P) => <Component {...props} />;
-};
-
-/**
- * The same as `createDefaultRender()` except that it assigns the component's `ref` with
- * the prop's `innerRef`.
- */
-export const createDefaultRenderWithRef = <
-  P extends Record<string, unknown> & { innerRef?: unknown },
->(
-  Component: React.ElementType,
-): RenderProp<P> => {
-  return ({ innerRef, ...props }) => <Component ref={innerRef} {...props} />;
-};
 
 /**
  * Given a state object (`Notes`, `WorldMeta`, `Tags`), create an array from it.

@@ -1,16 +1,15 @@
-import { WithComponentProps } from '@/utils/types';
+import { ComponentPropsWithoutRef, forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-const ItemDescription: React.FC<WithComponentProps<'p'>> = ({
-  innerRef,
-  className,
-  ...props
-}) => (
+const ItemDescription = forwardRef<
+  HTMLParagraphElement,
+  ComponentPropsWithoutRef<'p'>
+>(({ className, ...props }, ref) => (
   <p
-    ref={innerRef}
+    ref={ref}
     className={twMerge('my-2 block line-clamp-3', className)}
     {...props}
   />
-);
+));
 
 export default ItemDescription;
