@@ -2,12 +2,14 @@ import { Route, Routes } from 'react-router-dom';
 import useEnableTheme from './hooks/useEnableTheme';
 
 import Home from './home/Home';
-import Dashboard from './dashboard/Dashboard';
 import Editor from './editor/Editor';
-import Tagpage from './tags/TagPage';
-import Tagview from './tags/TagsPage';
-import World from './loads/World';
-import Metas from './loads/Metas';
+import World from './loading/World';
+import Metas from './loading/Metas';
+
+import Dashboard from './_update/dashboard/Dashboard';
+import Notes from './_update/dashboard/Notes';
+import Tags from './_update/dashboard/Tags';
+import Tag from './_update/dashboard/Tags/Tag';
 
 function App() {
   useEnableTheme();
@@ -18,11 +20,12 @@ function App() {
         <Route path="/" element={<Metas />}>
           <Route index element={<Home />} />
           <Route path="/:worldId" element={<World />}>
-            <Route index element={<Dashboard />} />
+            <Route path="" element={<Dashboard />}>
+              <Route index element={<Notes />} />
+              <Route path="tags" element={<Tags />} />
+              <Route path="tags/:id" element={<Tag />} />
+            </Route>
             <Route path=":id" element={<Editor />} />
-            <Route path="tags" element={<Tagview />} />
-            <Route path="tags/:id" element={<Tagpage />} />
-            <Route />
           </Route>
         </Route>
       </Routes>

@@ -1,7 +1,7 @@
 import { PropsWithChildren, useCallback, useRef, useState } from 'react';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
 import IconButton from '../IconButton';
-import { Icons } from '../Icons';
+import Icons from '../Icons';
 
 const NavbarMenu: React.FC<PropsWithChildren> = ({ children }) => {
   const [show, setShow] = useState(false);

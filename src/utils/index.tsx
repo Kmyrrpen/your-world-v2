@@ -4,6 +4,7 @@ import { NotesObject, TagsObject } from '@/app/world-curr/types';
 import { WorldMetasObject } from '@/app/world-metas/types';
 import { ConvertStateObjToItem } from './types';
 
+/** forwardRef but for polymorphic components */
 export const polyRef = React.forwardRef as PolyRefFunction;
 
 /**

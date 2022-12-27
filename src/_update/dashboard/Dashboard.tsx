@@ -1,40 +1,40 @@
+import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-
-import { useWorldStore } from '@/app/world-curr';
 import { useCurrentMeta } from '@/app/world-metas/hooks';
-import { stateObjectToArray } from '@/utils';
 
-import Icons from '@/components/Icons';
 import Container from '@/components/Container';
 import Header from '@/components/Header';
 import Button from '@/components/Button';
+import Icons from '@/components/Icons';
 import DashboardNavbar from './DashboardNavbar';
-import Notes from './Notes';
+import WorldSettings from './WorldSettings';
 
-const Dashboard: React.FC = () => {
-  const notes = useWorldStore((state) => stateObjectToArray(state.notes));
+const Dashboard = () => {
   const meta = useCurrentMeta();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
     <Container>
-      {/* For modals only */}
-      <Outlet />
+      <DashboardNavbar currentMeta={meta} />
+      {isSettingsOpen ? (
+        <WorldSettings onClose={() => setIsSettingsOpen(false)} />
+      ) : null}
 
-      <DashboardNavbar />
       <Header>
         <Header.Title>{meta.name}</Header.Title>
         <div className="flex flex-wrap gap-3">
-          <Button as={Link} to={'settings'}>
-            edit world
+          <Button onClick={() => setIsSettingsOpen(true)}>
+            <span>Edit World</span>
             <Icons.Settings />
           </Button>
           <Button as={Link} to={'new'}>
-            create note
+            <span>Create Note</span>
             <Icons.ArrowRight />
           </Button>
         </div>
       </Header>
-      <Notes notes={notes} />
+
+      <Outlet />
     </Container>
   );
 };

@@ -22,10 +22,12 @@ const ArrowRight = createIcon(ArrowRightIcon);
 const Settings = createIcon(SettingsIcon);
 const Menu = createIcon(MenuIcon);
 
-export const Icons = {
+const Icons = {
   Click,
   ArrowRight,
   ArrowLeft,
   Settings,
   Menu,
 };
+
+export default Icons;

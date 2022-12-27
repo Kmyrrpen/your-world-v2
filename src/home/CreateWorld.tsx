@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 
 import { useMetaStore } from '@/app/world-metas';
 import Button from '@/components/Button';
-import { Icons } from '@/components/Icons';
+import Icons from '@/components/Icons';
 
 const CreateWorld: React.FC = () => {
   const setMeta = useMetaStore((state) => state.setMeta);

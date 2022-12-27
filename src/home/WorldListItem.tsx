@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { WorldMeta } from '@/app/world-metas/types';
 import { ReactComponent as WorldIcon } from '@/assets/world.svg';
 
-import { Icons } from '@/components/Icons';
+import Icons from '@/components/Icons';
 import IconButton from '@/components/IconButton';
 
 type Props = {

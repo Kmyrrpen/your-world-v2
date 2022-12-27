@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import IconButton from '../IconButton';
-import { Icons } from '../Icons';
+import Icons from '../Icons';
 
 const NavbarBack: React.FC = () => (
   <Link to={'../'} className="flex gap-2 p-2 pl-0" relative="path">

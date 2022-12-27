@@ -37,7 +37,7 @@ const World: React.FC = () => {
   // will assume that the world store and worldDB connection exists.
   if (loading === 'error' || !metas[worldId])
     return <div>error: world does not exist!</div>;
-
+    
   if (loading === 'loading') return <div>Loading...</div>;
 
   return <Outlet />;

@@ -1,12 +1,11 @@
-import { Note } from '@/app/world-curr/types';
+import { useWorldStore } from '@/app/world-curr';
 import ItemGrid from '@/components/ItemGrid';
+import { stateObjectToArray } from '@/utils';
 import NoteItem from './NoteItem';
 
-type Props = {
-  notes: Note[];
-};
+const Notes: React.FC = () => {
+  const notes = useWorldStore((state) => stateObjectToArray(state.notes));
 
-const Notes: React.FC<Props> = ({ notes }) => {
   return (
     <ItemGrid as="ul">
       {notes.map((note) => (

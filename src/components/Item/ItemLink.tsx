@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
 import IconButton from '../IconButton';
-import { Icons } from '../Icons';
+import Icons from '../Icons';
 
 type Props = Omit<ComponentPropsWithoutRef<typeof Link>, 'children'>;
 
