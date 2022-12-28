@@ -34,8 +34,6 @@ const Tag = () => {
   if (!tag) return <div>error: tag does not exist</div>;
 
   return (
-    <Container>
-      <DashboardNavbar isBack />
       <Header>
         <Header.Title># {tag.name}</Header.Title>
         <Link to={'settings'}>
@@ -45,7 +43,6 @@ const Tag = () => {
       </Header>
       <p>{tag.description}</p>
       <Notes notes={filteredNotes} />
-    </Container>
   );
 };
 

@@ -39,13 +39,21 @@ const WorldSettings: React.FC = () => {
       `Are you sure you want to delete ${currentMeta.name}?`,
     );
     if (confirmed) {
-      deleteWorldDB(currentMeta.id, () => {
+      let notBlocked = true;
+      // attempt delete world DB 
+      await deleteWorldDB(currentMeta.id, (version, event) => {
+        notBlocked = false;
+        console.log(event)
         console.log(
           'please close all other tabs that have this world open first.',
         );
       });
-      await deleteMeta(currentMeta);
-      navigate('/');
+
+      // delete Meta and go back to home
+      if (notBlocked) {
+        await deleteMeta(currentMeta);
+        navigate('/');
+      }
     }
   };
 
@@ -61,10 +69,7 @@ const WorldSettings: React.FC = () => {
         <form className="flex flex-1 flex-col" onSubmit={onUpdate}>
           <h2 className="text-lg font-bold">World Settings</h2>
           <FormField className="my-1 flex flex-col pr-3">
-            <FormField.Label
-              className="text-sm text-neutral-600"
-              htmlFor="name"
-            >
+            <FormField.Label className="text-sm text-gray-600" htmlFor="name">
               world name
             </FormField.Label>
             <FormField.Input

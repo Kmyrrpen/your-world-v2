@@ -8,7 +8,7 @@ const FormFieldInput = forwardRef<
   <input
     ref={ref}
     className={twMerge(
-      'border-b border-b-neutral-300 pb-1 outline-none',
+      'border-b border-b-gray-300 pb-1 outline-none',
       className,
     )}
     {...props}

@@ -54,7 +54,7 @@ const NoteItem: React.FC<Props> = ({ note }) => {
           ))}
         </ul>
         {hiddenTagCount ? (
-          <span className="text-sm font-bold text-neutral-400">
+          <span className="text-sm font-bold text-gray-400">
             {hiddenTagCount}+ more tags
           </span>
         ) : null}

@@ -1,7 +1,7 @@
 import { deleteDB, IDBPDatabase, openDB } from 'idb';
 import { WorldSchema } from './types';
 
-let connection: IDBPDatabase<WorldSchema> | null = null;
+export let connection: IDBPDatabase<WorldSchema> | null = null;
 
 /**
  * creates/opens worldDB given an id, then sets current connection
@@ -13,6 +13,13 @@ export const createWorldDB = async (id: string) => {
       db.createObjectStore('notes', { keyPath: 'id' });
       db.createObjectStore('tags', { keyPath: 'id' });
     },
+    blocking: async (curr, blocked) => {
+      // // close DB connection in response to deletion
+      // if (blocked === null) {
+      //   console.log('DB connection forced to close');
+      //   worldDB.close();
+      // }
+    },
   });
   connection = worldDB;
   return connection;
@@ -23,14 +30,18 @@ export const createWorldDB = async (id: string) => {
  * an id is an existing worldDB or if it is even a worldDB. this was written
  * purely for uniformity.
  */
-export const deleteWorldDB = async (id: string, onBlocked: () => void) => {
-  return deleteDB(id, { blocked: onBlocked });
+
+export const deleteWorldDB = async (
+  id: string,
+  onBlocked: (currentVersion: number, event: IDBVersionChangeEvent) => void,
+): Promise<void> => {
+  await deleteDB(id, { blocked: onBlocked });
 };
 
 /**
  * Gets the **current** worldDB connection, throws if none exists.
  */
-export const getWorldConnection = async () => {
+export const getWorldConnection = () => {
   if (!connection)
     throw new Error(
       'getWorldDB called without DB connection being established',
@@ -41,7 +52,7 @@ export const getWorldConnection = async () => {
 /**
  * Closes **current** worldDB connection, throws if none exists.
  */
-export const closeWorldConnection = async () => {
+export const closeWorldConnection = () => {
   if (!connection) {
     throw new Error('WORLD: closeWorld called without db connection');
   }

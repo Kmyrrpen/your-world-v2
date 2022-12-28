@@ -1,3 +1,5 @@
+import { DBSchema } from 'idb';
+
 export type Note = Readonly<{
   name: string;
   description: string;
@@ -18,3 +20,14 @@ export type Tag = Readonly<{
 
 export type TagsObject = { readonly [key: string]: Tag };
 export type NotesObject = { readonly [key: string]: Note };
+
+export interface WorldSchema extends DBSchema {
+  tags: {
+    key: string;
+    value: Tag;
+  };
+  notes: {
+    key: string;
+    value: Note;
+  };
+}

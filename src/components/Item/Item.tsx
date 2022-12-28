@@ -8,7 +8,7 @@ const Item = forwardRef<
   <li
     ref={ref}
     className={twMerge(
-      'flex flex-col gap-1 border border-neutral-400 p-2 sm:p-3',
+      'flex flex-col gap-1 border border-gray-400 p-2 sm:p-3',
       className,
     )}
     {...props}

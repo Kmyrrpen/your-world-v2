@@ -33,7 +33,7 @@ const NavbarMenu: React.FC<PropsWithChildren> = ({ children }) => {
         ref={menuRef}
         className={`
           ${!show ? 'hidden' : ''}
-          absolute top-full left-0 w-full border border-neutral-300 bg-white lg:static lg:flex lg:border-none
+          absolute top-full left-0 w-full border border-gray-300 bg-white lg:static lg:flex lg:border-none
         `}
       >
         {children}

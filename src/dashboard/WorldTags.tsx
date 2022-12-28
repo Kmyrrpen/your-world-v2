@@ -25,7 +25,7 @@ const WorldTags: React.FC = () => {
         <ul>
           {tags.map((tag) => (
             <li
-              className="flex justify-between border-b border-b-neutral-200 py-2 last:border-b-0"
+              className="flex justify-between border-b border-b-gray-200 py-2 last:border-b-0"
               key={tag.id}
             >
               <Link to={tag.id} className="flex-1">

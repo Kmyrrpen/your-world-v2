@@ -11,7 +11,7 @@ const Button = polyRef<'button', Props>(({ as, className, ...props }, ref) => {
   return (
     <Elem
       className={twMerge(
-        'flex items-center gap-3 border-b border-dashed p-0.5 px-1 font-bold hover:text-neutral-500',
+        'flex items-center gap-3 rounded-sm py-1.5 px-3 bg-primary-300 font-bold hover:text-gray-500',
         className,
       )}
       ref={ref}

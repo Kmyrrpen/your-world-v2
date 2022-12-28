@@ -30,10 +30,13 @@ module.exports = {
       transparent: 'transparent',
       white: colors.white,
       black: colors.black,
-      form: {
+      gray: colors.neutral,
+      primary: {
+        300: "#72efdd"
+      },
+      highlight: {
         error: '#d00000',
       },
-      neutral: colors.neutral,
     },
     extend: {
       maxWidth: {

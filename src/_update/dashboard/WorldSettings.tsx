@@ -3,12 +3,13 @@ import { useForm } from 'react-hook-form';
 
 import { useMetaStore } from '@/app/world-metas';
 import { useCurrentMeta } from '@/app/world-metas/hooks';
-import { deleteWorldDB } from '@/app/db';
+import { closeWorldConnection, connection, deleteWorldDB } from '@/app/db';
 
 import Button from '@/components/Button';
 import FormField from '@/components/FormField';
 import shallow from 'zustand/shallow';
 import Modal from '@/components/Modal';
+import { useWorldStore } from '@/app/world-curr';
 
 type Props = {
   onClose: () => void;
@@ -46,10 +47,9 @@ const WorldSettings: React.FC<Props> = ({ onClose }) => {
       `Are you sure you want to delete ${currentMeta.name}?`,
     );
     if (confirmed) {
-      deleteWorldDB(currentMeta.id, () => {
-        alert('please close all other tabs that have this world open first.');
+      await deleteWorldDB(currentMeta.id, () => {
+        alert('close all other tabs that accesses this world before deleting.');
       });
-
       await deleteMeta(currentMeta);
       navigate('/');
     }
@@ -62,10 +62,7 @@ const WorldSettings: React.FC<Props> = ({ onClose }) => {
         <form className="flex flex-1 flex-col" onSubmit={onUpdate}>
           <h2 className="text-lg font-bold">World Settings</h2>
           <FormField className="my-1 flex flex-col pr-3">
-            <FormField.Label
-              className="text-sm text-neutral-600"
-              htmlFor="name"
-            >
+            <FormField.Label className="text-sm text-gray-600" htmlFor="name">
               world name
             </FormField.Label>
             <FormField.Input
@@ -76,9 +73,7 @@ const WorldSettings: React.FC<Props> = ({ onClose }) => {
           </FormField>
 
           <div className="mt-auto flex items-center justify-end gap-5">
-            <Button type="button" onClick={onDelete}>
-              delete
-            </Button>
+            <div onClick={onDelete}>delete</div>
             <Button type="submit">save</Button>
           </div>
         </form>

@@ -10,7 +10,7 @@ const ModalBackground = forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     className={twMerge(
-      'absolute top-0 left-0 z-10 h-full w-full bg-neutral-800 opacity-40',
+      'absolute top-0 left-0 z-10 h-full w-full bg-gray-800 opacity-40',
       className,
     )}
     ref={ref}

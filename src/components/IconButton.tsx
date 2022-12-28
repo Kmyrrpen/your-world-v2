@@ -13,7 +13,7 @@ const IconButton = polyRef<'button', Props>(
       <Element
         ref={ref}
         className={twMerge(
-          'inline-flex items-center justify-center gap-2 text-sm text-black hover:text-neutral-500 dark:text-white',
+          'inline-flex items-center justify-center gap-2 text-sm text-black hover:text-gray-500 dark:text-white',
           className,
         )}
         {...props}
