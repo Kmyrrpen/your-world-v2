@@ -2,10 +2,10 @@ import { polyRef } from "@/utils";
 import { PolyProps } from "@/utils/types";
 import { twMerge } from "tailwind-merge";
 
-const Container = polyRef<"li", PolyProps>(
-  ({ as: As = "div", className, ...props }, ref) => {
+const Button = polyRef<"button", PolyProps>(
+  ({ as: As = "button", className, ...props }, ref) => {
     return <As className={twMerge("", className)} ref={ref} {...props} />;
   },
 );
 
-export default Container;
+export default Button;

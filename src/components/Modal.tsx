@@ -1,12 +1,19 @@
+import { Overwrite } from "@/utils/types";
 import { PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
 
-type Props = PropsWithChildren<{
-  onClose: () => void;
-}>;
+export type ModalProps<P = {}> = Overwrite<
+  {
+    onClose: () => void;
+  },
+  P
+>;
 
 const modalRoot = document.querySelector("#modal-portal") as HTMLElement;
-const Modal: React.FC<Props> = ({ onClose, children }) => {
+const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
+  onClose,
+  children,
+}) => {
   return createPortal(
     <div>
       {/* stop content from being cut on scroll when content height is longer than the viewport */}

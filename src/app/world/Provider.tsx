@@ -22,25 +22,21 @@ export const WorldProvider: React.FC = () => {
 
   // initialize store
   useEffect(() => {
-    // to ensure being idempotent
-    if (loadState === "idle") {
-      setLoadState("loading");
-      createWorldStore(id)
-        .then((store) => {
-          worldRef.current = store;
-          setLoadState("loaded");
-        })
-        .catch(() => {
-          worldRef.current = null;
-          setLoadState("error");
-        });
-    }
+    setLoadState("loading");
+    createWorldStore(id)
+      .then((store) => {
+        worldRef.current = store;
+        setLoadState("loaded");
+      })
+      .catch(() => {
+        worldRef.current = null;
+        setLoadState("error");
+      });
+
     return () => {
-      if (worldRef.current) {
-        worldRef.current.getState().close();
-      }
+      if (worldRef.current) worldRef.current.getState().close();
     };
-  }, [worldRef, loadState, setLoadState]);
+  }, []);
 
   // world has successfully loaded
   if (loadState === "loaded") {

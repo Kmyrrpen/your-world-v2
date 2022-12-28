@@ -21,25 +21,23 @@ export const MetasProvider: React.FC = () => {
 
   // initialize store
   useEffect(() => {
-    // to ensure being idempotent
-    if (loadState === "idle") {
-      setLoadState("loading");
-      createMetaStore()
-        .then((store) => {
-          metasRef.current = store;
-          setLoadState("loaded");
-        })
-        .catch(() => {
-          metasRef.current = null;
-          setLoadState("error");
-        });
-    }
+    setLoadState("loading");
+    createMetaStore()
+      .then((store) => {
+        metasRef.current = store;
+        setLoadState("loaded");
+      })
+      .catch(() => {
+        metasRef.current = null;
+        setLoadState("error");
+      });
+
     return () => {
       if (metasRef.current) {
         metasRef.current.getState().close();
       }
     };
-  }, [metasRef, loadState, setLoadState]);
+  }, []);
 
   // world has successfully loaded
   if (loadState === "loaded") {
