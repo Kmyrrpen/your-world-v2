@@ -1,23 +1,11 @@
-import { polyRef } from '@/utils';
-import { ElementType } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { polyRef } from "@/utils";
+import { PolyProps } from "@/utils/types";
+import { twMerge } from "tailwind-merge";
 
-type Props = {
-  className?: string;
-};
+const Container = polyRef<"li", PolyProps>(
+  ({ as: As = "div", className, ...props }, ref) => {
+    return <As className={twMerge("", className)} ref={ref} {...props} />;
+  },
+);
 
-const Button = polyRef<'button', Props>(({ as, className, ...props }, ref) => {
-  const Elem: ElementType = as || 'button';
-  return (
-    <Elem
-      className={twMerge(
-        'flex items-center gap-3 rounded-sm py-1.5 px-3 bg-primary-300 font-bold hover:text-gray-500',
-        className,
-      )}
-      ref={ref}
-      {...props}
-    />
-  );
-});
-
-export default Button;
+export default Container;

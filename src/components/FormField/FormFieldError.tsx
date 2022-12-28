@@ -1,15 +1,15 @@
-import { ComponentPropsWithoutRef, forwardRef } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { ComponentPropsWithoutRef, forwardRef } from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   message?: string;
-} & ComponentPropsWithoutRef<'span'>;
+} & ComponentPropsWithoutRef<"span">;
 
 const FormFieldError = forwardRef<HTMLSpanElement, Props>(
   ({ className, message, ...props }, ref) => {
     return (
       <span
-        className={twMerge('text-sm text-highlight-error', className)}
+        className={twMerge("text-sm text-highlight-error", className)}
         ref={ref}
         {...props}
       >

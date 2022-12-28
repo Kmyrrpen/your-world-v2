@@ -1,13 +1,10 @@
-import { polyRef } from '@/utils';
-import { twMerge } from 'tailwind-merge';
+import { polyRef } from "@/utils";
+import { PolyProps } from "@/utils/types";
+import { twMerge } from "tailwind-merge";
 
-const ItemGrid = polyRef<'div', { className?: string }>(
-  ({ as: As = 'div', className, ...props }, ref) => (
-    <As
-      ref={ref}
-      className={twMerge('grid grid-cols-1 gap-4 lg:grid-cols-2', className)}
-      {...props}
-    />
+const ItemGrid = polyRef<"ul", PolyProps>(
+  ({ as: As = "ul", className, ...props }, ref) => (
+    <As className={twMerge("", className)} ref={ref} {...props} />
   ),
 );
 
