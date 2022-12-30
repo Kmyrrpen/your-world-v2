@@ -1,4 +1,5 @@
 import { useWorldStore } from "@/app/world";
+import { DropdownMultipleCombobox } from "@/Editor/TagInput/example";
 import shallow from "zustand/shallow";
 
 const Tags: React.FC = () => {
@@ -9,6 +10,8 @@ const Tags: React.FC = () => {
       {tags.map((tag) => (
         <li key={tag.id}>{tag.name}</li>
       ))}
+      <DropdownMultipleCombobox />
+      <DropdownMultipleCombobox />
     </ul>
   );
 };

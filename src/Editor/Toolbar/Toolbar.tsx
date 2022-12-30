@@ -13,7 +13,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
   if (!editor.isEditable) return null;
 
   return (
-    <div className="dark:bg-dark-100 sticky top-0 z-40 my-2 flex flex-wrap items-center gap-x-4 gap-y-2 bg-white py-2 sm:my-4 md:my-6">
+    <div className="dark:bg-dark-100 sticky top-0 z-10 my-2 flex flex-wrap items-center gap-x-4 gap-y-2 bg-white py-2 sm:my-4 md:my-6">
       <div className="flex flex-wrap items-center gap-2">
         <ToolbarIcon
           isActive={editor.isActive('paragraph')}

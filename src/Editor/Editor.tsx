@@ -7,6 +7,7 @@ import { Note, useWorldStore } from "@/app/world";
 import Container from "@/components/Container";
 import EditorNavbar from "./EditorNavbar";
 import TitleInput from "./TitleInput";
+import TagInput from "./TagInput";
 import Toolbar from "./Toolbar";
 import LinkModal from "./LinkModal";
 
@@ -37,6 +38,7 @@ const _Editor: React.FC<Props> = ({ note }) => {
     <Container>
       <EditorNavbar editor={editor} draft={draft} />
       <TitleInput editor={editor} draft={draft} setter={setDraft} />
+      <TagInput draft={draft} setter={setDraft} />
       <Toolbar editor={editor} />
       <EditorContent
         editor={editor}
