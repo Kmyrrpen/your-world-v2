@@ -13,7 +13,7 @@ export interface MetaStore extends State {
   /** sets meta object to payload */
   setMeta: Action<Meta, Promise<void>>;
   /** deletes meta object */
-  deleteMeta: Action<Meta, Promise<void>>;
+  deleteMeta: Action<string, Promise<void>>;
 }
 
 export const createMetaStore = async () => {
@@ -31,9 +31,9 @@ export const createMetaStore = async () => {
         });
       },
       deleteMeta: async (payload) => {
-        await connection.delete("metas", payload.id);
+        await connection.delete("metas", payload);
         set((state) => {
-          delete state.metas[payload.id];
+          delete state.metas[payload];
         });
       },
     })),

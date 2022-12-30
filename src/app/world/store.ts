@@ -1,9 +1,9 @@
-import { createStore } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
+import { createStore } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
-import { Action } from '@/utils/types';
-import { createWorldDB } from './db';
-import { Note, Tag } from './types';
+import { Action } from "@/utils/types";
+import { createWorldDB } from "./db";
+import { Note, Tag } from "./types";
 
 interface State {
   notes: { [key: string]: Note };
@@ -12,7 +12,7 @@ interface State {
 }
 
 export interface WorldStore extends State {
-  close: Action<never, Promise<void>>;
+  close: Action<never>;
   setTag: Action<Tag, Promise<void>>;
   setNote: Action<Note, Promise<void>>;
   deleteTag: Action<Tag, Promise<void>>;
@@ -26,33 +26,33 @@ export const createWorldStore = async (id: string) => {
       id,
       tags,
       notes,
-      close: async () => {
+      close: () => {
         connection.close();
       },
       setNote: async (payload) => {
-        await connection.put('notes', payload);
+        await connection.put("notes", payload);
         set((state) => {
           state.notes[payload.id] = payload;
         });
       },
       deleteNote: async (payload) => {
-        await connection.delete('notes', payload.id);
+        await connection.delete("notes", payload.id);
         set((state) => {
           delete state.notes[payload.id];
         });
       },
       setTag: async (payload) => {
-        await connection.put('tags', payload);
+        await connection.put("tags", payload);
         set((state) => {
           state.tags[payload.id] = payload;
         });
       },
       deleteTag: async (payload) => {
         const { notes } = get();
-        const tr = connection.transaction(['notes', 'tags'], 'readwrite');
+        const tr = connection.transaction(["notes", "tags"], "readwrite");
 
         // find all notes that have the tag and update them on the db.
-        const notesTr = tr.objectStore('notes');
+        const notesTr = tr.objectStore("notes");
         const promises: Promise<string>[] = [];
         const newNotes: Note[] = Object.values(notes).reduce(
           (arr: Note[], note: Note) => {
@@ -68,7 +68,7 @@ export const createWorldStore = async (id: string) => {
         await Promise.all(promises);
 
         // if all promises above runs, delete the tag from db.
-        const tagsTr = tr.objectStore('tags');
+        const tagsTr = tr.objectStore("tags");
         await tagsTr.delete(payload.id);
 
         // then after all db transactions are finished, update our zustand store.
