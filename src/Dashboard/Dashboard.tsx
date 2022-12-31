@@ -11,6 +11,7 @@ const Dashboard: React.FC = () => {
       <div className="mb-4">
         <NavLink
           end
+          replace
           to=""
           className={({ isActive }) =>
             twMerge("px-4 py-2", isActive ? "border-b-2 border-black" : "")
@@ -20,6 +21,7 @@ const Dashboard: React.FC = () => {
         </NavLink>
         <NavLink
           end
+          replace
           to="tags"
           className={({ isActive }) =>
             twMerge("px-4 py-2", isActive ? "border-b-2 border-black" : "")

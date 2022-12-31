@@ -7,7 +7,6 @@ const Notes: React.FC = () => {
   const notes = useWorldStore((state) => Object.values(state.notes), shallow);
   return (
     <ItemGrid>
-      <div>I am notes</div>
       {notes.map((note) => (
         <NoteItem note={note} key={note.id} />
       ))}

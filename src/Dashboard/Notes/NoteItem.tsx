@@ -19,16 +19,19 @@ const NoteItem: React.FC<Props> = ({ note }) => {
       <div className="flex flex-col">
         <ul ref={containerRef} className="flex overflow-hidden">
           {note.tagIds.map((tagId, i) => (
-            <Link
-              to={`/${id}/tags/${tagId}`}
+            <span
               key={tagId}
+              style={{
+                backgroundColor: tags[tagId].color.background,
+                color: tags[tagId].color.text,
+              }}
               className={twMerge(
                 "mr-1 mb-1 inline py-1 px-2 text-sm font-medium leading-none",
                 note.tagIds.length - toHide <= i ? "hidden" : "",
               )}
             >
               {tags[tagId].name}
-            </Link>
+            </span>
           ))}
         </ul>
         {toHide ? (

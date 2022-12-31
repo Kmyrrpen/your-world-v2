@@ -17,7 +17,7 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
   return createPortal(
     <div>
       {/* stop content from being cut on scroll when content height is longer than the viewport */}
-      <div className="absolute top-0 left-0 z-10 flex h-auto min-h-full w-full items-center justify-center p-4">
+      <div className="fixed top-0 left-0 z-10 flex h-auto min-h-full w-full items-center justify-center p-4">
         {/* modal container */}
         <div className="relative z-20 flex min-h-[10rem] w-full justify-start rounded bg-white p-4 md:max-w-screen-sm lg:max-w-screen-md">
           {children}
