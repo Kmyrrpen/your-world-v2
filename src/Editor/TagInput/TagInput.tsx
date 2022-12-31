@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
-import { Note, Tag, useWorldStore } from "@/app/world";
 import { useCombobox, useMultipleSelection } from "downshift";
 import { nanoid } from "nanoid";
 import { twMerge } from "tailwind-merge";
 
+import { Note, Tag, useWorldStore } from "@/app/world";
+
 // make sure to handle special create option
 const createOption: Tag = {
-  name: "create option",
+  name: "$$create",
   id: "$$create",
 } as Tag;
 
@@ -80,6 +81,20 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
   const { getDropdownProps, getSelectedItemProps, removeSelectedItem } =
     useMultipleSelection({
       selectedItems: draft.tagIds.map((id) => tags[id]),
+      stateReducer(state, actionAndChanges) {
+        const { changes, type } = actionAndChanges;
+        switch (type) {
+          case useMultipleSelection.stateChangeTypes
+            .SelectedItemKeyDownBackspace:
+          case useMultipleSelection.stateChangeTypes.SelectedItemKeyDownDelete:
+            return {
+              ...changes,
+              activeIndex: -1,
+            };
+          default:
+            return changes;
+        }
+      },
       onStateChange({ selectedItems: newSelectedItems, type }) {
         switch (type) {
           case useMultipleSelection.stateChangeTypes
@@ -122,14 +137,10 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
         case useCombobox.stateChangeTypes.ItemClick:
           return {
             ...changes,
-            ...(changes.selectedItem && { isOpen: true }),
+            ...(changes.selectedItem &&
+              changes.selectedItem.id !== createOption.id && { isOpen: true }),
           };
-        // keep the highlight on the first item
-        case useCombobox.stateChangeTypes.InputChange:
-          return {
-            ...changes,
-            highlightedIndex: 0,
-          };
+
         default:
           return changes;
       }
@@ -148,6 +159,8 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
           // user entered without item selected
           // this can happen when user typed in a name that was already selected
           if (!newSelectedItem) break;
+
+          setInputValue("");
 
           // handle creating tags else-where, it should be okay since
           // this is controlled.
@@ -178,7 +191,7 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
         {/* Selected Tags */}
         {draft.tagIds.map((tagId, index) => (
           <span
-            className="px-1 py-2"
+            className="px-1 py-1 text-sm"
             key={tagId}
             style={{
               backgroundColor: tags[tagId].color.background,
@@ -203,9 +216,16 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
         ))}
 
         {/* Input & Toggle */}
-        <div>
-          <input {...getInputProps(getDropdownProps({ disabled: loading }))} />
-          <button aria-label="toggle menu" {...getToggleButtonProps()}>
+        <div className="flex flex-1">
+          <input
+            className="w-full outline-none"
+            {...getInputProps(getDropdownProps({ disabled: loading }))}
+          />
+          <button
+            className="ml-auto"
+            aria-label="toggle menu"
+            {...getToggleButtonProps()}
+          >
             {isOpen ? <>&#8593;</> : <>&#8595;</>}
           </button>
         </div>
@@ -213,20 +233,25 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
 
       {/* Dropdown Menu */}
       <ul
-        className="absolute top-full z-20 w-full bg-white"
+        className={twMerge(
+          "absolute top-full z-20 mt-2 max-h-52 w-full overflow-y-auto border border-gray-200 bg-white",
+          (!isOpen || !items.length) && "hidden",
+        )}
         {...getMenuProps()}
       >
         {isOpen &&
           items.map((item, index) => (
             <li
               className={twMerge(
-                "p-1",
+                "px-2 py-1",
                 highlightedIndex === index && "bg-gray-300",
               )}
               key={item.id}
               {...getItemProps({ item, index })}
             >
-              {item.name}
+              {item.id === createOption.id
+                ? `create "${inputValue}"`
+                : item.name}
             </li>
           ))}
       </ul>
