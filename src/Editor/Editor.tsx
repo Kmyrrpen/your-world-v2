@@ -32,6 +32,7 @@ const _Editor: React.FC<Props> = ({ note }) => {
   const editor = useEditor(editorConfig);
 
   useEffect(() => () => editor?.destroy(), []);
+  
   if (!editor) return null;
 
   return (

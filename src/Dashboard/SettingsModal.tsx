@@ -1,6 +1,8 @@
+import shallow from "zustand/shallow";
+
+import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import shallow from "zustand/shallow";
 import { deleteDB } from "idb";
 import { useWorldStore } from "@/app/world";
 import { useMetaStore } from "@/app/metas";
@@ -8,6 +10,7 @@ import { useMetaStore } from "@/app/metas";
 import Button from "@/components/Button";
 import FormField from "@/components/FormField";
 import Modal from "@/components/Modal";
+import { registerWithRef } from "@/utils";
 
 type Props = {
   onClose: () => void;
@@ -38,6 +41,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
   }>({
     defaultValues: currentMeta,
   });
+  const refRegister = registerWithRef(register);
 
   const onUpdate = handleSubmit(async ({ name }) => {
     await updateMeta({ ...currentMeta, name });
@@ -63,6 +67,11 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
     }
   };
 
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    nameRef.current?.focus();
+  }, [nameRef]);
+
   return (
     <Modal onClose={onClose}>
       <form className="flex flex-1 flex-col" onSubmit={onUpdate}>
@@ -72,7 +81,10 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
           <FormField.Label htmlFor="name">world name</FormField.Label>
           <FormField.Input
             id="name"
-            {...register("name", { required: "can't be empty" })}
+            {...refRegister("name", {
+              ref: nameRef,
+              required: "this field is required",
+            })}
           />
           {errors.name && <FormField.Error message={errors.name.message} />}
         </FormField>

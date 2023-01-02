@@ -5,8 +5,11 @@ import { WorldProvider } from "./app/world";
 import Dashboard, { Notes, Tags } from "./Dashboard";
 import Editor from "./Editor";
 import Home from "./Home";
+import { usePreventScrollShifting } from "./hooks";
 
 function App() {
+  usePreventScrollShifting();
+
   return (
     <Routes>
       <Route path="/" element={<MetasProvider />}>

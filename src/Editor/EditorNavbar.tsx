@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Editor } from "@tiptap/react";
 import shallow from "zustand/shallow";
-
-import { getDescription } from "./misc/utils";
 import { Note, useWorldStore } from "@/app/world";
+
 import Button from "@/components/Button";
+import { getDescription } from "./misc/utils";
 
 type Props = {
   draft: Note;
@@ -24,8 +25,23 @@ const EditorNavbar: React.FC<Props> = ({ draft, editor }) => {
 
   const onSave = () => {
     const content = editor.getHTML();
-    createNote({ ...draft, content, description: getDescription(content) });
+    createNote({
+      ...draft,
+      name: draft.name || "Title",
+      content,
+      description: getDescription(content),
+    });
   };
+
+  // debounced save after timeout done
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onSave();
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [editor.state.doc.content]);
 
   const onDelete = async () => {
     await deleteNote(draft);

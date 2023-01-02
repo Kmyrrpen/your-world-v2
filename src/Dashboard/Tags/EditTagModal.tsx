@@ -1,11 +1,12 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import shallow from "zustand/shallow";
+import { Tag, useWorldStore } from "@/app/world";
 
 import Button from "@/components/Button";
 import FormField from "@/components/FormField";
 import Modal from "@/components/Modal";
-import { Tag, useWorldStore } from "@/app/world";
+import { registerWithRef } from "@/utils";
 
 type EditTagFormVals = Omit<Tag, "id">;
 type Props = {
@@ -23,12 +24,12 @@ const EditTagModal: React.FC<Props> = ({ tag, onClose }) => {
     shallow,
   );
   const clonedTag = useMemo(() => ({ ...tag, id: undefined }), [tag]);
-
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<EditTagFormVals>({ defaultValues: clonedTag });
+  const refRegister = registerWithRef(register);
 
   const onDelete = async () => {
     await deleteTag(tag);
@@ -40,6 +41,11 @@ const EditTagModal: React.FC<Props> = ({ tag, onClose }) => {
     onClose();
   });
 
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    nameRef.current?.focus();
+  }, [nameRef]);
+
   return (
     <Modal onClose={onClose}>
       <form onSubmit={onSubmit} className="w-full">
@@ -48,7 +54,8 @@ const EditTagModal: React.FC<Props> = ({ tag, onClose }) => {
           <FormField.Label htmlFor="name">tag name</FormField.Label>
           <FormField.Input
             id="name"
-            {...register("name", {
+            {...refRegister("name", {
+              ref: nameRef,
               required: "cannot be empty",
               validate: (value: string) => {
                 if (
@@ -67,11 +74,13 @@ const EditTagModal: React.FC<Props> = ({ tag, onClose }) => {
             <FormField.Label htmlFor="text-color">text color</FormField.Label>
             <FormField.Input
               id="text-color"
-              {...register("color.text", { required: "cannot be empty" })}
+              {...register("color.text", {
+                required: "this field is required",
+              })}
             />
-            {errors.color?.text && (
+            {errors.color?.text ? (
               <FormField.Error message={errors.color.text.message} />
-            )}
+            ) : null}
           </FormField>
           <FormField className="w-full">
             <FormField.Label htmlFor="background-color">
@@ -80,11 +89,11 @@ const EditTagModal: React.FC<Props> = ({ tag, onClose }) => {
             <FormField.Input
               id="background-color"
               {...register("color.background", {
-                required: "cannot be empty",
+                required: "this field is required",
               })}
             />
-            {errors.color?.text && (
-              <FormField.Error message={errors.color.text.message} />
+            {errors.color?.background && (
+              <FormField.Error message={errors.color.background.message} />
             )}
           </FormField>
         </div>

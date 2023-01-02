@@ -5,6 +5,11 @@ import { twMerge } from "tailwind-merge";
 import DashboardNavbar from "./DashboardNavbar";
 
 const Dashboard: React.FC = () => {
+  const bodyRect = document.body.getBoundingClientRect();
+  const scrollbarWidth = bodyRect.width - document.body.clientWidth;
+
+  console.log(scrollbarWidth);
+
   return (
     <Container>
       <DashboardNavbar />

@@ -158,6 +158,7 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
         case useCombobox.stateChangeTypes.ItemClick: {
           // user entered without item selected
           // this can happen when user typed in a name that was already selected
+          // making it so that options would be empty.
           if (!newSelectedItem) break;
 
           setInputValue("");
