@@ -32,25 +32,6 @@ export const isColorDark = (hexColor: string) => {
   return L < 0.179;
 };
 
-// export const registerWithRef = <R, T extends FieldValues>(
-//   ref: MutableRefObject<R>,
-//   register: UseFormRegister<T>,
-// ) => {
-//   return (
-//     name: Parameters<typeof register>[0],
-//     options: Parameters<typeof register>[1],
-//   ): ReturnType<typeof register> => {
-//     const { ref: returnedRef, ...rest } = register(name, options);
-//     // eslint-disable-next-line
-//     const newRef = (e: any) => {
-//       returnedRef(e);
-//       ref.current = e;
-//     };
-
-//     return { ref: newRef, ...rest };
-//   };
-// };
-
 /** attach your ref to the register function from react-hook-form */
 export const registerWithRef = <T extends FieldValues = FieldValues>(
   register: UseFormRegister<T>,
@@ -73,7 +54,7 @@ export const registerWithRef = <T extends FieldValues = FieldValues>(
   };
 };
 
-export function getScrollbarWidth() {
+export const getScrollbarWidth = () => {
   // Creating invisible container
   const outer = document.createElement("div");
   outer.style.visibility = "hidden";

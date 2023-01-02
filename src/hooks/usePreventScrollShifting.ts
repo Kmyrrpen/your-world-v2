@@ -9,7 +9,6 @@ const scrollbarWidth = getScrollbarWidth();
 const usePreventScrollShifting = () => {
   useLayoutEffect(() => {
     const setPaddingRight = (isScrollable: boolean) => {
-      console.log(isScrollable);
       if (isScrollable) document.body.style.paddingRight = "0px";
       else document.body.style.paddingRight = `${scrollbarWidth}px`;
     };

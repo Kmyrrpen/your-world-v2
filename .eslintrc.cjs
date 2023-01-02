@@ -5,33 +5,34 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    'eslint:recommended',
-    'plugin:valtio/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
+    "eslint:recommended",
+    "plugin:valtio/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
   ],
   overrides: [],
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+    ecmaVersion: "latest",
+    sourceType: "module",
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ["react", "@typescript-eslint"],
   rules: {
-    'react/prop-types': 'off',
-    '@typescript-eslint/ban-ts-comment': [
-      'error',
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
       {
-        'ts-ignore': 'allow-with-description',
+        "ts-ignore": "allow-with-description",
       },
     ],
-    'react/display-name': 'off',
-    '@typescript-eslint/ban-types': [
-      'error',
+    "react/display-name": "off",
+    "@typescript-eslint/ban-types": [
+      "error",
       {
         types: {
-          '{}': false,
+          "{}": false,
         },
         extendDefaults: true,
       },
@@ -39,7 +40,7 @@ module.exports = {
   },
   settings: {
     react: {
-      version: 'detect',
+      version: "detect",
     },
   },
 };

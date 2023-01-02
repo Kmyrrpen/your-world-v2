@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { useWorldStore } from "@/app/world";
-
-import ItemGrid from "@/components/ItemGrid";
 import shallow from "zustand/shallow";
+
 import NoteItem from "./NoteItem";
 
 const Notes: React.FC = () => {
@@ -21,11 +20,11 @@ const Notes: React.FC = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <ItemGrid>
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
         {filteredNotes.map((note) => (
           <NoteItem note={note} key={note.id} />
         ))}
-      </ItemGrid>
+      </div>
     </div>
   );
 };
