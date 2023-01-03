@@ -24,7 +24,9 @@ export type WorldStore = State & WorldActions;
 export const createWorldStore = async (id: string) => {
   const { connection, notes, tags } = await createWorldDB(id);
   const channel = new BroadcastChannel(`world: ${id}`);
-  const postMessage = channel.postMessage.bind(channel) as PostMessage<WorldActions>;
+  const postMessage = channel.postMessage.bind(
+    channel,
+  ) as PostMessage<WorldActions>;
 
   const store = createStore<WorldStore>()(
     immer((set, get) => ({

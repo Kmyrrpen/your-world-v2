@@ -1,5 +1,5 @@
-import { Editor } from '@tiptap/react';
-import ToolbarIcon from './ToolbarIcon';
+import { Editor } from "@tiptap/react";
+import ToolbarIcon from "./ToolbarIcon";
 
 type Props = {
   editor: Editor;
@@ -16,7 +16,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
     <div className="dark:bg-dark-100 sticky top-0 z-10 my-2 flex flex-wrap items-center gap-x-4 gap-y-2 bg-white py-2 sm:my-4 md:my-6">
       <div className="flex flex-wrap items-center gap-2">
         <ToolbarIcon
-          isActive={editor.isActive('paragraph')}
+          isActive={editor.isActive("paragraph")}
           onClick={() => cf(editor).setParagraph().run()}
         >
           <span className="sr-only">set to paragraph</span>
@@ -28,7 +28,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
           </svg>
         </ToolbarIcon>
         <ToolbarIcon
-          isActive={editor.isActive('heading', { level: 2 })}
+          isActive={editor.isActive("heading", { level: 2 })}
           onClick={() => th(editor, 2)}
         >
           <span className="sr-only">set to heading level 2</span>
@@ -45,7 +45,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
         </ToolbarIcon>
 
         <ToolbarIcon
-          isActive={editor.isActive('heading', { level: 3 })}
+          isActive={editor.isActive("heading", { level: 3 })}
           onClick={() => th(editor, 3)}
         >
           <span className="sr-only">set to heading level 3</span>
@@ -61,7 +61,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
           </svg>
         </ToolbarIcon>
         <ToolbarIcon
-          isActive={editor.isActive('heading', { level: 4 })}
+          isActive={editor.isActive("heading", { level: 4 })}
           onClick={() => th(editor, 4)}
         >
           <span className="sr-only">set to heading level 4</span>
@@ -77,7 +77,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
           </svg>
         </ToolbarIcon>
         <ToolbarIcon
-          isActive={editor.isActive('link')}
+          isActive={editor.isActive("link")}
           onClick={() => editor.commands.toggleLinkModal()}
         >
           <span className="sr-only">create link</span>
@@ -92,7 +92,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
 
       <div className="flex gap-2">
         <ToolbarIcon
-          isActive={editor.isActive('bulletList')}
+          isActive={editor.isActive("bulletList")}
           onClick={() => cf(editor).toggleBulletList().run()}
         >
           <span className="sr-only">make into unordered-list</span>
@@ -108,7 +108,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
           </svg>
         </ToolbarIcon>
         <ToolbarIcon
-          isActive={editor.isActive('orderedList')}
+          isActive={editor.isActive("orderedList")}
           onClick={() => cf(editor).toggleOrderedList().run()}
         >
           <span className="sr-only">make into ordered-list</span>
@@ -127,7 +127,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
 
       <div className="flex gap-2">
         <ToolbarIcon
-          isActive={editor.isActive('italic')}
+          isActive={editor.isActive("italic")}
           onClick={() => cf(editor).toggleItalic().run()}
         >
           <span className="sr-only">apply italic</span>
@@ -139,7 +139,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
           </svg>
         </ToolbarIcon>
         <ToolbarIcon
-          isActive={editor.isActive('bold')}
+          isActive={editor.isActive("bold")}
           onClick={() => cf(editor).toggleBold().run()}
         >
           <span className="sr-only">apply bold</span>
@@ -151,7 +151,7 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
           </svg>
         </ToolbarIcon>
         <ToolbarIcon
-          isActive={editor.isActive('strike')}
+          isActive={editor.isActive("strike")}
           onClick={() => cf(editor).toggleStrike().run()}
         >
           <span className="sr-only">apply strike-through</span>

@@ -1,13 +1,13 @@
-import { ComponentPropsWithoutRef, forwardRef } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { ComponentPropsWithoutRef, forwardRef } from "react";
+import { twMerge } from "tailwind-merge";
 
 const FormFieldLabel = forwardRef<
   HTMLLabelElement,
-  ComponentPropsWithoutRef<'label'>
+  ComponentPropsWithoutRef<"label">
 >(({ className, ...props }, ref) => (
   <label
     ref={ref}
-    className={twMerge('text-sm text-gray-600', className)}
+    className={twMerge("text-sm text-gray-600", className)}
     {...props}
   />
 ));

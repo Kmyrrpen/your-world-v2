@@ -27,7 +27,9 @@ const NoteSearch: React.FC = () => {
       if (inputValue) setInputValue(inputValue);
     },
     onSelectedItemChange({ selectedItem }) {
-      if (selectedItem) {""}
+      if (selectedItem) {
+        ("");
+      }
     },
   });
 

@@ -12,12 +12,12 @@ const usePreventScrollShifting = () => {
       if (isScrollable) document.body.style.paddingRight = "0px";
       else document.body.style.paddingRight = `${scrollbarWidth}px`;
     };
-    
+
     const resizeObserver = new ResizeObserver(() => {
       setPaddingRight(document.body.scrollHeight > window.innerHeight);
     });
     resizeObserver.observe(document.body);
-    
+
     return () => {
       resizeObserver.unobserve(document.body);
     };

@@ -73,4 +73,4 @@ export const getScrollbarWidth = () => {
   outer.parentNode.removeChild(outer);
 
   return scrollbarWidth;
-}
+};
