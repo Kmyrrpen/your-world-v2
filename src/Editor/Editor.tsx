@@ -32,7 +32,7 @@ const _Editor: React.FC<Props> = ({ note }) => {
   const editor = useEditor(editorConfig);
 
   useEffect(() => () => editor?.destroy(), []);
-  
+
   if (!editor) return null;
 
   return (
@@ -47,7 +47,7 @@ const _Editor: React.FC<Props> = ({ note }) => {
         spellCheck="false"
       />
       {editor.storage.custom.showLinkModal ? (
-        <LinkModal editor={editor} />
+        <LinkModal draft={draft} editor={editor} />
       ) : null}
     </Container>
   );

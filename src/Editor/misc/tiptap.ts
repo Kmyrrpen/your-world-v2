@@ -38,7 +38,6 @@ const CustomExtension = Extension.create<Record<string, never>, Storage>({
           const noLink = Object.keys(editor.getAttributes("link")).length === 0;
 
           if (!selection.empty) {
-            console.log(selection);
             // show link modal or remove link attached
             if (noLink) {
               this.storage.showLinkModal = true;

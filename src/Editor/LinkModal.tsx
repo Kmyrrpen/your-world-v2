@@ -1,72 +1,104 @@
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Editor } from "@tiptap/react";
-import { useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useCombobox } from "downshift";
+import { Note, useWorldStore } from "@/app/world";
+import shallow from "zustand/shallow";
+import { twMerge } from "tailwind-merge";
 
 import Modal from "@/components/Modal";
 import FormField from "@/components/FormField";
-import Button from "@/components/Button";
 
 type Props = {
   editor: Editor;
+  draft: Note;
 };
 
-type FormValues = {
-  text: string;
+const getItems = (notes: Note[], draft: Note, inputValue: string): Note[] => {
+  inputValue = inputValue.toLowerCase();
+  return notes.filter(
+    (note) =>
+      draft.id !== note.id && note.name.toLowerCase().startsWith(inputValue),
+  );
 };
 
-const LinkModal: React.FC<Props> = ({ editor }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>({
-    defaultValues: { text: "" },
-  });
+const LinkModal: React.FC<Props> = ({ editor, draft }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = useState("");
+  const { id, notes } = useWorldStore(
+    (state) => ({ id: state.id, notes: Object.values(state.notes) }),
+    shallow,
+  );
+  const items = useMemo(
+    () => getItems(notes, draft, inputValue),
+    [inputValue, notes],
+  );
 
-  // focus input on mount
-  const inputRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
-  const onToggle = () => {
-    editor.chain().toggleLinkModal().focus().run();
-  };
-
-  const onSubmit = handleSubmit(({ text }) => {
-    editor
-      .chain()
-      .focus()
-      .extendMarkRange("link")
-      .setLink({ href: text })
-      .run();
-    onToggle();
+  const {
+    getLabelProps,
+    getInputProps,
+    getItemProps,
+    getMenuProps,
+    highlightedIndex,
+  } = useCombobox({
+    items,
+    inputValue,
+    initialHighlightedIndex: 0,
+    isOpen: true,
+    onInputValueChange({ inputValue }) {
+      if (inputValue !== undefined) setInputValue(inputValue);
+    },
   });
 
-  const { ref, ...textProps } = register("text", { required: true });
+  const onClose = () => {
+    editor.chain().toggleLinkModal().focus().run();
+  };
+  const onAttachLink = () => {
+    // use `highlightedIndex` instead of just grabbing `selectedItem` because
+    // this fires before downshift gets to update `selectedItem` to the correct one
+    const selectedItem = items[highlightedIndex];
+    const href = selectedItem ? `/${id}/${selectedItem.id}` : inputValue;
+    editor.chain().focus().extendMarkRange("link").setLink({ href }).run();
+    onClose();
+  };
 
   return (
-    <Modal onClose={onToggle}>
-      <form className="flex flex-1 flex-col" onSubmit={onSubmit}>
-        <FormField>
-          <FormField.Label htmlFor="link-input">attach link</FormField.Label>
-          <FormField.Input
-            id="link-input"
-            ref={(el) => {
-              ref(el);
-              inputRef.current = el;
-            }}
-            {...textProps}
-          />
-          {errors.text && <FormField.Error message={errors.text.message} />}
-        </FormField>
-        <div className="mt-auto flex items-center justify-end gap-4">
-          <Button type="button" onClick={onToggle}>
-            cancel
-          </Button>
-          <Button type="submit">attach</Button>
-        </div>
-      </form>
+    <Modal onClose={onClose}>
+      <FormField>
+        <FormField.Label htmlFor="link-input" {...getLabelProps()}>
+          attach link
+        </FormField.Label>
+        <FormField.Input
+          id="link-input"
+          {...getInputProps({
+            ref: inputRef,
+            onKeyDown: (event) => {
+              if (event.key === "Enter") onAttachLink();
+            },
+          })}
+        />
+      </FormField>
+      <ul {...getMenuProps()}>
+        {items.map((item, index) => (
+          <li
+            className={twMerge(
+              "border-b-2 border-b-gray-200 py-1 px-1 last:border-b-0",
+              highlightedIndex === index && "bg-gray-200",
+            )}
+            key={item.id}
+            {...getItemProps({
+              item,
+              index,
+              onClick: () => onAttachLink(),
+            })}
+          >
+            {item.name}
+          </li>
+        ))}
+      </ul>
     </Modal>
   );
 };

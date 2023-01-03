@@ -219,7 +219,7 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
         {/* Input & Toggle */}
         <div className="flex flex-1">
           <input
-          placeholder="Add Tag..."
+            placeholder="Add Tag..."
             className="w-full outline-none"
             {...getInputProps(getDropdownProps({ disabled: loading }))}
           />
