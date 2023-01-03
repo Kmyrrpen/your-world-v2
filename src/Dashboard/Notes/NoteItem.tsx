@@ -41,7 +41,7 @@ const NoteItem: React.FC<Props> = ({ note }) => {
         ) : null}
       </div>
 
-      <p className="my-2 block line-clamp-3">{note.description}</p>
+      <p className="my-2 block">{note.description}</p>
       <Link className="ml-auto mt-auto" to={`/${id}/${note.id}`}>
         <span>edit</span>
       </Link>

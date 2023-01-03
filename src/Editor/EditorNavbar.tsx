@@ -5,7 +5,7 @@ import shallow from "zustand/shallow";
 import { Note, useWorldStore } from "@/app/world";
 
 import Button from "@/components/Button";
-import { getDescription } from "./misc/utils";
+import { getDescription } from "./misc/tiptap";
 
 type Props = {
   draft: Note;

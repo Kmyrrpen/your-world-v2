@@ -90,7 +90,9 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
         </FormField>
 
         <div className="mt-auto flex items-center justify-end gap-5">
-          <Button onClick={onDelete}>delete</Button>
+          <Button type="button" onClick={onDelete}>
+            delete
+          </Button>
           <Button type="submit">save</Button>
         </div>
       </form>
