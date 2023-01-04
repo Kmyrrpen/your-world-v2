@@ -3,7 +3,8 @@ import { useCombobox, useMultipleSelection } from "downshift";
 import { nanoid } from "nanoid";
 import { twMerge } from "tailwind-merge";
 
-import { Note, Tag, useWorldStore } from "@/app/world";
+import { Tag, useWorldStore } from "@/app/world";
+import { useEditorState, useEditorStateActions } from "./store/store";
 
 // make sure to handle special create option
 const createOption: Tag = {
@@ -36,12 +37,10 @@ const getItems = (
   return showCreate ? [createOption, ...filtered] : filtered;
 };
 
-type Props = {
-  draft: Note;
-  setter: React.Dispatch<React.SetStateAction<Note>>;
-};
-
-const TagInput: React.FC<Props> = ({ draft, setter }) => {
+const TagInput: React.FC = () => {
+  const { draft } = useEditorState();
+  const { setDraft } = useEditorStateActions();
+  
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -72,7 +71,7 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
     await setTag(tag);
     setLoading(false);
 
-    setter((state) => ({
+    setDraft((state) => ({
       ...state,
       tagIds: [...state.tagIds, tag.id],
     }));
@@ -105,7 +104,7 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
             {
               // newSelectedItems will always be defined
               const tag = newSelectedItems as Tag[];
-              setter((state) => ({
+              setDraft((state) => ({
                 ...state,
                 tagIds: tag.map((tag) => tag.id),
               }));
@@ -170,7 +169,7 @@ const TagInput: React.FC<Props> = ({ draft, setter }) => {
             break;
           }
 
-          setter((state) => ({
+          setDraft((state) => ({
             ...state,
             tagIds: [...state.tagIds, newSelectedItem.id],
           }));

@@ -1,16 +1,11 @@
-import { Note } from "@/app/world";
-import { Editor } from "@tiptap/react";
-import React, { ChangeEvent, SetStateAction } from "react";
+import React, { ChangeEvent } from "react";
+import { useEditorState, useEditorStateActions } from "./store/store";
 
-type Props = {
-  draft: Note;
-  editor: Editor;
-  setter: React.Dispatch<SetStateAction<Note>>;
-};
-
-const TitleInput: React.FC<Props> = ({ draft, editor, setter }) => {
+const TitleInput: React.FC = () => {
+  const { draft, editor } = useEditorState();
+  const { setDraft } = useEditorStateActions();
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setter((note) => ({ ...note, name: e.target.value }));
+    setDraft((note) => ({ ...note, name: e.target.value }));
   };
 
   return (

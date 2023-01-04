@@ -1,6 +1,5 @@
 /* eslint @typescript-eslint/no-var-requires: 0, no-undef: 0 */
 const colors = require('tailwindcss/colors');
-const lineClamp = require('@tailwindcss/line-clamp');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -48,5 +47,4 @@ module.exports = {
       },
     },
   },
-  plugins: [lineClamp],
 };

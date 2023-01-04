@@ -1,17 +1,15 @@
 import { Editor } from "@tiptap/react";
+import { useEditorState } from "../store/store";
 import ToolbarIcon from "./ToolbarIcon";
-
-type Props = {
-  editor: Editor;
-};
 
 const cf = (editor: Editor) => editor.chain().focus();
 const th = (editor: Editor, level: 1 | 2 | 3 | 4) =>
   cf(editor).toggleHeading({ level }).run();
 
-const Toolbar: React.FC<Props> = ({ editor }) => {
+const Toolbar: React.FC = () => {
+  const { editor } = useEditorState();
   if (!editor.isEditable) return null;
-
+  
   return (
     <div className="dark:bg-dark-100 sticky top-0 z-10 my-2 flex flex-wrap items-center gap-x-4 gap-y-2 bg-white py-2 sm:my-4 md:my-6">
       <div className="flex flex-wrap items-center gap-2">
