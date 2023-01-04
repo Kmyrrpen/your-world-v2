@@ -1,17 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Editor } from "@tiptap/react";
 import { useCombobox } from "downshift";
-import { Note, useWorldStore } from "@/app/world";
 import shallow from "zustand/shallow";
 import { twMerge } from "tailwind-merge";
 
+import { Note, useWorldStore } from "@/app/world";
 import Modal from "@/components/Modal";
 import FormField from "@/components/FormField";
-
-type Props = {
-  editor: Editor;
-  draft: Note;
-};
+import { useEditorState } from "./store";
 
 const getItems = (notes: Note[], draft: Note, inputValue: string): Note[] => {
   inputValue = inputValue.toLowerCase();
@@ -21,7 +16,8 @@ const getItems = (notes: Note[], draft: Note, inputValue: string): Note[] => {
   );
 };
 
-const LinkModal: React.FC<Props> = ({ editor, draft }) => {
+const LinkModal: React.FC = () => {
+  const { draft, editor } = useEditorState();
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const { id, notes } = useWorldStore(

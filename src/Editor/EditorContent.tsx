@@ -1,7 +1,7 @@
 import { EditorContent as EditorTiptapContent } from "@tiptap/react";
 import { useEditorState } from "./store";
 
-const EditorContext = () => {
+const EditorContent: React.FC = () => {
   const { editor } = useEditorState();
   return (
     <EditorTiptapContent
@@ -12,4 +12,4 @@ const EditorContext = () => {
   );
 };
 
-export default EditorContext;
+export default EditorContent;

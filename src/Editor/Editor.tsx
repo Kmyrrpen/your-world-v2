@@ -1,7 +1,5 @@
-import { EditorContent } from "@tiptap/react";
 import { useParams } from "react-router-dom";
 import { Note, useWorldStore } from "@/app/world";
-
 import Container from "@/components/Container";
 import EditorNavbar from "./EditorNavbar";
 import TitleInput from "./TitleInput";
@@ -11,6 +9,7 @@ import LinkModal from "./LinkModal";
 
 import { editorContext, editorSetContext, useEditorInit } from "./store";
 import "./misc/editor.css";
+import EditorContent from "./EditorContent";
 
 type Props = {
   note?: Note;
@@ -27,14 +26,8 @@ const _Editor: React.FC<Props> = ({ note }) => {
           <TitleInput />
           <TagInput />
           <Toolbar />
-          <EditorContent
-            editor={editor}
-            placeholder="Type Here.."
-            spellCheck="false"
-          />
-          {editor.storage.linkModal.show ? (
-            <LinkModal draft={draft} editor={editor} />
-          ) : null}
+          <EditorContent />
+          {editor.storage.linkModal.show ? <LinkModal /> : null}
         </editorSetContext.Provider>
       </editorContext.Provider>
     </Container>
