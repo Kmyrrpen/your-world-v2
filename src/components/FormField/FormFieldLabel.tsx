@@ -7,7 +7,7 @@ const FormFieldLabel = forwardRef<
 >(({ className, ...props }, ref) => (
   <label
     ref={ref}
-    className={twMerge("text-sm text-gray-600", className)}
+    className={twMerge("text-xs mb-1 text-gray-600 font-sans font-medium", className)}
     {...props}
   />
 ));

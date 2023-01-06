@@ -1,5 +1,5 @@
 .ProseMirror {
-  @apply min-h-[20rem] w-full p-1 outline-none;
+  @apply min-h-[20rem] w-full p-1 outline-none focus:outline-none;
 }
 
 .ProseMirror > * {

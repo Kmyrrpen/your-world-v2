@@ -7,7 +7,7 @@ import TagInput from "./TagInput";
 import Toolbar from "./Toolbar";
 import LinkModal from "./LinkModal";
 
-import { editorContext, editorSetContext, useEditorInit } from "./store";
+import { editorContext, editorActionsContext, useEditorInit } from "./store";
 import "./misc/editor.css";
 import EditorContent from "./EditorContent";
 
@@ -16,19 +16,21 @@ type Props = {
 };
 
 const _Editor: React.FC<Props> = ({ note }) => {
-  const { editor, draft, setDraft, saveNote } = useEditorInit(note);
+  const { draft, editor, setDraft, saveNote, deleteNote } = useEditorInit(note);
   if (!editor) return null;
   return (
     <Container>
       <editorContext.Provider value={{ draft, editor }}>
-        <editorSetContext.Provider value={{ setDraft, saveNote }}>
+        <editorActionsContext.Provider
+          value={{ setDraft, saveNote, deleteNote }}
+        >
           <EditorNavbar />
           <TitleInput />
           <TagInput />
           <Toolbar />
           <EditorContent />
           {editor.storage.linkModal.show ? <LinkModal /> : null}
-        </editorSetContext.Provider>
+        </editorActionsContext.Provider>
       </editorContext.Provider>
     </Container>
   );

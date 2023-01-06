@@ -89,7 +89,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
           {errors.name && <FormField.Error message={errors.name.message} />}
         </FormField>
 
-        <div className="mt-auto flex items-center justify-end gap-5">
+        <div className="mt-auto flex items-center justify-end gap-1">
           <Button type="button" onClick={onDelete}>
             delete
           </Button>

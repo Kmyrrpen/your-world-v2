@@ -3,11 +3,12 @@ import shallow from "zustand/shallow";
 import { useWorldStore } from "@/app/world";
 
 import Button from "@/components/Button";
-import { useEditorState, useEditorStateActions } from "./store/store";
+import { useEditorContext, useEditorActionsContext } from "./store/store";
+import Navbar from "@/components/Navbar";
 
 const EditorNavbar: React.FC = () => {
-  const { saveNote } = useEditorStateActions();
-  const { draft } = useEditorState();
+  const { saveNote } = useEditorActionsContext();
+  const { draft } = useEditorContext();
   const navigate = useNavigate();
 
   const { notes, deleteNote } = useWorldStore(
@@ -24,10 +25,10 @@ const EditorNavbar: React.FC = () => {
   };
 
   return (
-    <nav className="mb-16 flex items-center justify-end">
+    <Navbar>
       {notes[draft.id] ? <Button onClick={onDelete}>delete</Button> : null}
       <Button onClick={saveNote}>save</Button>
-    </nav>
+    </Navbar>
   );
 };
 

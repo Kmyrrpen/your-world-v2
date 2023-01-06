@@ -1,3 +1,5 @@
+import Button from "@/components/Button";
+import Navbar from "@/components/Navbar";
 import { Link, useSearchParams } from "react-router-dom";
 import SettingsModal from "./SettingsModal";
 
@@ -8,15 +10,17 @@ const DashboardNavbar = () => {
   const worldSettingsParam = searchParams.get(worldSettingsKey);
 
   return (
-    <nav className="mb-16 flex items-center justify-end">
-      <button onClick={() => setSearchParams("world-settings=true")}>
+    <Navbar>
+      <Button onClick={() => setSearchParams("world-settings=true")}>
         settings
-      </button>
+      </Button>
       {worldSettingsParam === "true" ? (
         <SettingsModal onClose={() => setSearchParams("", { replace: true })} />
       ) : null}
-      <Link to={"new"}>New Note</Link>
-    </nav>
+      <Button as={Link} to={"new"}>
+        create note
+      </Button>
+    </Navbar>
   );
 };
 

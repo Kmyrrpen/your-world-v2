@@ -24,8 +24,13 @@ const CreateModal: React.FC<ModalProps> = ({ onClose }) => {
 
   const onSubmit = handleSubmit(async ({ name }) => {
     const id = nanoid();
-    await setMeta({ name, id });
-    navigate;
+    await setMeta({
+      name,
+      id,
+      dateCreated: new Date(),
+      recentDateOpened: new Date(),
+    });
+    navigate(id);
   });
 
   const namedRef = useRef<HTMLInputElement | null>(null);
@@ -35,7 +40,7 @@ const CreateModal: React.FC<ModalProps> = ({ onClose }) => {
 
   return (
     <Modal onClose={onClose}>
-      <form className="flex flex-col" onSubmit={onSubmit}>
+      <form className="flex flex-col w-full" onSubmit={onSubmit}>
         <FormField>
           <FormField.Label htmlFor="name">World Name</FormField.Label>
           <FormField.Input
@@ -48,7 +53,7 @@ const CreateModal: React.FC<ModalProps> = ({ onClose }) => {
           {errors.name && <FormField.Error message={errors.name.message} />}
         </FormField>
 
-        <div className="flex items-end">
+        <div className="flex justify-end mt-auto w-full">
           <Button type="submit">Create</Button>
         </div>
       </form>

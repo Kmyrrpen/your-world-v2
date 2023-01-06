@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { Note, useWorldStore } from "@/app/world";
 import Modal from "@/components/Modal";
 import FormField from "@/components/FormField";
-import { useEditorState } from "./store";
+import { useEditorContext } from "./store";
 
 const getItems = (notes: Note[], draft: Note, inputValue: string): Note[] => {
   inputValue = inputValue.toLowerCase();
@@ -17,7 +17,7 @@ const getItems = (notes: Note[], draft: Note, inputValue: string): Note[] => {
 };
 
 const LinkModal: React.FC = () => {
-  const { draft, editor } = useEditorState();
+  const { draft, editor } = useEditorContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const { id, notes } = useWorldStore(

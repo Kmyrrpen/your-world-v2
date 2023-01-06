@@ -6,7 +6,7 @@ const Container = polyRef<"li", PolyProps>(
   ({ as: As = "div", className, ...props }, ref) => {
     return (
       <As
-        className={twMerge("mx-auto max-w-screen-xl px-4", className)}
+        className={twMerge("mx-auto max-w-screen-lg px-4", className)}
         ref={ref}
         {...props}
       />

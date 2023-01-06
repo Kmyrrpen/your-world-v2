@@ -1,17 +1,9 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useCombobox, useMultipleSelection } from "downshift";
-import { nanoid } from "nanoid";
 import { twMerge } from "tailwind-merge";
 
-import { Tag, useWorldStore } from "@/app/world";
-import { useEditorContext, useEditorActionsContext } from "./store/store";
+import { Tag } from "@/app/world";
 import useSortedTags from "@/hooks/useSortedTags";
-
-// make sure to handle special create option
-const createOption: Tag = {
-  name: "$$create",
-  id: "$$create",
-} as Tag;
 
 const getItems = (
   tags: Tag[],
@@ -19,67 +11,33 @@ const getItems = (
   inputValue: string,
 ): Tag[] => {
   inputValue = inputValue.toLowerCase();
-  let showCreate = Boolean(
-    inputValue &&
-      !selectedTags.find((tag) => tag.name.toLowerCase() === inputValue),
-  );
-
-  const filtered = tags.filter((tag) => {
+  return tags.filter((tag) => {
     if (selectedTags.includes(tag)) return false;
-    const name = tag.name.toLowerCase();
-    // one of the non-selected tags match exactly
-    if (name === inputValue) {
-      showCreate = false;
-      return true;
-    }
     return tag.name.toLowerCase().startsWith(inputValue);
   });
-
-  return showCreate ? [createOption, ...filtered] : filtered;
 };
 
-const TagInput: React.FC = () => {
-  const { draft } = useEditorContext();
-  const { setDraft } = useEditorActionsContext();
+type Props = {
+  selectedItems: Tag[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<Tag[]>>;
+};
 
+const TagSearchInput: React.FC<Props> = ({
+  selectedItems,
+  setSelectedItems,
+}) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [loading, setLoading] = useState(false);
+  const tags = useSortedTags();
 
-  const setTag = useWorldStore((state) => state.setTag);
-  const tags = useWorldStore((state) => state.tags);
-
-  const sortedTags = useSortedTags();
-  const sortedSelected = draft.tagIds
-    .map((id) => tags[id])
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
-
+  const tagsArr = useMemo(() => Object.values(tags), [tags]);
   const items = useMemo(
-    () => getItems(sortedTags, sortedSelected, inputValue),
-    [sortedTags, inputValue, sortedSelected],
+    () => getItems(tagsArr, selectedItems, inputValue),
+    [tagsArr, inputValue, selectedItems],
   );
-
-  const createTagAndSet = async (name: string) => {
-    setLoading(true);
-    const tag: Tag = {
-      name,
-      color: {
-        text: "#fff",
-        background: "#000",
-      },
-      id: nanoid(),
-    };
-    await setTag(tag);
-    setLoading(false);
-
-    setDraft((state) => ({
-      ...state,
-      tagIds: [...state.tagIds, tag.id],
-    }));
-  };
 
   const { getDropdownProps, getSelectedItemProps, removeSelectedItem } =
     useMultipleSelection({
-      selectedItems: sortedSelected,
+      selectedItems: selectedItems,
       stateReducer(state, actionAndChanges) {
         const { changes, type } = actionAndChanges;
         switch (type) {
@@ -104,10 +62,7 @@ const TagInput: React.FC = () => {
             {
               // newSelectedItems will always be defined
               const tags = newSelectedItems as Tag[];
-              setDraft((state) => ({
-                ...state,
-                tagIds: tags.map((tag) => tag.id),
-              }));
+              setSelectedItems(tags);
             }
             break;
           default:
@@ -121,7 +76,6 @@ const TagInput: React.FC = () => {
     highlightedIndex,
     getInputProps,
     getMenuProps,
-    getToggleButtonProps,
     getItemProps,
   } = useCombobox({
     items,
@@ -131,13 +85,12 @@ const TagInput: React.FC = () => {
     stateReducer(state, actionsAndChanges) {
       const { changes, type } = actionsAndChanges;
       switch (type) {
-        // make it so that when we select an item, the box stays open.
+        // make it so that when we select an item, the box stays open
         case useCombobox.stateChangeTypes.InputKeyDownEnter:
         case useCombobox.stateChangeTypes.ItemClick:
           return {
             ...changes,
-            ...(changes.selectedItem &&
-              changes.selectedItem.id !== createOption.id && { isOpen: true }),
+            ...(changes.selectedItem && { isOpen: true }),
           };
 
         default:
@@ -159,20 +112,8 @@ const TagInput: React.FC = () => {
           // this can happen when user typed in a name that was already selected
           // making it so that options would be empty.
           if (!newSelectedItem) break;
-
           setInputValue("");
-
-          // handle creating tags else-where, it should be okay since
-          // this is controlled.
-          if (newSelectedItem.id === createOption.id) {
-            createTagAndSet(inputValue);
-            break;
-          }
-
-          setDraft((state) => ({
-            ...state,
-            tagIds: [...state.tagIds, newSelectedItem.id],
-          }));
+          setSelectedItems((items) => [...items, newSelectedItem]);
           break;
         }
         case useCombobox.stateChangeTypes.InputChange:
@@ -186,10 +127,11 @@ const TagInput: React.FC = () => {
   });
 
   return (
-    <div className="relative font-sans ">
-      <div className="flex flex-wrap gap-2">
+    <div className="relative p-1 font-sans text-sm">
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="font-medium">with tags:</label>
         {/* Selected Tags */}
-        {sortedSelected.map((tag, index) => (
+        {selectedItems.map((tag, index) => (
           <span
             className="px-1 py-1 text-sm font-medium"
             key={tag.id}
@@ -201,10 +143,7 @@ const TagInput: React.FC = () => {
           >
             {tag.name}
             <span
-              className={twMerge(
-                "cursor-pointer p-1",
-                loading && "cursor-wait",
-              )}
+              className={twMerge("cursor-pointer p-1")}
               onClick={(e) => {
                 e.stopPropagation();
                 removeSelectedItem(tag);
@@ -215,20 +154,13 @@ const TagInput: React.FC = () => {
           </span>
         ))}
 
-        {/* Input & Toggle */}
-        <div className="flex flex-1">
+        {/* Input & Label */}
+        <div className="flex flex-1 gap-2">
           <input
-            placeholder="Add Tag..."
-            className="w-full outline-none"
-            {...getInputProps(getDropdownProps({ disabled: loading }))}
+            placeholder="Filter Tags..."
+            className="outline-none"
+            {...getInputProps(getDropdownProps())}
           />
-          <button
-            className="ml-auto"
-            aria-label="toggle menu"
-            {...getToggleButtonProps()}
-          >
-            {isOpen ? <>&#8593;</> : <>&#8595;</>}
-          </button>
         </div>
       </div>
 
@@ -250,9 +182,7 @@ const TagInput: React.FC = () => {
               key={item.id}
               {...getItemProps({ item, index })}
             >
-              {item.id === createOption.id
-                ? `create "${inputValue}"`
-                : item.name}
+              {item.name}
             </li>
           ))}
       </ul>
@@ -260,4 +190,4 @@ const TagInput: React.FC = () => {
   );
 };
 
-export default TagInput;
+export default TagSearchInput;

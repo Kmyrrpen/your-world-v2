@@ -10,6 +10,7 @@ import { StoreApi, useStore } from "zustand";
 import { ContextHook } from "@/utils/types";
 import { createWorldStore, WorldStore } from "./store";
 import { useMetaStore } from "../metas";
+import shallow from "zustand/shallow";
 
 type ContextValue = StoreApi<WorldStore> | null;
 const worldContext = createContext<ContextValue>(null);
@@ -20,36 +21,43 @@ export const WorldProvider: React.FC = () => {
     store: null,
     called: false,
   });
-  const metas = useMetaStore((state) => state.metas);
+  const { metas, setMeta } = useMetaStore(
+    (state) => ({ metas: state.metas, setMeta: state.setMeta }),
+    shallow,
+  );
   const [loadState, setLoadState] = useState<
     "idle" | "loading" | "loaded" | "error"
   >("idle");
 
   // initialize store
   useEffect(() => {
-    // make sure react only calls this function once
-    if (!worldRef.current.called) {
-      worldRef.current.called = true;
-      // world must be recorded in metas
-      if (!metas[id]) {
-        setLoadState("error");
-        return;
-      }
-      setLoadState("loading");
-      createWorldStore(id)
-        .then((store) => {
-          worldRef.current.store = store;
-          setLoadState("loaded");
-        })
-        .catch(() => {
-          worldRef.current.store = null;
-          setLoadState("error");
-        });
+    if (!metas[id]) {
+      setLoadState("error");
+      return;
     }
+
+    setLoadState("loading");
+    const dbPromise = createWorldStore(id)
+      .then((store) => {
+        worldRef.current.store = store;
+        setMeta({ ...metas[id], recentDateOpened: new Date() });
+        setLoadState("loaded");
+        return store;
+      })
+      .catch(() => {
+        worldRef.current.store = null;
+        setLoadState("error");
+        return null;
+      });
+
+    return () => {
+      dbPromise.then((store) => {
+        store?.getState().close();
+      });
+    };
   }, []);
 
-  // world has successfully loaded
-  if (loadState === "loaded") {
+  if (loadState === "loaded" && worldRef.current.store && metas[id]) {
     return (
       <worldContext.Provider value={worldRef.current.store}>
         <Outlet />
@@ -57,11 +65,7 @@ export const WorldProvider: React.FC = () => {
     );
   }
 
-  // world ran into an error while loading
-  if (loadState === "error") {
-    return <span>Error</span>;
-  }
-
+  if (loadState === "error") return <span>Error</span>;
   return <span>loading world</span>;
 };
 

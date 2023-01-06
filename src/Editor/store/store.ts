@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { Editor, useEditor } from "@tiptap/react";
 import { Note, useWorldStore } from "@/app/world";
 
@@ -13,15 +7,18 @@ import { emptyNote, getDescription } from "./utils";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import LinkModal from "./extensions/LinkModal";
+import shallow from "zustand/shallow";
+import { useNavigate } from "react-router-dom";
 
 export type EditorContext = {
   editor: Editor;
   draft: Note;
 };
 
-export type EditorSetContext = {
+export type EditorActionsContext = {
   setDraft: React.Dispatch<React.SetStateAction<Note>>;
   saveNote: () => void;
+  deleteNote: () => void;
 };
 
 // logic shared across editor is stored here.
@@ -36,28 +33,34 @@ export const useEditorInit = (note: Note | undefined) => {
       LinkModal,
     ],
   });
-  const setNote = useWorldStore((state) => state.setNote);
 
-  const saveNote = useCallback(() => {
+  const navigate = useNavigate();
+  const { set, remove } = useWorldStore(
+    (state) => ({ set: state.setNote, remove: state.deleteNote }),
+    shallow,
+  );
+
+  const saveNote = () => {
     if (!editor) return;
     const content = editor.getHTML();
-    setNote({
+    set({
       ...draft,
       name: draft.name || "Title",
       content,
       description: getDescription(content),
     });
-  }, [setNote, editor, draft]);
+  };
 
-  // destroy editor on unmount
-  useEffect(() => () => editor?.destroy(), []);
+  const deleteNote = () => {
+    remove(draft);
+    navigate("../");
+  };
 
   // listen to save shortcut
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
       const mod = e.ctrlKey || e.metaKey;
       if (mod && e.key === "s") {
-        console.log("saved");
         e.preventDefault();
         saveNote();
       }
@@ -66,21 +69,12 @@ export const useEditorInit = (note: Note | undefined) => {
     return () => window.removeEventListener("keydown", listener);
   }, [saveNote]);
 
-  // debounced save after timeout done
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      saveNote();
-    }, 5000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [saveNote]);
-
-  return { draft, setDraft, editor, saveNote };
+  useEffect(() => () => editor?.destroy(), []);
+  return { draft, editor, setDraft, saveNote, deleteNote };
 };
 
 export const editorContext = createContext({} as EditorContext);
-export const editorSetContext = createContext({} as EditorSetContext);
+export const editorActionsContext = createContext({} as EditorActionsContext);
 
-export const useEditorState = () => useContext(editorContext);
-export const useEditorStateActions = () => useContext(editorSetContext);
+export const useEditorContext = () => useContext(editorContext);
+export const useEditorActionsContext = () => useContext(editorActionsContext);

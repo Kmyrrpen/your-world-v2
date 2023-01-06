@@ -22,20 +22,22 @@ export const MetasProvider: React.FC = () => {
   // initialize store
   useEffect(() => {
     setLoadState("loading");
-    createMetaStore()
+    const dbPromise = createMetaStore()
       .then((store) => {
         metasRef.current = store;
         setLoadState("loaded");
+        return store;
       })
       .catch(() => {
         metasRef.current = null;
         setLoadState("error");
+        return null;
       });
 
     return () => {
-      if (metasRef.current) {
-        metasRef.current.getState().close();
-      }
+      dbPromise.then((store) => {
+        store?.getState().close();
+      });
     };
   }, []);
 

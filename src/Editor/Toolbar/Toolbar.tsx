@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react";
-import { useEditorState } from "../store/store";
+import { useEditorContext } from "../store/store";
 import ToolbarIcon from "./ToolbarIcon";
 
 const cf = (editor: Editor) => editor.chain().focus();
@@ -7,7 +7,7 @@ const th = (editor: Editor, level: 1 | 2 | 3 | 4) =>
   cf(editor).toggleHeading({ level }).run();
 
 const Toolbar: React.FC = () => {
-  const { editor } = useEditorState();
+  const { editor } = useEditorContext();
   if (!editor.isEditable) return null;
   
   return (
