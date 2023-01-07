@@ -9,10 +9,12 @@ export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 /** Intersect A & B but with B overriding A's properties in case of conflict */
 export type Overwrite<A, B> = Omit<A, keyof B> & B;
 
-export type ContextHook<S extends object> = <T>(
+export type StoreHook<S extends object> = <T>(
   selector: (state: S) => T,
   equalityFn?: (left: T, right: T) => boolean,
 ) => T;
+
+export type Loading = "idle" | "loading" | "loaded" | "error";
 
 export type PostMessage<Actions extends Record<string, Action<any, any>>> = <
   T extends keyof Actions,

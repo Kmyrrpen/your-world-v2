@@ -1,5 +1,5 @@
 import { Note, useWorldStore } from "@/app/world";
-import { useTagsToHide } from "@/hooks";
+import useTagsToHide from "@/hooks/useTagsToHide";
 import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 
@@ -30,7 +30,7 @@ const NoteItem: React.FC<Props> = ({ note }) => {
                   color: tags[tagId].color.text,
                 }}
                 className={twMerge(
-                  "mr-1 mb-1 inline whitespace-nowrap py-1 px-2 text-sm font-medium leading-none",
+                  "mr-1 mb-1 inline whitespace-nowrap py-1 px-2 text-xs font-medium font-sans leading-none",
                   note.tagIds.length - toHide <= i ? "hidden" : "",
                 )}
               >

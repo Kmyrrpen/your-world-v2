@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react";
-import { useWorldStore } from "@/app/world";
 import { Link, useSearchParams } from "react-router-dom";
-import EditTagModal from "./EditTagModal";
+import { twJoin } from "tailwind-merge";
+import { useWorldStore } from "@/app/world";
+
 import SearchInput from "@/components/SearchInput";
-import { twMerge } from "tailwind-merge";
+import SearchEmptyMessage from "@/components/SearchEmptyMessage";
+import EditTagModal from "./EditTagModal";
 
 export const editTagKey = "edit-tag";
 
@@ -31,11 +33,16 @@ const Tags: React.FC = () => {
         className="mb-8"
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <ul className={twMerge("flex flex-col border", !filteredTags.length && "hidden" )}>
+      <ul
+        className={twJoin(
+          "flex flex-col border",
+          !filteredTags.length && "hidden",
+        )}
+      >
         {filteredTags.map((tag) => (
           <li key={tag.id}>
             <Link
-              className="group flex items-center gap-1 p-2 font-sans font-medium outline-none focus:bg-gray-200 hover:bg-gray-200 transition-all"
+              className="group flex items-center gap-1 p-2 font-sans font-medium outline-none transition-all hover:bg-gray-200 focus:bg-gray-200"
               to={`?${editTagKey}=${tag.id}`}
               replace
             >
@@ -48,15 +55,22 @@ const Tags: React.FC = () => {
             </Link>
           </li>
         ))}
-
-        {/* Open Tag Modal */}
-        {editTagId && tags[editTagId] ? (
-          <EditTagModal
-            tag={tags[editTagId]}
-            onClose={() => setSearchParams("", { replace: true })}
-          />
-        ) : null}
       </ul>
+
+      <SearchEmptyMessage
+        inputValue={inputValue}
+        isHidden={Boolean(filteredTags.length)}
+      >
+        Go ahead and add a tag to your Notes, all tags are recorded here.
+      </SearchEmptyMessage>
+
+      {/* Open Tag Modal */}
+      {editTagId && tags[editTagId] ? (
+        <EditTagModal
+          tag={tags[editTagId]}
+          onClose={() => setSearchParams("", { replace: true })}
+        />
+      ) : null}
     </div>
   );
 };

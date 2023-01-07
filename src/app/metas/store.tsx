@@ -1,24 +1,49 @@
-import create from "zustand";
+import create, { createStore, StoreApi } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { Action } from "@/utils/types";
+import { Action, Loading } from "@/utils/types";
 import { Meta, Metas } from "./types";
 import { createMetaDB } from "./db";
+import { nanoid } from "nanoid";
 
-interface State {
+export type MetaStore = {
   metas: Metas;
-}
-
-export interface MetaStore extends State {
   close: Action<never>;
-  /** sets meta object to payload */
   setMeta: Action<Meta, Promise<void>>;
-  /** deletes meta object */
   deleteMeta: Action<string, Promise<void>>;
-}
+};
 
-export const createMetaStore = async () => {
+type MetaConnection = {
+  loading: Loading;
+  store: StoreApi<MetaStore> | null;
+  validKey: string | null;
+  connect: Action;
+  disconnect: Action;
+};
+
+export const useMetaConnection = create<MetaConnection>()((set, get) => ({
+  store: null,
+  loading: "idle",
+  validKey: null,
+  connect: async () => {
+    const key = nanoid();
+    set({ validKey: key, loading: "loading" });
+    try {
+      const store = await createMetaStore();
+      if (key === get().validKey) set({ store, loading: "loaded" });
+    } catch {
+      if (key === get().validKey) set({ store: null, loading: "error" });
+    }
+  },
+  disconnect: () => {
+    const store = get().store;
+    if (store) store.getState().close();
+    set({ store: null, validKey: null, loading: "idle" });
+  },
+}));
+
+const createMetaStore = async () => {
   const { connection, metas } = await createMetaDB();
-  return create(
+  return createStore(
     immer<MetaStore>((set) => ({
       metas: metas,
       close: () => {

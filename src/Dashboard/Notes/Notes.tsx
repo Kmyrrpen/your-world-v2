@@ -5,6 +5,8 @@ import shallow from "zustand/shallow";
 import NoteItem from "./NoteItem";
 import SearchInput from "@/components/SearchInput";
 import TagSearchInput from "./TagSearchInput";
+import { twJoin } from "tailwind-merge";
+import SearchEmptyMessage from "@/components/SearchEmptyMessage";
 
 const Notes: React.FC = () => {
   const notes = useWorldStore((state) => Object.values(state.notes), shallow);
@@ -34,11 +36,22 @@ const Notes: React.FC = () => {
           setSelectedItems={setSelectedItems}
         />
       </div>
-      <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
+      <ul
+        className={twJoin(
+          "grid grid-cols-1 gap-2 md:grid-cols-2",
+          !filteredNotes.length && "hidden",
+        )}
+      >
         {filteredNotes.map((note) => (
           <NoteItem note={note} key={note.id} />
         ))}
       </ul>
+      <SearchEmptyMessage
+        inputValue={inputValue}
+        isHidden={Boolean(filteredNotes.length)}
+      >
+        You don&apos;t have any Notes! Start creating!
+      </SearchEmptyMessage>
     </div>
   );
 };

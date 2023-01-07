@@ -1,3 +1,3 @@
 export { MetasProvider, useMetaStore } from "./Provider";
-export { createMetaStore } from "./store";
+export { useMetaConnection } from "./store";
 export * from "./types";

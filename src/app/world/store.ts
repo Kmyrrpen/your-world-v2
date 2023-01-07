@@ -1,27 +1,72 @@
-import { createStore } from "zustand";
+import create, { createStore, StoreApi } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-import { Action, PostMessage } from "@/utils/types";
+import { Action, Loading, PostMessage } from "@/utils/types";
 import { createWorldDB } from "./db";
 import { Note, Tag } from "./types";
+import { nanoid } from "nanoid";
+import { deleteDB, DeleteDBCallbacks } from "idb";
 
-type State = {
+type WorldActions = {
+  setTag: Action<Tag, Promise<void>>;
+  deleteTag: Action<Tag, Promise<void>>;
+  setNote: Action<Note, Promise<void>>;
+  deleteNote: Action<Note, Promise<void>>;
+  closeConnections: Action;
+};
+
+export type WorldStore = {
   notes: { [key: string]: Note };
   tags: { [key: string]: Tag };
   id: string;
+} & WorldActions;
+
+type WorldConnection = {
+  loading: Loading;
+  store: StoreApi<WorldStore> | null;
+  __key: string | null;
+  id: string | null;
+  setLoading: Action<Loading>;
+  destroy: Action<DeleteDBCallbacks["blocked"], Promise<void>>;
+  connect: Action<string, Promise<void>>;
+  disconnect: Action;
 };
 
-type WorldActions = {
-  close: Action<never>;
-  setTag: Action<Tag, Promise<void>>;
-  setNote: Action<Note, Promise<void>>;
-  deleteTag: Action<Tag, Promise<void>>;
-  deleteNote: Action<Note, Promise<void>>;
-};
+export const useWorldConnection = create<WorldConnection>((set, get) => ({
+  __key: null,
+  store: null,
+  id: null,
+  loading: "idle",
+  setLoading: async (payload) => set({ loading: payload }),
+  destroy: async (blocked) => {
+    const { store, id, disconnect } = get();
+    if (!store || !id) return;
+    store.getState().closeConnections();
+    await deleteDB(id, { blocked });
+    disconnect();
+  },
+  connect: async (payload) => {
+    // use `key` to see if connect got called again when the promise is still
+    // resolving, might not happen in prod but it makes <StrictMode /> happy.
+    const key = nanoid(8);
+    set({ __key: key, loading: "loading" });
+    try {
+      const store = await createWorldStore(payload);
+      if (key !== get().__key) {
+        set({ store, loading: "loaded", id: payload });
+      } else store.getState().closeConnections();
+    } catch {
+      if (key === get().__key) set({ loading: "error" });
+    }
+  },
+  disconnect: () => {
+    const store = get().store;
+    if (store) store.getState().closeConnections();
+    set({ loading: "idle", store: null, __key: null, id: null });
+  },
+}));
 
-export type WorldStore = State & WorldActions;
-
-export const createWorldStore = async (id: string) => {
+const createWorldStore = async (id: string) => {
   const { connection, notes, tags } = await createWorldDB(id);
   const channel = new BroadcastChannel(`world: ${id}`);
   const postMessage = channel.postMessage.bind(
@@ -33,7 +78,7 @@ export const createWorldStore = async (id: string) => {
       id,
       tags,
       notes,
-      close: () => {
+      closeConnections: () => {
         channel.close();
         connection.close();
       },

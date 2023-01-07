@@ -9,6 +9,8 @@ import Navbar from "@/components/Navbar";
 import { formatDate } from "@/utils";
 import CreateModal from "./CreateModal";
 import Button from "@/components/Button";
+import { twJoin } from "tailwind-merge";
+import SearchEmptyMessage from "@/components/SearchEmptyMessage";
 
 const Home: React.FC = () => {
   const metas = useMetaStore(
@@ -26,17 +28,28 @@ const Home: React.FC = () => {
         <Button onClick={() => setOpenForm(true)}>Create World</Button>
         {openForm ? <CreateModal onClose={() => setOpenForm(false)} /> : null}
       </Navbar>
-      <ul className="flex flex-col gap-3">
+      <ul className={twJoin("flex flex-col gap-3", !metas.length && "hidden")}>
         {metas.map((meta) => (
           <li key={meta.id}>
-            <Link className="flex flex-col border p-2 border-gray-600" to={meta.id}>
-              <h2 className="text-lg mb-2 font-bold">{meta.name}</h2>
-              <span className="text-sm text-gray-400 font-sans font-medium">recent: {formatDate(meta.recentDateOpened)}</span>
-              <span className="text-sm text-gray-400 font-sans font-medium">created: {formatDate(meta.dateCreated)}</span>
+            <Link
+              className="flex flex-col border border-gray-600 p-2"
+              to={meta.id}
+            >
+              <h2 className="mb-2 text-lg font-bold">{meta.name}</h2>
+              <span className="font-sans text-sm font-medium text-gray-400">
+                recent: {formatDate(meta.recentDateOpened)}
+              </span>
+              <span className="font-sans text-sm font-medium text-gray-400">
+                created: {formatDate(meta.dateCreated)}
+              </span>
             </Link>
           </li>
         ))}
       </ul>
+
+      <SearchEmptyMessage inputValue="" isHidden={Boolean(metas.length)}>
+        Go Ahead and create your first world! It will show up here.
+      </SearchEmptyMessage>
     </Container>
   );
 };

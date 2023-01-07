@@ -3,13 +3,14 @@ import shallow from "zustand/shallow";
 import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { deleteDB } from "idb";
-import { useWorldStore } from "@/app/world";
+
+import { useWorldConnection } from "@/app/world";
 import { useMetaStore } from "@/app/metas";
 
 import Button from "@/components/Button";
 import FormField from "@/components/FormField";
 import Modal from "@/components/Modal";
+import useCurrentMeta from "@/hooks/useCurrentMeta";
 import { registerWithRef } from "@/utils";
 
 type Props = {
@@ -18,14 +19,10 @@ type Props = {
 
 const SettingsModal: React.FC<Props> = ({ onClose }) => {
   const navigate = useNavigate();
-  const { close, id } = useWorldStore(
-    (state) => ({ close: state.close, id: state.id }),
-    shallow,
-  );
-
-  const { currentMeta, updateMeta, deleteMeta } = useMetaStore(
+  const { destroy } = useWorldConnection();
+  const currentMeta = useCurrentMeta();
+  const { updateMeta, deleteMeta } = useMetaStore(
     (state) => ({
-      currentMeta: state.metas[id],
       updateMeta: state.setMeta,
       deleteMeta: state.deleteMeta,
     }),
@@ -42,6 +39,10 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
     defaultValues: currentMeta,
   });
   const refRegister = registerWithRef(register);
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    nameRef.current?.focus();
+  }, [nameRef]);
 
   const onUpdate = handleSubmit(async ({ name }) => {
     await updateMeta({ ...currentMeta, name });
@@ -52,25 +53,13 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
     const confirmed = confirm(
       `Are you sure you want to delete ${currentMeta.name}?`,
     );
-
-    if (confirmed) {
-      close();
-      await deleteDB(currentMeta.id, {
-        blocked: () => {
-          alert(
-            "close all other tabs that accesses this world before deleting.",
-          );
-        },
-      });
-      await deleteMeta(currentMeta.id);
-      navigate("/");
-    }
+    if (!confirmed) return;
+    await destroy(() => {
+      alert("close all other tabs that accesses this world before deleting.");
+    });
+    await deleteMeta(currentMeta.id);
+    navigate("/");
   };
-
-  const nameRef = useRef<HTMLInputElement | null>(null);
-  useEffect(() => {
-    nameRef.current?.focus();
-  }, [nameRef]);
 
   return (
     <Modal onClose={onClose}>
