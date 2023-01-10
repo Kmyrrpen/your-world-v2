@@ -5,7 +5,7 @@ import { WorldProvider } from "./app/world";
 import Dashboard, { Notes, Tags } from "./Dashboard";
 import Editor from "./Editor";
 import Home from "./Home";
-import { usePreventScrollShifting } from "./hooks";
+import usePreventScrollShifting from "./hooks/usePreventScrollShifting";
 
 function App() {
   usePreventScrollShifting();
