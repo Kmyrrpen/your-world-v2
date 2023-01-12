@@ -52,7 +52,7 @@ export const useWorldConnection = create<WorldConnection>((set, get) => ({
     set({ __key: key, loading: "loading" });
     try {
       const store = await createWorldStore(payload);
-      if (key !== get().__key) {
+      if (key === get().__key) {
         set({ store, loading: "loaded", id: payload });
       } else store.getState().closeConnections();
     } catch {

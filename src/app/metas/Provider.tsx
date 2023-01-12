@@ -1,3 +1,4 @@
+import LoadingMessage from "@/components/LoadingMessage";
 import { StoreHook } from "@/utils/types";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
@@ -12,8 +13,14 @@ export const MetasProvider: React.FC = () => {
   }, []);
 
   if (loading === "loaded") return <Outlet />;
-  if (loading === "error") return <div>error</div>;
-  return <div>loading</div>;
+  if (loading === "error")
+    return (
+      <LoadingMessage>
+        <span className="text-highlight-error">error:</span> failed to load
+        worlds
+      </LoadingMessage>
+    );
+  return <LoadingMessage>Loading worlds...</LoadingMessage>;
 };
 
 export const useMetaStore: StoreHook<MetaStore> = (selector, equalityFn) => {

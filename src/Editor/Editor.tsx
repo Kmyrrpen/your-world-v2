@@ -10,6 +10,7 @@ import LinkModal from "./LinkModal";
 import { EditorProvider } from "./store";
 import EditorContent from "./EditorContent";
 import "./misc/editor.css";
+import LoadingMessage from "@/components/LoadingMessage";
 
 type Props = {
   note?: Note;
@@ -38,10 +39,15 @@ const Editor: React.FC = () => {
 
   if (id) {
     // if id is present but we don't have it, it doesn't exist
-    if (!notes[id]) return <div>Error: Note does not exist!</div>;
+    if (!notes[id])
+      return (
+        <LoadingMessage>
+          <span className="text-highlight-error">Error:</span> Note does not
+          exist!
+        </LoadingMessage>
+      );
     note = notes[id];
   }
-
 
   return <_Editor note={note} />;
 };

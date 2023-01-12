@@ -1,3 +1,4 @@
+import LoadingMessage from "@/components/LoadingMessage";
 import { StoreHook } from "@/utils/types";
 import { useEffect } from "react";
 import { Outlet, useParams } from "react-router-dom";
@@ -8,16 +9,14 @@ import { useWorldConnection, WorldStore } from "./store";
 
 export const WorldProvider: React.FC = () => {
   const { world } = useParams() as { world: string };
-  const { loading, setLoading, connect, disconnect } = useWorldConnection();
+  const { loading, connect, disconnect } = useWorldConnection();
   const { metas, setMeta } = useMetaStore(
     (state) => ({ metas: state.metas, setMeta: state.setMeta }),
     shallow,
   );
 
   useEffect(() => {
-    if (!metas[world]) {
-      setLoading("error");
-    } else {
+    if (metas[world]) {
       connect(world).then(() =>
         setMeta({ ...metas[world], recentDateOpened: new Date() }),
       );
@@ -25,9 +24,22 @@ export const WorldProvider: React.FC = () => {
     return () => disconnect();
   }, [world]);
 
-  if (loading === "error" || !metas[world]) return <div>error</div>;
+  if (!metas[world])
+    return (
+      <LoadingMessage>
+        <span className="text-highlight-error">error:</span> world does not
+        exist!
+      </LoadingMessage>
+    );
+  if (loading === "error")
+    return (
+      <LoadingMessage>
+        <span className="text-highlight-error">error:</span> failed to load
+        {metas[world].name}!
+      </LoadingMessage>
+    );
   if (loading === "loaded") return <Outlet />;
-  return <div>loading</div>;
+  return <LoadingMessage>Loading world...</LoadingMessage>;
 };
 
 export const useWorldStore: StoreHook<WorldStore> = (selector, equalityFn) => {
