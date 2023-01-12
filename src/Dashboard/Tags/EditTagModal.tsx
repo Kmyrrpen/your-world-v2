@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import FormField from "@/components/FormField";
 import Modal from "@/components/Modal";
 import { registerWithRef } from "@/utils";
+import { toast } from "react-toastify";
 
 type EditTagFormVals = Omit<Tag, "id">;
 type Props = {
@@ -34,11 +35,13 @@ const EditTagModal: React.FC<Props> = ({ tag, onClose }) => {
   const onDelete = async () => {
     await deleteTag(tag);
     onClose();
+    toast.success("Tag deleted.");
   };
 
   const onSubmit = handleSubmit(async (newValues) => {
     await createTag({ ...newValues, id: tag.id });
     onClose();
+    toast.success("Tag saved.");
   });
 
   const nameRef = useRef<HTMLInputElement | null>(null);

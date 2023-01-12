@@ -1,8 +1,9 @@
 import shallow from "zustand/shallow";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Id, toast } from "react-toastify";
 
 import { useWorldConnection } from "@/app/world";
 import { useMetaStore } from "@/app/metas";
@@ -29,6 +30,8 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
     shallow,
   );
 
+  const [freezeModal, setFreezeModal] = useState(false);
+
   const {
     handleSubmit,
     register,
@@ -38,6 +41,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
   }>({
     defaultValues: currentMeta,
   });
+
   const refRegister = registerWithRef(register);
   const nameRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
@@ -47,6 +51,7 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
   const onUpdate = handleSubmit(async ({ name }) => {
     await updateMeta({ ...currentMeta, name });
     onClose();
+    toast.success("World updated.");
   });
 
   const onDelete = async () => {
@@ -54,15 +59,31 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
       `Are you sure you want to delete ${currentMeta.name}?`,
     );
     if (!confirmed) return;
+
+    // wait for db to finish being destroyed. Warn the user if db
+    // is open else where.
+    let toastId: Id | undefined = undefined;
     await destroy(() => {
-      alert("close all other tabs that accesses this world before deleting.");
+      toastId = toast.warn("Please close all tabs with this world open!", {
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      });
+      setFreezeModal(true);
     });
+
+    if (toastId) toast.dismiss(toastId);
     await deleteMeta(currentMeta.id);
+    toast.success("World Deleted.");
     navigate("/");
   };
 
+  const handleClose = () => {
+    if (!freezeModal) onClose();
+  };
+
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={handleClose}>
       <form className="flex flex-1 flex-col" onSubmit={onUpdate}>
         <h2 className="text-lg font-bold">World Settings</h2>
 
@@ -73,16 +94,28 @@ const SettingsModal: React.FC<Props> = ({ onClose }) => {
             {...refRegister("name", {
               ref: nameRef,
               required: "this field is required",
+              disabled: freezeModal,
             })}
           />
           {errors.name && <FormField.Error message={errors.name.message} />}
         </FormField>
 
         <div className="mt-auto flex items-center justify-end gap-1">
-          <Button type="button" onClick={onDelete}>
+          <Button
+            disabled={freezeModal}
+            style={freezeModal ? "disabled" : "default"}
+            type="button"
+            onClick={onDelete}
+          >
             delete
           </Button>
-          <Button type="submit">save</Button>
+          <Button
+            disabled={freezeModal}
+            style={freezeModal ? "disabled" : "default"}
+            type="submit"
+          >
+            save
+          </Button>
         </div>
       </form>
     </Modal>

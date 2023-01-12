@@ -164,7 +164,6 @@ const createWorldStore = async (id: string) => {
 
   channel.onmessage = (event) => {
     const { data } = event;
-    console.log(data);
     if (isMessagePayload(data)) {
       store.getState()[data.type](data.payload, true);
     }

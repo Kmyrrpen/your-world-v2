@@ -7,31 +7,25 @@ import TagInput from "./TagInput";
 import Toolbar from "./Toolbar";
 import LinkModal from "./LinkModal";
 
-import { editorContext, editorActionsContext, useEditorInit } from "./store";
-import "./misc/editor.css";
+import { EditorProvider } from "./store";
 import EditorContent from "./EditorContent";
+import "./misc/editor.css";
 
 type Props = {
   note?: Note;
 };
 
 const _Editor: React.FC<Props> = ({ note }) => {
-  const { draft, editor, setDraft, saveNote, deleteNote } = useEditorInit(note);
-  if (!editor) return null;
   return (
     <Container>
-      <editorContext.Provider value={{ draft, editor }}>
-        <editorActionsContext.Provider
-          value={{ setDraft, saveNote, deleteNote }}
-        >
-          <EditorNavbar />
-          <TitleInput />
-          <TagInput />
-          <Toolbar />
-          <EditorContent />
-          {editor.storage.linkModal.show ? <LinkModal /> : null}
-        </editorActionsContext.Provider>
-      </editorContext.Provider>
+      <EditorProvider note={note}>
+        <EditorNavbar />
+        <TitleInput />
+        <TagInput />
+        <Toolbar />
+        <EditorContent />
+        <LinkModal />
+      </EditorProvider>
     </Container>
   );
 };
@@ -47,6 +41,7 @@ const Editor: React.FC = () => {
     if (!notes[id]) return <div>Error: Note does not exist!</div>;
     note = notes[id];
   }
+
 
   return <_Editor note={note} />;
 };

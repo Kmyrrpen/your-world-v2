@@ -16,7 +16,7 @@ const getItems = (notes: Note[], draft: Note, inputValue: string): Note[] => {
   );
 };
 
-const LinkModal: React.FC = () => {
+const _LinkModal: React.FC = () => {
   const { draft, editor } = useEditorContext();
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
@@ -97,6 +97,12 @@ const LinkModal: React.FC = () => {
       </ul>
     </Modal>
   );
+};
+
+const LinkModal: React.FC = () => {
+  const { editor } = useEditorContext();
+  if (!editor.storage.linkModal.show) return null;
+  return <_LinkModal />;
 };
 
 export default LinkModal;

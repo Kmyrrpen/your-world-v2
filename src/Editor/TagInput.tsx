@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { twMerge } from "tailwind-merge";
 
 import { Tag, useWorldStore } from "@/app/world";
-import { useEditorContext, useEditorActionsContext } from "./store/store";
+import { useEditorContext, useEditorActionsContext } from "./store/Provider";
 import useSortedTags from "@/hooks/useSortedTags";
 
 // make sure to handle special create option
@@ -40,7 +40,7 @@ const getItems = (
 
 const TagInput: React.FC = () => {
   const { draft } = useEditorContext();
-  const { setDraft } = useEditorActionsContext();
+  const { setTagIds } = useEditorActionsContext();
 
   const [inputValue, setInputValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -70,11 +70,7 @@ const TagInput: React.FC = () => {
     };
     await setTag(tag);
     setLoading(false);
-
-    setDraft((state) => ({
-      ...state,
-      tagIds: [...state.tagIds, tag.id],
-    }));
+    setTagIds((state) => [...state, tag.id]);
   };
 
   const { getDropdownProps, getSelectedItemProps, removeSelectedItem } =
@@ -104,10 +100,7 @@ const TagInput: React.FC = () => {
             {
               // newSelectedItems will always be defined
               const tags = newSelectedItems as Tag[];
-              setDraft((state) => ({
-                ...state,
-                tagIds: tags.map((tag) => tag.id),
-              }));
+              setTagIds(tags.map((tag) => tag.id));
             }
             break;
           default:
@@ -169,10 +162,7 @@ const TagInput: React.FC = () => {
             break;
           }
 
-          setDraft((state) => ({
-            ...state,
-            tagIds: [...state.tagIds, newSelectedItem.id],
-          }));
+          setTagIds((state) => [...state, newSelectedItem.id]);
           break;
         }
         case useCombobox.stateChangeTypes.InputChange:

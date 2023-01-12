@@ -1,5 +1,5 @@
-import { Note } from "@/app/world";
 import { nanoid } from "nanoid";
+import { EditorDraft } from "./Provider";
 
 export const getDescription = (htmlString: string): string => {
   // grab the first paragraph tag found and remove all html tags present.
@@ -9,10 +9,11 @@ export const getDescription = (htmlString: string): string => {
   return description.length >= 90 ? description + "..." : description;
 };
 
-export const emptyNote = (): Note => ({
+export const emptyDraft = (): EditorDraft => ({
   name: "",
   content: "",
   description: "",
   id: nanoid(),
   tagIds: [],
+  isFresh: true,
 });

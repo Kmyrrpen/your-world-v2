@@ -8,7 +8,7 @@ import { useWorldConnection, WorldStore } from "./store";
 
 export const WorldProvider: React.FC = () => {
   const { world } = useParams() as { world: string };
-  const { loading, setLoading, connect, disconnect, id } = useWorldConnection();
+  const { loading, setLoading, connect, disconnect } = useWorldConnection();
   const { metas, setMeta } = useMetaStore(
     (state) => ({ metas: state.metas, setMeta: state.setMeta }),
     shallow,
@@ -25,7 +25,7 @@ export const WorldProvider: React.FC = () => {
     return () => disconnect();
   }, [world]);
 
-  if (loading === "error" || !id || !metas[id]) return <div>error</div>;
+  if (loading === "error" || !metas[world]) return <div>error</div>;
   if (loading === "loaded") return <Outlet />;
   return <div>loading</div>;
 };

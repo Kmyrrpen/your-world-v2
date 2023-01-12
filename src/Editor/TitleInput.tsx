@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useRef, useEffect } from "react";
-import { useEditorContext, useEditorActionsContext } from "./store/store";
+import { useEditorContext, useEditorActionsContext } from "./store/Provider";
 
 const TitleInput: React.FC = () => {
   const { draft, editor } = useEditorContext();
-  const { setDraft } = useEditorActionsContext();
+  const { setTitle } = useEditorActionsContext();
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDraft((note) => ({ ...note, name: e.target.value }));
+    setTitle(e.target.value);
   };
 
   const inputRef = useRef<HTMLInputElement>(null);

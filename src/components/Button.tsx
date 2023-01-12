@@ -2,12 +2,22 @@ import { polyRef } from "@/utils";
 import { PolyProps } from "@/utils/types";
 import { twMerge } from "tailwind-merge";
 
-const Button = polyRef<"button", PolyProps>(
-  ({ as: As = "button", className, ...props }, ref) => {
+type Props = PolyProps<{
+  style?: keyof typeof styleTw;
+}>;
+
+const styleTw = {
+  default: "bg-black hover:bg-primary-300 hover:text-black text-white",
+  disabled: "bg-gray-400 opacity-80 text-white cursor-not-allowed",
+};
+
+const Button = polyRef<"button", Props>(
+  ({ as: As = "button", style = "default", className, ...props }, ref) => {
     return (
       <As
         className={twMerge(
-          "border bg-black py-1.5 px-3 font-sans text-sm font-medium leading-tight text-white transition-colors hover:bg-primary-300 hover:text-black rounded",
+          "rounded border py-1.5 px-3 font-sans text-sm font-medium leading-tight transition-colors",
+          styleTw[style],
           className,
         )}
         ref={ref}

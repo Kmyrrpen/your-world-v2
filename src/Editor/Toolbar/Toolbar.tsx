@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react";
-import { useEditorContext } from "../store/store";
+import { useEditorContext } from "../store/Provider";
 import ToolbarIcon from "./ToolbarIcon";
 
 const cf = (editor: Editor) => editor.chain().focus();
