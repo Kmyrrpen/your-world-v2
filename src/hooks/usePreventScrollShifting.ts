@@ -14,6 +14,7 @@ const usePreventScrollShifting = () => {
     };
 
     const resizeObserver = new ResizeObserver(() => {
+      console.log(document.body.scrollHeight > window.innerHeight);
       setPaddingRight(document.body.scrollHeight > window.innerHeight);
     });
     resizeObserver.observe(document.body);
