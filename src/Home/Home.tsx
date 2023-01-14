@@ -1,33 +1,25 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import shallow from "zustand/shallow";
-
-import { useMetaStore } from "@/app/metas";
-import Container from "@/components/Container";
-import Navbar from "@/components/Navbar";
-
-import { formatDate } from "@/utils";
-import CreateModal from "./CreateModal";
-import Button from "@/components/Button";
 import { twJoin } from "tailwind-merge";
+
+import Container from "@/components/Container";
+import { useMetaStore } from "@/app/metas";
+import { formatDate } from "@/utils";
 import SearchEmptyMessage from "@/components/SearchEmptyMessage";
+import HomeNavbar from "./HomeNavbar";
 
 const Home: React.FC = () => {
   const metas = useMetaStore(
     (state) =>
       Object.values(state.metas).sort(
-        (a, b) => a.dateCreated.getTime() - b.dateCreated.getTime(),
+        (a, b) => b.recentDateOpened.getTime() - a.recentDateOpened.getTime(),
       ),
     shallow,
   );
-  const [openForm, setOpenForm] = useState(false);
 
   return (
     <Container>
-      <Navbar>
-        <Button onClick={() => setOpenForm(true)}>Create World</Button>
-        {openForm ? <CreateModal onClose={() => setOpenForm(false)} /> : null}
-      </Navbar>
+      <HomeNavbar />
       <ul className={twJoin("flex flex-col gap-3", !metas.length && "hidden")}>
         {metas.map((meta) => (
           <li key={meta.id}>

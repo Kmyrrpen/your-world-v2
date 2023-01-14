@@ -9,7 +9,7 @@ const FormFieldError = forwardRef<HTMLSpanElement, Props>(
   ({ className, message, ...props }, ref) => {
     return (
       <span
-        className={twMerge("text-sm text-highlight-error", className)}
+        className={twMerge("font-sans text-sm mt-1 text-highlight-error", className)}
         ref={ref}
         {...props}
       >

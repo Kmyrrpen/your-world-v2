@@ -6,10 +6,7 @@ const Navbar: React.FC<ComponentPropsWithoutRef<"nav">> = ({
   ...props
 }) => {
   return (
-    <nav
-      className={twMerge("mb-12 flex justify-end py-2 gap-1", className)}
-      {...props}
-    />
+    <nav className={twMerge("mb-12 flex items-center py-2", className)} {...props} />
   );
 };
 
