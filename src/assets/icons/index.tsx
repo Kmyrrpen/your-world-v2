@@ -1,8 +1,8 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-import { ReactComponent as ArrowRightIcon } from "@/assets/arrow-right.svg";
-import { ReactComponent as ArrowLeftIcon } from "@/assets/arrow-left.svg";
+import { ReactComponent as ArrowRightIcon } from "./arrow-right.svg";
+import { ReactComponent as ArrowLeftIcon } from "./arrow-left.svg";
 
 type SVGProps = React.SVGProps<SVGSVGElement>;
 

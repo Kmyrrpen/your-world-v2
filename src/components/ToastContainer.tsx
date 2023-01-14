@@ -3,6 +3,7 @@ import { Slide, ToastContainer as DefaultContainer } from "react-toastify";
 const ToastContainer: React.FC = () => {
   return (
     <DefaultContainer
+      bodyClassName={"font-sans font-bold"}
       position="bottom-right"
       hideProgressBar
       closeOnClick

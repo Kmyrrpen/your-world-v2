@@ -7,6 +7,8 @@ export const getDescription = (htmlString: string): string => {
   let firstPar = htmlString.match(/(<p>.*?<\/p>)/g)?.[0] || "";
   firstPar = firstPar.replaceAll(/(<a.*?>)|(<\/a>)/g, "");
 
+  const maxCharacterCount = 200;
+
   let validCharCount = 0;
   let isInsideTag = false;
   let isInsideString = false;
@@ -33,14 +35,15 @@ export const getDescription = (htmlString: string): string => {
 
     // only count the valid characters.
     validCharCount++;
-    if (validCharCount >= 100) {
+    if (validCharCount >= maxCharacterCount) {
       break;
     }
   }
 
   const description = firstPar.slice(0, endingSliceIndex);
-  console.log(description);
-  return description.length >= 90 ? description + "..." : description;
+  return description.length >= maxCharacterCount
+    ? description + "..."
+    : description;
 };
 
 export const emptyDraft = (): EditorDraft => ({

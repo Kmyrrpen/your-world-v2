@@ -15,10 +15,15 @@ module.exports = {
       primary: {
         300: "#48cae4",
         200: "#0096c7",
-        100: "#023e8a"
+        100: "#023e8a",
       },
       highlight: {
         error: "#d00000",
+      },
+    },
+    extend: {
+      fontFamily: {
+        default: ["Alegreya", "ui-serif", "system-ui", "serif"],
       },
     },
   },
